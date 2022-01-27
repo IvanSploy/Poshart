@@ -23,7 +23,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 
 ## Servicio interno 👮
 * Confirmación de creación de cuenta.
-* Envío de correo al usuario para confirmar la realización de una compra.
+* Envío de correo al usuario para confirmar la realización de una compra adjuntado con el PDF de la factura.
 * Notificación semanal con obras que puedan interesar al usuario.
 * Cambio de contraseña del usuario.
 * Notificar al usuario cuando otro usuario ha dado _me gusta_ o comentado en alguna obra de su propiedad.
