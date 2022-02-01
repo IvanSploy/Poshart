@@ -1,4 +1,4 @@
-package es.urjc.dad.poshartdemo.controller;
+package es.urjc.dad.poshart.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

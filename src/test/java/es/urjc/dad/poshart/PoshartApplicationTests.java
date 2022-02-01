@@ -1,10 +1,10 @@
-package es.urjc.dad.poshartdemo;
+package es.urjc.dad.poshart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PoshartDemoApplicationTests {
+class PoshartApplicationTests {
 
 	@Test
 	void contextLoads() {
