@@ -19,6 +19,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * **Colección**: Alberga un conjunto de obras _(compradas o en venta)_ para un propósito específico.
 * **Usuario**: Persona registrada en la aplicación, emplea tanto funcionalidades públicas como privadas.
 * **Compra**: Obra comprada por un usuario a cambio de dinero.
+* **Comentario**: Comentario de un usuario sobre una obra u otro comentario.
 
 ## Servicio interno 👮
 * Confirmación de creación de cuenta.
