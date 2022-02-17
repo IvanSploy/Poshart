@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -23,10 +25,16 @@ public class User {
 	private String description;
 	
 	@ManyToMany
+	private List<User> follows;
+	
+	@ManyToMany(mappedBy = "follows")
 	private List<User> followers;
-
-	@ManyToMany
-	private List<User> follows; 
+	
+	@OneToMany(mappedBy = "owner")
+	private List<Collection> collections;
+	
+	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private ShoppingCart cart; 
 	
 	public User() {
 		//Used by JPA.
