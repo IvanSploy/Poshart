@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -32,6 +33,9 @@ public class User {
 	
 	@OneToMany(mappedBy = "owner")
 	private List<Collection> collections;
+	
+	@OneToMany(mappedBy = "owner")
+	private List<ArtPost> myPosts;
 	
 	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ShoppingCart cart; 

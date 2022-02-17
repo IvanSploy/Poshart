@@ -31,6 +31,12 @@ public class Comment {
 	@ManyToOne
 	private ArtPost post;
 	
+	@OneToMany(mappedBy = "responseTo")
+	private List<Comment> responses;
+	
+	@ManyToOne
+	private Comment responseTo;
+	
 	public Comment() {
 		//Used by JPA.
 	}

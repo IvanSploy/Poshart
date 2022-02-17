@@ -22,7 +22,7 @@ public class ShoppingCart {
 	private Date date;
 	
 	@ManyToMany
-	private List<User> art;
+	private List<ArtPost> art;
 
 	@OneToOne
 	private User buyer; 
