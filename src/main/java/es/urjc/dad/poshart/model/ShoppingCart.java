@@ -46,6 +46,14 @@ public class ShoppingCart {
 		this.setPrice(price);
 		this.setDate(date);
 	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public Date getDate() {
 		return date;
@@ -70,6 +78,22 @@ public class ShoppingCart {
 
 	public void setBuyer(User buyer) {
 		this.buyer = buyer;
+	}
+
+	public void setArt(List<ArtPost> art) {
+		this.art = art;
+	}
+	
+	public List<ArtPost> getArt() {
+		return art;
+	}
+
+	public void addArt(ArtPost artPost) {
+		art.add(artPost);
+	}
+	
+	public void removeArt(ArtPost artPost) {
+		art.remove(artPost);
 	}
 	
 	

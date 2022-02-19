@@ -93,4 +93,14 @@ public class Comment {
 	public List<Comment> getResponses() {
 		return responses;
 	}
+	
+	public void addResponse(Comment comment) {
+		responses.add(comment);
+		comment.setResponseTo(this);
+	}
+	
+	public void removeResponse(Comment comment) {
+		responses.remove(comment);
+		comment.setResponseTo(this);
+	}
 }
