@@ -24,8 +24,8 @@ public class ArtPost {
 	@ManyToOne
 	private User owner;
 	
-	@OneToMany(mappedBy = "post")
-	private List<Comment> comments;
+	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> postComments = new ArrayList<>();	
 	
 	@ManyToOne
 	private Image image;
@@ -79,5 +79,27 @@ public class ArtPost {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+	
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+	
+	public void addComment(Comment comment) {
+		postComments.add(comment);
+		comment.setPost(this);
+	}
+	
+	public List<Comment> getPostComments() {
+		return postComments;
+	}
+	
+	public void removeComment(Comment comment) {
+		postComments.remove(comment);
+		comment.setPost(this);
 	}
 }

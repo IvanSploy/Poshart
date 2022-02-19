@@ -17,21 +17,30 @@ public class ShoppingCart {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private String price;
+	private float price;
 	private Date date;
 	
 	@ManyToMany
-	private List<ArtPost> art;
+	private List<ArtPost> art= new ArrayList<>();
+	
+	public void addArtPost(ArtPost post) {
+		art.add(post);
+	}
+	
+	public void removeArtPost(ArtPost post) {
+		art.remove(post);
+	}
 
 	@OneToOne
 	private User buyer; 
 	
+
 	public ShoppingCart() {
 		//Used by JPA.
 	}
 	
 	//Constructor con lo necesario no estrictamente obligatorio.
-	public ShoppingCart(String price, Date date) {
+	public ShoppingCart(float price, Date date) {
 		super();
 		this.setPrice(price);
 		this.setDate(date);
@@ -45,12 +54,23 @@ public class ShoppingCart {
 		this.date = date;
 	}
 
-	public String getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
+	
+
+	public User getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(User buyer) {
+		this.buyer = buyer;
+	}
+	
+	
 	
 }
