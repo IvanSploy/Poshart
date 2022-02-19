@@ -3,6 +3,8 @@ package es.urjc.dad.poshart.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.urjc.dad.poshart.model.ArtPost;
+import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.Image;
+import es.urjc.dad.poshart.model.User;
+import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.service.ImageService;
 
@@ -21,10 +27,27 @@ import es.urjc.dad.poshart.service.ImageService;
 public class MyController {
 	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
+	
+
+	@Autowired
+	private ArtPostRepository artRepository;
 	
 	@Autowired
 	private ImageService imageService;
+	
+	@PostConstruct
+	public void init() {
+		
+		// Añadimos muchos anuncios
+		for(int i = 0; i<20; i++){
+			artRepository.save(new ArtPost("Post "+i, i*10));
+			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i);
+			Collection c = new Collection("Colección "+i, "Descripcion " + i);
+			u.getCollections().add(c);
+			userRepository.save(u);
+		}
+	}
 	
 	@GetMapping("/")
 	public String startPage(Model model) {

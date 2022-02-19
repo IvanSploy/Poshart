@@ -1,5 +1,6 @@
 package es.urjc.dad.poshart.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public class Collection {
 	private User owner;
 
 	@ManyToMany
-	private List<ArtPost> posts;
+	private List<ArtPost> posts = new ArrayList<>();
 
 	public Collection() {
 		// Used by JPA.
@@ -67,6 +68,14 @@ public class Collection {
 		this.owner = owner;
 	}
 
+	public void addOwner(User owner) {
+		owner.addCollection(this);
+	}
+
+	public void removeOwner(User owner) {
+		owner.removeCollection(this);
+	}
+	
 	public List<ArtPost> getPosts() {
 		return posts;
 	}

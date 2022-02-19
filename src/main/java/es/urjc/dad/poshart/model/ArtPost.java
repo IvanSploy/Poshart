@@ -91,6 +91,14 @@ public class ArtPost {
 		this.owner = owner;
 	}
 	
+	public void addOwner(User owner) {
+		owner.addPost(this);
+	}
+
+	public void removeOwner(User owner) {
+		owner.removePost(this);
+	}
+	
 	public void addComment(Comment comment) {
 		postComments.add(comment);
 		comment.setPost(this);
