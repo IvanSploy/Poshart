@@ -1,0 +1,25 @@
+<html>
+<head>
+	<meta charset="UTF-8"/>
+</head>
+  <!-- Imagen central-->
+    <hr>
+    <h2><center><img src="img_avatar.png" class="image"></center></h2>
+<body>
+	<p>Nombre: {{ArtPost.name}}</p>
+	<p>Descripción: {{ArtPost.description}}</p>
+  <p>Precio: {{ArtPost.price}}</p>
+  <p>Comentarios:</p>
+  <p>{{ArtPost.comments}}<p>
+    <!-- hacer comentario-->
+    <label for="PostArtName"><b>Haz un comentario</b></label>
+    <input type="text" placeholder="Comenta desde tu cuenta..." name="PostArtName" id="PostArtName" required/><button class="button">Comentar</button>
+  <!-- Botón para subir el post-->
+    <button type="submit" class="uploadpic">COMPRAR</button>
+  </div>
+  <!-- Enlace a crearse un perfil-->
+  <div class="container create">
+    <p><a href="#">Volver</a></p>
+  </div>
+</body>
+</html>

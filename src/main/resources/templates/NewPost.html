@@ -1,0 +1,29 @@
+<form action="action_page.php">
+  <div class="container">
+    <!-- Titulo-->
+    <h1><center>Post your brand new work of Art!</center></h1>
+    <!-- Imagen central-->
+    <hr>
+    <h2><center><img src="img_avatar.png" class="image"></center></h2>
+    	 
+    <!-- Buscar archivo para subir-->
+    <label for="PostArtPicture"><b>Upload your picture:</b></label>
+    <input type="file" id="myFile" name="filename">
+  	<input type="submit">
+    <br>
+    <!-- Nombrar imagen-->
+    <label for="PostArtName"><b>Name</b></label>
+    <input type="text" placeholder="Enter PostArt Name" name="PostArtName" id="PostArtName" required/>
+	<!-- Descripcion imagen-->
+    <label for="PostArtDescription"><b>Description:</b></label>
+    <input type="text" placeholder="PostArt Description" name="PostArtDescription" id="PostArtDescription" required/>
+
+    <!-- Botón para subir el post-->
+    <button type="submit" class="uploadpic">UPLOAD</button>
+  </div>
+
+  <!-- Enlace a crearse un perfil-->
+  <div class="container create">
+    <p>Don´t have an account yet? <a href="#">Create account</a>.</p>
+  </div>
+</form>

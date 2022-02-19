@@ -1,0 +1,82 @@
+* {box-sizing: border-box}
+
+/* Add padding to containers */
+.container {
+  padding: 15px;
+}
+
+/* Formalizar el campo de texto */
+input[type=text] {
+  border-radius: 25px;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: 2px solid #ECD7F7;
+}
+/* Formalizar el campo de archivo */
+input[type=file] {
+  border-radius: 25px;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #ECD7F7;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Boton de upload */
+.uploadpic {
+  border-radius: 40px;
+  background-color: #B07EEC;
+  color: white;
+  font-size: 25px;
+  padding: 26px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+/* color del link de crear cuenta sin pulsar */
+a {
+  color: green;
+}
+/* color del link de crear cuenta cuando ya ha sido pulsado */
+a:visited {
+  color: purple;
+}
+
+/* Recuadro lila para enlaces */
+.create {
+  background-color: #EBE4F4;
+  text-align: center;
+}
+
+/* Formato de la imagen de la cabecera */
+.image {
+  display: block;
+  width: 150px;
+  height: auto;
+}
+
+/* botones pequeños */
+.button {
+  background-color: #EBE4F4;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+}
