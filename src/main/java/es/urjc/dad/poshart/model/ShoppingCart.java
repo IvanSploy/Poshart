@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
