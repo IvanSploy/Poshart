@@ -1,0 +1,49 @@
+/*CABECERA*/
+header {
+  	width: 100%;
+	position: fixed;
+	background-color: #edf7f5 ;
+	display: inline-flex;
+  	justify-content: center;
+
+
+}
+
+.iconheader:hover{
+	display: inline-block;
+	position: relative;
+  	background-color: #B7DBFA;
+ 	border-radius: 10px;
+}
+.iconheader{
+  	width: 125px;
+  	margin:20px;
+  	padding:20px;
+}
+
+/*PIE*/
+footer {
+  background-color: grey;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  color: white;
+	text-align: center;
+  	z-index: 0px;
+  	background-color: #204E5F;
+
+}
+body {
+	padding:0px;
+	margin:0px;
+}
+.cuerpo{
+	padding-top: 250px;
+}
+td{
+	padding: 30px;
+}
+th{
+	padding: 10px;
+}

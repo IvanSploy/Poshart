@@ -10,9 +10,12 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +38,7 @@ public class MyController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 
 	@Autowired
 	private ArtPostRepository artRepository;
@@ -48,8 +51,6 @@ public class MyController {
 	
 	@PostConstruct
 	public void init() {
-		
-		// Añadimos muchos anuncios
 		for(int i = 0; i<20; i++){
 			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i);
 			Collection c = new Collection("Colección "+i, "Descripcion " + i);
@@ -61,7 +62,7 @@ public class MyController {
 			userRepository.save(u);
 		}
 	}
-	
+		
 	@GetMapping("/")
 	public String startPage(Model model, HttpSession sesion) {
 		if(sesion.isNew()) {
@@ -80,9 +81,40 @@ public class MyController {
 		}
 		return "start";
 	}
-	
-	@GetMapping("/mustache")
-	public String devuelvePlantilla() {
-		return "MiPlantilla";
+	@GetMapping("/muro")
+	public String getMuro(Model model) {
+		return "muro";
+	}
+	@GetMapping("/shopping")
+	public String getShopping(Model model) {
+		return "shoppingCart";
+	}
+	@GetMapping("/home")
+	public String getHome(Model model) {
+		return "home";
+	}
+	@GetMapping("/search")
+	public String getSearch(Model model) {
+		return "search";
+	}
+	@GetMapping("/config")
+	public String getConfig(Model model) {
+		return "config";
+	}
+	@GetMapping("/user/{id}")
+	public String getUser(Model model, @PathVariable long id) {
+		User u = userRepository.findById(id).orElseThrow();
+		model.addAttribute("user", u);
+		return "users";
+	}
+	@GetMapping("/users")
+	public String getUser(Model model,Pageable page) {
+		Page<User> p = userRepository.findAll(page);
+		model.addAttribute("page", p);
+		model.addAttribute("hasPrev", p.hasPrevious());
+		model.addAttribute("hasNext", p.hasNext());
+		model.addAttribute("nextPage", p.getNumber()+1);
+		model.addAttribute("prevPage", p.getNumber()-1);
+		return "allusers";
 	}
 }

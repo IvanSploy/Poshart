@@ -1,0 +1,33 @@
+<html>
+<body>
+{{#page}}
+	{{#hasPrev}}
+	<a href="/users/?page={{prevPage}}&size=5">Prev</a>
+	{{/hasPrev}}
+	{{#hasNext}}
+	<a href="/users/?page={{nextPage}}&size=5">Next</a>
+	{{/hasNext}}
+	
+	<h1> Estas viendo el user: {{id}} </h1>
+	<p>Username: {{username}}</p>
+	<p>Mail: {{mail}}</p>
+	<p>Password: {{password}}</p>
+	<a href="/">Back</a>
+	<!--{{#follows}}
+	<h1> Estas viendo el user: {{id}} </h1>
+	<p>Username: {{username}}</p>
+	<p>Mail: {{mail}}</p>
+	<p>Password: {{password}}</p>
+	<a href="/">Back</a>
+	{{/follows}}
+	{{#collection}}
+	<h1> Estas viendo el user: {{id}} </h1>
+	<p>Username: {{username}}</p>
+	<p>Mail: {{mail}}</p>
+	<p>Password: {{password}}</p>
+	<a href="/">Back</a>
+	{{/collection}}
+	{{-index}}-->
+{{/page}}
+</body>
+</html>
