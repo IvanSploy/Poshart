@@ -1,0 +1,14 @@
+<html>
+{<header}
+	<h1>Estas viendo el user: {{user.id}} </h1>
+	<p>Username: {{user.username}}</p>
+	<p>Image: {{user.image.id}}</p>
+	<p>Mail: {{user.mail}}</p>
+	<p>Password: {{user.password}}</p>
+	<p>Name: {{user.name}}</p>
+	<p>Surname: {{user.surname}}</p>
+	<p>Description: {{user.description}}</p>
+	<a href="/follows/{user.id}">Follows</a>
+	<a href="/following/{user.id}">Following</a>
+{<footer}
+</html>
