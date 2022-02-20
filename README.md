@@ -33,8 +33,8 @@ Para la planificación del proyecto se ha hecho uso de la herramienta virtual Tr
 * [Acceso al Trello](https://trello.com/b/WhTBchG9/ad)
 
 ## Modelo de Datos 📇
-### Diagrama UML
-![Diagrama UML](https://user-images.githubusercontent.com/78254966/154862603-8dd50f7c-994f-4f66-ba8e-3ae411265c14.png)
+### Diagrama UML!
+[Diagrama UML (1)](https://user-images.githubusercontent.com/78254966/154862912-00f4e28c-75c6-4a15-8e59-8efe05a23014.png)
 ### Diagrama Entidad/Relación
 ![Diagrama E_R (1)](https://user-images.githubusercontent.com/78254966/154862744-b1db011d-58ef-4b56-b820-14d5f5dbcc82.png)
 
