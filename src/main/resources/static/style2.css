@@ -38,23 +38,12 @@ body {
 	padding:0px;
 	margin:0px;
 }
-.inicio {
-	padding-left: 100px;
-	padding-bottom: 150px;
-	width: 100%;
-  
-	position: fixed;
-	display: inline-flex;
-  	justify-content: left;
-}
 .cuerpo{
 	padding-top: 250px;
 }
-#next{
-	padding-top: 250px;
+td{
+	padding: 30px;
 }
-#cuadro{
-  	width: 125px;
-  	margin:20px;
-  	padding:20px;
+th{
+	padding: 10px;
 }

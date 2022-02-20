@@ -42,18 +42,18 @@ public class MyController {
 	@PostConstruct
 	public void init() {
 		User u = new User();
-		for(int i = 0; i<20; i++){
+		for(int i = 0; i<65; i++){
 			u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i);
 			userRepository.save(u);
 		}		
 		// Añadimos muchos anuncios
-		for(int i = 0; i<20; i++){
+		/*for(int i = 0; i<20; i++){
 			artRepository.save(new ArtPost("Post "+i, i*10));
 			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i);
 			Collection c = new Collection("Colección "+i, "Descripcion " + i);
 			u.getCollections().add(c);
 			userRepository.save(u);
-		}
+		}*/
 	}
 		
 	@GetMapping("/")
@@ -68,6 +68,18 @@ public class MyController {
 	public String getShopping(Model model) {
 		return "shoppingCart";
 	}
+	@GetMapping("/home")
+	public String getHome(Model model) {
+		return "home";
+	}
+	@GetMapping("/search")
+	public String getSearch(Model model) {
+		return "search";
+	}
+	@GetMapping("/config")
+	public String getConfig(Model model) {
+		return "config";
+	}
 	@GetMapping("/user/{id}")
 	public String getUser(Model model, @PathVariable long id) {
 		User u = userRepository.findById(id).orElseThrow();
@@ -78,25 +90,26 @@ public class MyController {
 	public String getUser(Model model,Pageable page) {
 		Page<User> p = userRepository.findAll(page);
 		model.addAttribute("page", p);
+		model.addAttribute("hasPrev", p.hasPrevious());
+		model.addAttribute("hasNext", p.hasNext());
+		model.addAttribute("nextPage", p.getNumber()+1);
+		model.addAttribute("prevPage", p.getNumber()-1);
 		return "allusers";
 	}
 	
 	@PostMapping("/newImage")
 	public String newImage(Model model, @RequestParam MultipartFile image) throws IOException {
-		
 		Image imagen = imageService.createImage(image);
 		return "confirm";
 	}
 	
 	@GetMapping("/image/{id}")
 	public ResponseEntity<Object> newImage(Model model, @PathVariable long id) throws SQLException {
-		
 		return imageService.createResponseFromImage(id);
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteImage(Model model, @PathVariable long id) {
-		
 		imageService.deleteImage(id);
 		return "confirm";
 	}

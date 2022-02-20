@@ -1,14 +1,66 @@
 <html>
-{<header}
-	<h1>Estas viendo el user: {{user.id}} </h1>
-	<p>Username: {{user.username}}</p>
-	<p>Image: {{user.image.id}}</p>
-	<p>Mail: {{user.mail}}</p>
-	<p>Password: {{user.password}}</p>
-	<p>Name: {{user.name}}</p>
-	<p>Surname: {{user.surname}}</p>
-	<p>Description: {{user.description}}</p>
-	<a href="/follows/{user.id}">Follows</a>
-	<a href="/following/{user.id}">Following</a>
-{<footer}
+{{>header}}
+<table>
+	<tbody>
+     <tr>
+	<td>
+		Name: 
+	</td>
+	<td>
+		<input type="text" placeholder="Nombre de usuario nuevo" name="username"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Surname:
+	</td>
+	<td>
+		<input type="text" placeholder="Apellido de usuario nuevo" name="username"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Description: 
+	</td>
+	<td>
+		<input type="text" placeholder="Descipción del usuario nuevo" name="username"/>
+	</td>
+	</tr>
+	<tr>
+	<td>
+		Username: 
+	</td>
+	<td>
+		<input type="text" placeholder="Nombre de usurario nuevo" name="username"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Image: 
+	</td>
+	<td>
+		<input type="file" id="myFile" name="filename">
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Mail:
+	</td>
+	<td>
+		<input type="text" placeholder="Mail de usurario nuevo" name="username"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Password:
+	</td>
+	<td>
+		<input type="text" placeholder="Contraseña de usurario nueva" name="username"/>
+	</td>
+	</tr>
+    
+  </tbody>
+</table>
+<button type="submit" class="uploadpic">CAMBIAR</button>
+{{>footer}}
 </html>
