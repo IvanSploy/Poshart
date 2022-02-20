@@ -39,7 +39,6 @@ public class MyController {
 	@Autowired
 	private UserRepository userRepository;
 
-
 	@Autowired
 	private ArtPostRepository artRepository;
 	
@@ -89,6 +88,14 @@ public class MyController {
 	public String getShopping(Model model) {
 		return "shoppingCart";
 	}
+	@GetMapping("/newPost")
+	public String getPost(Model model) {
+		return "NewPost";
+	}
+	@GetMapping("/viewComment")
+	public String getComment(Model model) {
+		return "ViewCommentBuyPost";
+	}
 	@GetMapping("/home")
 	public String getHome(Model model) {
 		return "home";
@@ -100,6 +107,14 @@ public class MyController {
 	@GetMapping("/config")
 	public String getConfig(Model model) {
 		return "config";
+	}
+	@GetMapping("/logIn")
+	public String getlogIn(Model model) {
+		return "logIn";
+	}
+	@GetMapping("/singIn")
+	public String getSingIn(Model model) {
+		return "singIn";
 	}
 	@GetMapping("/user/{id}")
 	public String getUser(Model model, @PathVariable long id) {
