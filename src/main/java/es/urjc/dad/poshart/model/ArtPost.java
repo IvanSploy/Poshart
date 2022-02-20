@@ -1,7 +1,9 @@
 package es.urjc.dad.poshart.model;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,8 +26,8 @@ public class ArtPost {
 	@ManyToOne
 	private User owner;
 	
-	@OneToMany(mappedBy = "post")
-	private List<Comment> comments;
+	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> postComments = new ArrayList<>();	
 	
 	@ManyToOne
 	private Image image;
@@ -79,5 +81,35 @@ public class ArtPost {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+	
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+	
+	public void addOwner(User owner) {
+		owner.addPost(this);
+	}
+
+	public void removeOwner(User owner) {
+		owner.removePost(this);
+	}
+	
+	public void addComment(Comment comment) {
+		postComments.add(comment);
+		comment.setPost(this);
+	}
+	
+	public List<Comment> getPostComments() {
+		return postComments;
+	}
+	
+	public void removeComment(Comment comment) {
+		postComments.remove(comment);
+		comment.setPost(this);
 	}
 }

@@ -1,5 +1,6 @@
 package es.urjc.dad.poshart.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,16 +31,16 @@ public class User {
 	private Image image;
 
 	@ManyToMany
-	private List<User> follows;
+	private List<User> follows = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "follows")
-	private List<User> followers;
+	private List<User> followers = new ArrayList<>();
 
-	@OneToMany(mappedBy = "owner")
-	private List<Collection> collections;
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Collection> collections = new ArrayList<>();
 
-	@OneToMany(mappedBy = "owner")
-	private List<ArtPost> myPosts;
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ArtPost> myPosts = new ArrayList<>();
 
 	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ShoppingCart cart;
@@ -119,37 +120,61 @@ public class User {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+	
+	public void addFollow(User follow) {
+		this.follows.add(follow);
+		follow.followers.add(this);
+	}
 
 	public List<User> getFollows() {
 		return follows;
 	}
-
-	public void setFollows(List<User> follows) {
-		this.follows = follows;
+	
+	public void removeFollow(User follow) {
+		this.follows.remove(follow);
+		follow.followers.remove(this);
+	}
+	
+	public void addFollower(User follower) {
+		this.followers.add(follower);
+		follower.follows.add(this);
 	}
 
 	public List<User> getFollowers() {
 		return followers;
 	}
-
-	public void setFollowers(List<User> followers) {
-		this.followers = followers;
+	
+	public void removeFollower(User follower) {
+		this.followers.remove(follower);
+		follower.follows.remove(this);
+	}
+	
+	public void addCollection(Collection collection) {
+		this.collections.add(collection);
+		collection.setOwner(this);
 	}
 
 	public List<Collection> getCollections() {
 		return collections;
 	}
-
-	public void setCollections(List<Collection> collections) {
-		this.collections = collections;
+	
+	public void removeCollection(Collection collection) {
+		this.collections.remove(collection);
+		collection.setOwner(null);
+	}
+	
+	public void addPost(ArtPost post) {
+		this.myPosts.add(post);
+		post.setOwner(this);
 	}
 
 	public List<ArtPost> getMyPosts() {
 		return myPosts;
 	}
 
-	public void setMyPosts(List<ArtPost> myPosts) {
-		this.myPosts = myPosts;
+	public void removePost(ArtPost post) {
+		this.myPosts.remove(post);
+		post.setOwner(null);
 	}
 
 	public ShoppingCart getCart() {

@@ -1,6 +1,8 @@
 package es.urjc.dad.poshart.model;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,8 +29,9 @@ public class Comment {
 	@ManyToOne
 	private Comment responseTo;
 	
-	@OneToMany(mappedBy = "responseTo")
-	private List<Comment> responses;
+	@OneToMany(mappedBy = "responseTo", cascade=CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> responses= new ArrayList<>();
+	
 	
 	public Comment() {
 		//Used by JPA.
@@ -40,6 +43,13 @@ public class Comment {
 		this.description = description;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -54,5 +64,43 @@ public class Comment {
 
 	public void setCommentDate(String commentDate) {
 		this.commentDate = commentDate;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public ArtPost getPost() {
+		return post;
+	}
+
+	public void setPost(ArtPost post) {
+		this.post = post;
+	}
+
+	public Comment getResponseTo() {
+		return responseTo;
+	}
+
+	public void setResponseTo(Comment responseTo) {
+		this.responseTo = responseTo;
+	}
+
+	public List<Comment> getResponses() {
+		return responses;
+	}
+	
+	public void addResponse(Comment comment) {
+		responses.add(comment);
+		comment.setResponseTo(this);
+	}
+	
+	public void removeResponse(Comment comment) {
+		responses.remove(comment);
+		comment.setResponseTo(this);
 	}
 }
