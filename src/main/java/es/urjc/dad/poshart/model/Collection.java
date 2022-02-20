@@ -76,11 +76,15 @@ public class Collection {
 		owner.removeCollection(this);
 	}
 	
+	public void addPost(ArtPost post) {
+		this.posts.add(post);
+	}
+	
 	public List<ArtPost> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<ArtPost> posts) {
-		this.posts = posts;
+	public void removePost(ArtPost post) {
+		this.posts.remove(post);
 	}
 }

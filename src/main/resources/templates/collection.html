@@ -1,0 +1,16 @@
+<html>
+<body>
+	<p></b> Collección: {{col.name}}</b></p>
+	<p>{{col.description}}</p>
+	<p>De: <a href="/user/{{col.owner.id}}" >{{col.owner.username}}</a></p>
+	<ul>
+	{{#col.posts}}
+		<li><a href="/post/{{id}}">{{name}}</a></li>
+	{{/col.posts}}
+	{{^col.posts}}
+		<p>Esta colección no tiene ninguna obra aún.
+		<a href="/">Ver posts</a>
+	{{/col.posts}}
+	</ul>
+</html>
+</body>

@@ -123,7 +123,6 @@ public class User {
 	
 	public void addFollow(User follow) {
 		this.follows.add(follow);
-		follow.followers.add(this);
 	}
 
 	public List<User> getFollows() {
@@ -132,12 +131,10 @@ public class User {
 	
 	public void removeFollow(User follow) {
 		this.follows.remove(follow);
-		follow.followers.remove(this);
 	}
 	
 	public void addFollower(User follower) {
 		this.followers.add(follower);
-		follower.follows.add(this);
 	}
 
 	public List<User> getFollowers() {
@@ -146,7 +143,6 @@ public class User {
 	
 	public void removeFollower(User follower) {
 		this.followers.remove(follower);
-		follower.follows.remove(this);
 	}
 	
 	public void addCollection(Collection collection) {
@@ -176,12 +172,20 @@ public class User {
 		this.myPosts.remove(post);
 		post.setOwner(null);
 	}
+	
+	public void addCart(ShoppingCart cart) {
+		this.cart = cart;
+		cart.setBuyer(this);
+	}
 
 	public ShoppingCart getCart() {
 		return cart;
 	}
 
-	public void setCart(ShoppingCart cart) {
-		this.cart = cart;
+	public void removeCart() {
+		if(cart!=null) {
+			cart.setBuyer(null);
+			this.cart = null;
+		}
 	}
 }

@@ -2,9 +2,13 @@ package es.urjc.dad.poshart.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,10 +26,13 @@ import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.service.ImageService;
+import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
 public class MyController {
 	
+	Logger log = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -36,46 +43,46 @@ public class MyController {
 	@Autowired
 	private ImageService imageService;
 	
+	@Autowired
+	private SessionData sessionData;
+	
 	@PostConstruct
 	public void init() {
 		
 		// Añadimos muchos anuncios
 		for(int i = 0; i<20; i++){
-			artRepository.save(new ArtPost("Post "+i, i*10));
 			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i);
 			Collection c = new Collection("Colección "+i, "Descripcion " + i);
-			u.getCollections().add(c);
+			Collection c2 = new Collection("Colección2-"+i, "Descripcion2-" + i);
+			ArtPost art = new ArtPost("Post "+i, i*10);
+			u.addPost(art);
+			u.addCollection(c);
+			u.addCollection(c2);
 			userRepository.save(u);
 		}
 	}
 	
 	@GetMapping("/")
-	public String startPage(Model model) {
+	public String startPage(Model model, HttpSession sesion) {
+		if(sesion.isNew()) {
+			log.warn("Usuario sin cuenta!");
+			long i = 0;
+			Optional<User> user;
+			do {
+				i++;
+				user = userRepository.findById(i);
+			}while(!user.isPresent());
+			sessionData.setUser(user.get().getId());
+			model.addAttribute("userid", user.get().getId());
+		}else {
+			log.warn("Usuario con cuenta!");
+			model.addAttribute("userid", sessionData.getUser());
+		}
 		return "start";
 	}
 	
 	@GetMapping("/mustache")
 	public String devuelvePlantilla() {
 		return "MiPlantilla";
-	}
-	
-	@PostMapping("/newImage")
-	public String newImage(Model model, @RequestParam MultipartFile image) throws IOException {
-		
-		Image imagen = imageService.createImage(image);
-		return "confirm";
-	}
-	
-	@GetMapping("/image/{id}")
-	public ResponseEntity<Object> newImage(Model model, @PathVariable long id) throws SQLException {
-		
-		return imageService.createResponseFromImage(id);
-	}
-	
-	@GetMapping("/delete/{id}")
-	public String deleteImage(Model model, @PathVariable long id) {
-		
-		imageService.deleteImage(id);
-		return "confirm";
 	}
 }
