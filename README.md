@@ -32,7 +32,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 Para la planificación del proyecto se ha hecho uso de la herramienta virtual Trello.
 * [Acceso al Trello](https://trello.com/b/WhTBchG9/ad)
 
-## Modelo de Datos 🛠️
+## Modelo de Datos 📇
 ### Diagrama UML
 ![Diagrama UML](https://user-images.githubusercontent.com/78254966/154862603-8dd50f7c-994f-4f66-ba8e-3ae411265c14.png)
 ### Diagrama Entidad/Relación
