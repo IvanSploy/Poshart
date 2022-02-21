@@ -4,138 +4,38 @@
 <div class="tablaoverflowCesta">
 <table>
 	<tbody>
+	{{#art}}
      <tr>
      <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
+      <th colspan="3">
+        <a href="/user/{{user.id}}/?colId={{id}}"> {{name}}</a>
+        <a href="/collection/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar colección"/></a>
+      </th>
+		{{#image}}
+			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+		{{/image}}
+		{{^image}}
+			<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
+		{{/image}}
+		</td>
+    	<td>
+    	<a href="/search/0">
+   			{{name}} FALTA ENLACE
+   			</a>
+    	</td>
+    	<td>
+   			{{price}}
+    	</td>
 	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+	FALTA ELIMINAR
+		 <img src="/img/iconBasura.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
 	</td>
 	</tr>
-	
-	
-     <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-     <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-     <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-     <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-      <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-      <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-      <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
-      <tr>
-     <td>
-		 <img src="/img/iconConfig.png" width=75px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	<td>
-		Nombre: 
-	</td>
-	<td>
-		Precio: 
-	</td>
-	<td>
-		 <img src="/img/iconConfig.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-	</td>
-	</tr>
+	{{/art}}
   </tbody>
 </table>
-</div>
-<button type="submit" class="uploadpic">CAMBIAR</button>
+</div> 
+<button type="submit" class="uploadpic">COMPRAR</button>
  </center>
 {{>footer}}
 </html>

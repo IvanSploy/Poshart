@@ -1,68 +1,40 @@
 {{>header}}
 <center>
-<table>
-	<tbody>
+</table>
+    <h1> Estas viendo los posts de los usuarios que sigues </h1>
+    <div class=tablaoverflowCesta>
+    {{#page}}
+    <table>
+    <tbody>
 	<tr>
-		<td rowspan="2">
-			<img src="/img/iconConfig.png" width=100px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+	<td>
+		{{#image}}
+			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+		{{/image}}
+		{{^image}}
+			<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
+		{{/image}}
 		</td>
-		<td>
-   			Nombre:  
+    	<td>
+    	<a href="/search/0">
+   			{{name}} FALTA ENLACE
+   			</a>
     	</td>
     	<td>
-   			Apellidos:
+   			{{price}}
     	</td>
     </tr>
-    <tr>
-		<td>
-   			NUM SEGUIDORES 
-    	</td>
-    	<td>
-   			NUM SEGUIDORES 
-    	</td>
-    </tr>
-    <tr>
-    	<td>
-   			Username:
-    	</td>
-		<td>
-   			NUM gfdhs
-    	</td>
-    	<td>
-  			NUM seguidos 
-    	</td>
-    </tr>
-    <tr>
-    	<td colspan="3">
-   			Descripción:
-    	</td>
-    </tr>
-    <tr>
-    	<td colspan="3">
-   			<button type="button"class="uploadpic">SEGUIR // SUBIR POST</button> 
-    	</td>
-    </tr>
-    
-	</tbody>
-</table>
-<div class="tablaoverflow">
-  <table>
-    <tr>
-      <th>
-        MIS OBRAS
-        <img src="/img/iconSumar.png" width=25px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-      </th>
-      <th colwspan="3">
-        COLECCION X
-        <img src="/img/iconBasura.png" width=25px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
-      </th>
-    </tr>
-    <tr>
-    	<td colspan="3">
-   			<button type="button"class="uploadpic">UN POST</button>
-    	</td>
-    </tr>
-</table>
-</div>
+    </tbody></table>
+	{{/page}}
+	</div>
+	{{#hasPrev}}
+	<a href="/search/0/?page={{prevPage}}&size=5">Prev</a>
+	{{/hasPrev}}
+	{{#totalPages}}
+	<a href="/search/0/?page={{.}}&size=5">{{.}}</a>
+	{{/totalPages}}
+	{{#hasNext}}
+	<a href="/search/0/?page={{nextPage}}&size=5">Next</a>
+	{{/hasNext}}
 </center>
 {{>footer}}

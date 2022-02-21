@@ -148,6 +148,11 @@ th{
      width:90%;
   	 height:650px;
 }
+.tablaoverflowUsuarios {
+     overflow:scroll;
+     width: 50%;
+  	 height: 40%;
+}
 #space{
 	padding-top: 50px;
 	padding-bottom: 100px;
