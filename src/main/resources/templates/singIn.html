@@ -66,12 +66,16 @@
 		<input type="password" placeholder="Contraseña de usuario" name="password" required/>
 	</td>
 	</tr>
+	<tr>
+	<td colspan='2'>
+	<button type="submit" class="uploadpic">REGISTRARSE</button>
+	</td>
+	</tr>
   </tbody>
 </table>
 {{#hasFailed}}
 <h2>Usuario o correo ya utilizados.</h2>
 {{/hasFailed}}
-<button type="submit" class="uploadpic">REGISTRARSE</button>
 </form>
 </center>
 {{>footer}}

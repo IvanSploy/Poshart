@@ -84,14 +84,37 @@ public class GeneralController {
 			return new RedirectView("/user");
 		}
 	}
-
 	@GetMapping("/shopping/{id}")
 	public String getShopping(Model model, @PathVariable long id) {
 		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
 		model.addAttribute("cart", c);
 		return "shoppingCart";
 	}
-
+	@GetMapping("/shopping/{id}/clear")
+	public String getShoppingClear(Model model, @PathVariable long id) {
+		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
+		c.clear();
+		shoppingCartRepository.save(c);
+		model.addAttribute("cart", c);
+		return "shoppingCart";
+	}
+	@GetMapping("/shopping/{id}/buy")
+	public String getShoppingBuy(Model model, @PathVariable long id) {
+		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
+		c.buy();
+		userRepository.save(c.getBuyer());
+		shoppingCartRepository.save(c);
+		model.addAttribute("cart", c);
+		return "shoppingCart";
+	}
+	@GetMapping("/shopping/{id}/remove/{id2}")
+	public String getShoppingRemove(Model model, @PathVariable long id, @PathVariable long id2) {
+		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
+		c.removeArt((int)id2);
+		shoppingCartRepository.save(c);
+		model.addAttribute("cart", c);
+		return "shoppingCart";
+	}
 	@GetMapping("/newPost")
 	public String getPost(Model model) {
 		return "NewPost";

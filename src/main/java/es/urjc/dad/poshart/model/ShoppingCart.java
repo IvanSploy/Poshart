@@ -109,7 +109,20 @@ public class ShoppingCart {
 	public void removeArt(ArtPost artPost) {
 		art.remove(artPost);
 	}
-	
+	public void clear() {
+		art.clear();
+	}
+	public void buy() {
+		for(int i=0; i<art.size(); i++) {
+			buyer.addPost(art.get(i));
+		}
+		art.clear();
+	}
+	public void removeArt(int i) {
+		if(i<art.size()) {
+			art.remove(i);
+		}	
+	}
 	public boolean equals(Object obj) {
 		if(obj==null) return false;
 		if(this==obj) return true;
