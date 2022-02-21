@@ -1,0 +1,69 @@
+{{>header}}
+<center>
+<form action="/user/{{id}}/edit/confirm" method="POST" enctype="multipart/form-data">
+<table>
+	<tbody>
+     <tr>
+	<td>
+		Nombre:
+	</td>
+	<td>
+		<input type="text" value="{{user.name}}" name="name"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Apellidos:
+	</td>
+	<td>
+		<input type="text" value="{{user.surname}}" name="surname"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Descripción:
+	</td>
+	<td>
+		<input type="text" value="{{user.description}}" name="description"/>
+	</td>
+	</tr>
+	<tr>
+	<td>
+		Usuario:
+	</td>
+	<td>
+		<input type="text" value="{{user.username}}" name="username"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Imagen: 
+	</td>
+	<td>
+		<input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png">
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Correo:
+	</td>
+	<td>
+		<input type="text" value="{{user.mail}}" name="mail"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Contraseña:
+	</td>
+	<td>
+		<input type="password" value="{{user.password}}" name="password"/>
+	</td>
+	</tr>
+    
+  </tbody>
+</table>
+<button type="submit" class="uploadpic">CAMBIAR</button>
+</form>
+<button class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
+</center>
+{{>footer}}

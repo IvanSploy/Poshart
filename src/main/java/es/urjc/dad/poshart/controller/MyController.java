@@ -1,5 +1,7 @@
 package es.urjc.dad.poshart.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.model.Collection;
@@ -87,35 +90,37 @@ public class MyController {
 	public String getHome(Model model) {
 		return "home";
 	}
-	@GetMapping("/muro")
-	public String getMuro(Model model) {
-		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
-		model.addAttribute("follows", u.getFollows().size());
-		model.addAttribute("followers", u.getFollowers().size());
-		model.addAttribute("user", u);
-		model.addAttribute("isMine", true);
-		return "muro";
+	@GetMapping("/checkUser")
+	public RedirectView checkUser(Model model) {
+		long userId = sessionData.getUser();
+		if(userId<=0) {
+			return new RedirectView("/user/");
+		}else {
+			return new RedirectView("/user/"+userId);
+		}
+	}
+	@GetMapping("/editUser")
+	public RedirectView editUser(Model model) {
+		long userId = sessionData.getUser();
+		if(userId<=0) {
+			return new RedirectView("/user/create");
+		}else {
+			return new RedirectView("/user/"+userId+"/edit");
+		}
 	}
 	@GetMapping("/search")
 	public String getSearch(Model model) {
 		return "search";
 	}
-	@GetMapping("/config")
-	public String getConfig(Model model) {
-		return "config";
-	}
-	@GetMapping("/logIn")
-	public String getlogIn(Model model) {
-		return "logIn";
-	}
-	@GetMapping("/singIn")
-	public String getSingIn(Model model) {
-		return "singIn";
-	}
 	@GetMapping("/users")
 	public String getUser(Model model,Pageable page) {
 		Page<User> p = userRepository.findAll(page);
 		model.addAttribute("page", p);
+		List<Integer> pageNumbers = new ArrayList<>();
+		for(int i = 0; i < p.getTotalPages(); i++) {
+			pageNumbers.add(i);
+		}
+		model.addAttribute("totalPages", pageNumbers);
 		model.addAttribute("hasPrev", p.hasPrevious());
 		model.addAttribute("hasNext", p.hasNext());
 		model.addAttribute("nextPage", p.getNumber()+1);

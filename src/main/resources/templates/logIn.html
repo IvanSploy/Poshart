@@ -7,6 +7,7 @@
 <div id="space">
 <center>
 <h1>UNIRSE</h1>
+<form action="/user/logIn">
 <table>
 <tbody>
 	<tr>
@@ -22,15 +23,19 @@
 		Contraseña:
 	</td>
 	<td>
-		<input type="text" placeholder="Contraseña" name="contraseña"/>
+		<input type="password" placeholder="Contraseña" name="password"/>
 	</td>
 	</tr>
 </tbody>
 </table>
-  <a href="/singIn">
+{{#hasFailed}}
+<p>Usuario o contraseña incorrectos. Inténtelo de nuevo.</p>
+{{/hasFailed}}
+<button type="submit" class="uploadpic">UNIRSE</button>
+</form>
+  <a href="/user/create">
   <p> ¿No tienes cuenta?</p>
 	</a>
 </div>
-<button type="submit" class="uploadpic">UNIRSE</button>
 </center>
 {{>footer}}

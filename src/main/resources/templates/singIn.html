@@ -7,66 +7,69 @@
 <div id="space">
 <center>
 <h1>REGISTRARSE</h1>
+
+<form action="/user/signIn" method="POST" enctype="multipart/form-data">
 <table>
 	<tbody>
      <tr>
 	<td>
-		Name: 
+		Nombre: 
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usuario nuevo" name="username" required/>
-	</td>
-	</tr>
-      <tr>
-	<td>
-		Surname:
-	</td>
-	<td>
-		<input type="text" placeholder="Apellido de usuario nuevo" name="username"/>
+		<input type="text" placeholder="Nombre de usuario" name="name" required/>
 	</td>
 	</tr>
       <tr>
 	<td>
-		Description: 
+		Apellidos:
 	</td>
 	<td>
-		<input type="text" placeholder="Descipción del usuario nuevo" name="username"/>
+		<input type="text" placeholder="Apellido de usuario" name="surname"/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Descripción: 
+	</td>
+	<td>
+		<input type="text" placeholder="Descipción del usuario" name="description"/>
 	</td>
 	</tr>
 	<tr>
 	<td>
-		Username: 
+		Usuario: 
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usurario nuevo" name="username" required/>
-	</td>
-	</tr>
-      <tr>
-	<td>
-		Image: 
-	</td>
-	<td>
-		<input type="file" id="myFile" name="filename" required/>
+		<input type="text" placeholder="Nombre de usurario" name="username" required/>
 	</td>
 	</tr>
       <tr>
 	<td>
-		Mail:
+		Imagen: 
 	</td>
 	<td>
-		<input type="text" placeholder="Mail de usurario nuevo" name="username"/>
+		<input type="file" id="myFile" name="imagen"/>
 	</td>
 	</tr>
       <tr>
 	<td>
-		Password:
+		Correo:
 	</td>
 	<td>
-		<input type="text" placeholder="Contraseña de usurario nueva" name="username" required/>
+		<input type="text" placeholder="Mail de usuario" name="mail" required/>
+	</td>
+	</tr>
+      <tr>
+	<td>
+		Contraseña:
+	</td>
+	<td>
+		<input type="password" placeholder="Contraseña de usuario" name="password" required/>
 	</td>
 	</tr>
   </tbody>
 </table>
 <button type="submit" class="uploadpic">REGISTRARSE</button>
+</form>
 </center>
 {{>footer}}

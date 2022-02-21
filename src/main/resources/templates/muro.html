@@ -4,7 +4,12 @@
 	<tbody>
 	<tr>
 		<td rowspan="2">
-			<img src="/img/iconConfig.png" width=100px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+		{{#user.image}}
+			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+		{{/user.image}}
+		{{^user.image}}
+			<img src="/img/iconUser.png" width=100px alt="FOTOPERFIL">
+		{{/user.image}}
 		</td>
 		<td>
    			<u>Nombre:</u> {{user.name}}
