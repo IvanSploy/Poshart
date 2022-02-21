@@ -55,10 +55,13 @@ public class MyController {
 	@PostConstruct
 	public void init() {
 		User u1 = new User("a", "a", "a", "a", "a", "a");
+		ShoppingCart s =  new ShoppingCart(100);
 		for(int i = 30; i<50; i++){
 			ArtPost art = new ArtPost("Post "+i, i*10);
+			s.addArt(art);
 			u1.addPost(art);
 		}
+		u1.addCart(s);
 		userRepository.save(u1);
 		for(int i = 0; i<20; i++){
 			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i, "Nombre "+i, "Apellidos "+i, "Descripción "+i);
@@ -72,8 +75,11 @@ public class MyController {
 		}
 	}
 		
-	@GetMapping("/shopping")
-	public String getShopping(Model model) {
+	@GetMapping("/shopping/{id}")
+	public String getShopping(Model model, @PathVariable long id) {
+		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
+		model.addAttribute("art", c.getArt());
+		model.addAttribute("precio", c.getPrice());
 		return "shoppingCart";
 	}
 	@GetMapping("/newPost")
@@ -164,7 +170,6 @@ public class MyController {
 			model.addAttribute("prevPage", p.getNumber()-1);
 		}
 		return "search";
-		
 	}
 	@GetMapping("/users")
 	public String getUser(Model model,Pageable page) {

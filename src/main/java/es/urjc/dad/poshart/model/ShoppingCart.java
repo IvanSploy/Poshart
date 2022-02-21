@@ -47,6 +47,12 @@ public class ShoppingCart {
 		this.setDate(date);
 	}
 	
+	public ShoppingCart(float price) {
+		super();
+		this.setPrice(price);
+		this.setDate(new Date(1000));
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -64,6 +70,11 @@ public class ShoppingCart {
 	}
 
 	public float getPrice() {
+		price = 0;
+		for(int i=0; i<art.size(); i++)
+		{
+			price+=art.get(i).getPrice();
+		}
 		return price;
 	}
 
