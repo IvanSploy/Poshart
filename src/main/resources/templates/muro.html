@@ -45,42 +45,67 @@
     <tr>
     	<td colspan="3">
     	{{#isMine}}
-   			<button type="button"class="uploadpic">SUBIR POST</button> 
+   			<button type="button"class="uploadpic" onclick="location.href=''">SUBIR POST</button> 
     	{{/isMine}}
     	{{^isMine}}
     		{{#followed}}
-   				<button type="button"class="uploadpic">DEJAR DE SEGUIR</button> 
+   				<button type="button"class="uploadpic" onclick="location.href='/user/{{user.id}}/unfollow'">DEJAR DE SEGUIR</button> 
     		{{/followed}}
     		{{^followed}}
-   				<button type="button"class="uploadpic">SEGUIR</button> 
+   				<button type="button"class="uploadpic" onclick="location.href='/user/{{user.id}}/follow'">SEGUIR</button> 
     		{{/followed}}
     	{{/isMine}}
     	</td>
     </tr>
-    
 	</tbody>
 </table>
 <div class="tablaoverflow">
   <table>
-    <tr>
-      <th>
-      <a href="/user/{{user.id}}"> MIS OBRAS</a>
+  <tbody>
+      <tr id="tabla">
+      <td>
+      <a href="/user/{{user.id}}">OBRAS</a>
+      {{#isMine}}
         <a href="/collection"><img src="/img/iconSumar.png" width=25px alt="NUEVA COLECCIÓN" title="Crear nueva colección"/></a>
-      </th>
-      
+      {{/isMine}}
+      </td>
     {{#user.collections}}
-      <th colspan="3">
+      <td>
         <a href="/user/{{user.id}}/?colId={{id}}"> {{name}}</a>
+        {{#isMine}}
         <a href="/collection/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar colección"/></a>
-      </th>
-    {{/user.collections}}
-    </tr>
-    <tr>
+        {{/isMine}}
+      </td>
+     {{/user.collections}}
+     </tr>
+  </tbody>
+  </table>
+</div>
+<div class="tablaoverflowCesta">
+  <table>
+  <tbody>
     {{^selectedCol}}
     	{{#user.myPosts}}
-    		<td colspan="3">
-   				<p>{{name}}</p>
+    	
+    <tr>
+    		<td>
+		{{#image}}
+			<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
+		{{/image}}
+		{{^image}}
+			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
+		{{/image}}
+		</td>
+    		<td>
+    		<a href="/post/{{id}}">
+   				{{name}}
+   			</a>
     		</td>
+    		<td>
+   				{{price}}
+    		</td>
+    		
+    </tr>
     	{{/user.myPosts}}
     	{{^user.myPosts}}
     		<td>
@@ -90,9 +115,24 @@
     {{/selectedCol}}
     {{#selectedCol}}
     	{{#posts}}
-    		<td colspan="3">
-   				<p>{{name}}</p>
+    	<tr>
+    	<td>
+		{{#image}}
+			<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
+		{{/image}}
+		{{^image}}
+			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
+		{{/image}}
+		</td>
+    		<td>
+    		<a href="/post/{{id}}">
+   				{{name}}
+   			</a>
     		</td>
+    		<td>
+   				{{price}}
+    		</td>
+    	</tr>
     	{{/posts}}
     	{{^posts}}
     		<td>
@@ -100,7 +140,7 @@
     		</td>
     	{{/posts}}
     {{/selectedCol}}
-    </tr>
+  </tbody>
 </table>
 </div>
 </center>

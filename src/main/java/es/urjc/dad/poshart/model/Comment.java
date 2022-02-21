@@ -10,11 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Comment {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(initialValue = 1, name = "commentGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGen")
 	private long id;
 	
 	private String description;

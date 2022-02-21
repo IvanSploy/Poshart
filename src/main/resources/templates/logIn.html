@@ -7,15 +7,15 @@
 <div id="space">
 <center>
 <h1>UNIRSE</h1>
-<form action="/user/logIn">
+<form action="/user/logIn" method="POST">
 <table>
 <tbody>
 	<tr>
 	<td>
-		Usuario:
+		Usuario/Correo:
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usurario" name="username"/>
+		<input type="text" placeholder="Nombre de usuario/correo" name="name"/>
 	</td>
 	</tr>
 	<tr>
@@ -29,7 +29,7 @@
 </tbody>
 </table>
 {{#hasFailed}}
-<p>Usuario o contraseña incorrectos. Inténtelo de nuevo.</p>
+<p>Usuario/Correo o contraseña incorrectos. Inténtelo de nuevo.</p>
 {{/hasFailed}}
 <button type="submit" class="uploadpic">UNIRSE</button>
 </form>

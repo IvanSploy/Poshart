@@ -7,68 +7,70 @@
 <div id="space">
 <center>
 <h1>REGISTRARSE</h1>
-
 <form action="/user/signIn" method="POST" enctype="multipart/form-data">
 <table>
 	<tbody>
      <tr>
-	<td>
+	<td id="registrarse">
 		Nombre: 
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" placeholder="Nombre de usuario" name="name" required/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Apellidos:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" placeholder="Apellido de usuario" name="surname"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Descripción: 
 	</td>
-	<td>
-		<input type="text" placeholder="Descipción del usuario" name="description"/>
+	<td id="registrarse">
+		<textarea placeholder="Descipción del usuario" cols="50" rows="3" name="description"></textarea>
 	</td>
 	</tr>
 	<tr>
-	<td>
+	<td id="registrarse">
 		Usuario: 
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" placeholder="Nombre de usurario" name="username" required/>
 	</td>
 	</tr>
-      <tr>
-	<td>
+    <tr>
+	<td id="registrarse">
 		Imagen: 
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="file" id="myFile" name="imagen"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Correo:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" placeholder="Mail de usuario" name="mail" required/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Contraseña:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="password" placeholder="Contraseña de usuario" name="password" required/>
 	</td>
 	</tr>
   </tbody>
 </table>
+{{#hasFailed}}
+<h2>Usuario o correo ya utilizados.</h2>
+{{/hasFailed}}
 <button type="submit" class="uploadpic">REGISTRARSE</button>
 </form>
 </center>

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,8 @@ import java.util.Date;
 @Entity
 public class ShoppingCart {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(initialValue = 1, name = "cartGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartGen")
 	private long id;
 	
 	private float price;
@@ -47,6 +49,12 @@ public class ShoppingCart {
 		this.setDate(date);
 	}
 	
+	public ShoppingCart(float price) {
+		super();
+		this.setPrice(price);
+		this.setDate(new Date(1000));
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -64,6 +72,11 @@ public class ShoppingCart {
 	}
 
 	public float getPrice() {
+		price = 0;
+		for(int i=0; i<art.size(); i++)
+		{
+			price+=art.get(i).getPrice();
+		}
 		return price;
 	}
 

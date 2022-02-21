@@ -12,7 +12,7 @@
 			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
 		{{/image}}
 		{{^image}}
-			<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
+			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
 		{{/image}}
 		</td>
     	<td>
@@ -28,13 +28,13 @@
 	{{/page}}
 	</div>
 	{{#hasPrev}}
-	<a href="/search/0/?page={{prevPage}}&size=5">Prev</a>
+	<a href="/home/?page={{prevPage}}&size=5">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
-	<a href="/search/0/?page={{.}}&size=5">{{.}}</a>
+	<a href="/home/?page={{.}}&size=5">{{.}}</a>
 	{{/totalPages}}
 	{{#hasNext}}
-	<a href="/search/0/?page={{nextPage}}&size=5">Next</a>
+	<a href="/home/?page={{nextPage}}&size=5">Next</a>
 	{{/hasNext}}
 </center>
 {{>footer}}
