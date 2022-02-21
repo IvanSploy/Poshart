@@ -7,15 +7,15 @@
 			<img src="/img/iconConfig.png" width=100px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
 		</td>
 		<td>
-   			Nombre:  
+   			<u>Nombre:</u> {{user.name}}
     	</td>
     	<td>
-   			Apellidos:
+   			<u>Apellidos:</u> {{user.surname}}
     	</td>
     </tr>
     <tr>
 		<td>
-   			NUM SEGUIDORES 
+   			NUM SEGUIDOS
     	</td>
     	<td>
    			NUM SEGUIDORES 
@@ -23,23 +23,33 @@
     </tr>
     <tr>
     	<td>
-   			Username:
+   			<u>Usuario:</u> {{user.username}}
     	</td>
 		<td>
-   			NUM gfdhs
+   			{{follows}}
     	</td>
     	<td>
-  			NUM seguidos 
+   			{{followers}}
     	</td>
     </tr>
     <tr>
     	<td colspan="3">
-   			Descripción:
+   			<u>Descripción:</u> {{user.description}}
     	</td>
     </tr>
     <tr>
     	<td colspan="3">
-   			<button type="button"class="uploadpic">SEGUIR // SUBIR POST</button> 
+    	{{#isMine}}
+   			<button type="button"class="uploadpic">SUBIR POST</button> 
+    	{{/isMine}}
+    	{{^isMine}}
+    		{{#followed}}
+   				<button type="button"class="uploadpic">DEJAR DE SEGUIR</button> 
+    		{{/followed}}
+    		{{^followed}}
+   				<button type="button"class="uploadpic">SEGUIR</button> 
+    		{{/followed}}
+    	{{/isMine}}
     	</td>
     </tr>
     
@@ -49,18 +59,42 @@
   <table>
     <tr>
       <th>
-        MIS OBRAS
-        <img src="/img/iconSumar.png" width=25px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+      <a href="/user/{{user.id}}"> MIS OBRAS</a>
+        <a href="/collection"><img src="/img/iconSumar.png" width=25px alt="NUEVA COLECCIÓN" title="Crear nueva colección"/></a>
       </th>
-      <th colwspan="3">
-        COLECCION X
-        <img src="/img/iconBasura.png" width=25px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+      
+    {{#user.collections}}
+      <th colspan="3">
+        <a href="/user/{{user.id}}/?colId={{id}}"> {{name}}</a>
+        <a href="/collection/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar colección"/></a>
       </th>
+    {{/user.collections}}
     </tr>
     <tr>
-    	<td colspan="3">
-   			<button type="button"class="uploadpic">UN POST</button>
-    	</td>
+    {{^selectedCol}}
+    	{{#user.myPosts}}
+    		<td colspan="3">
+   				<p>{{name}}</p>
+    		</td>
+    	{{/user.myPosts}}
+    	{{^user.myPosts}}
+    		<td>
+   				<p>Este usuario no posee posts actualmente.</p>
+    		</td>
+    	{{/user.myPosts}}
+    {{/selectedCol}}
+    {{#selectedCol}}
+    	{{#posts}}
+    		<td colspan="3">
+   				<p>{{name}}</p>
+    		</td>
+    	{{/posts}}
+    	{{^posts}}
+    		<td>
+   				<p>Esta coleccion no posee posts actualmente.</p>
+    		</td>
+    	{{/posts}}
+    {{/selectedCol}}
     </tr>
 </table>
 </div>

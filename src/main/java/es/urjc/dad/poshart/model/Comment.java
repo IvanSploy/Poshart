@@ -103,4 +103,11 @@ public class Comment {
 		responses.remove(comment);
 		comment.setResponseTo(this);
 	}
+	
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((Comment)obj).getId();
+	}
 }

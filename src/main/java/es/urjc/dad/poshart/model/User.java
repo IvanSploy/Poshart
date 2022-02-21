@@ -50,11 +50,14 @@ public class User {
 	}
 
 	// Constructor con lo necesario no estrictamente obligatorio.
-	public User(String mail, String username, String password) {
+	public User(String mail, String username, String password, String name, String surname, String description) {
 		super();
 		this.mail = mail;
 		this.username = username;
 		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.description = description;
 	}
 
 	public long getId() {
@@ -187,5 +190,13 @@ public class User {
 			cart.setBuyer(null);
 			this.cart = null;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((User)obj).getId();
 	}
 }

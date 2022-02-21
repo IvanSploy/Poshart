@@ -96,6 +96,10 @@ public class ShoppingCart {
 		art.remove(artPost);
 	}
 	
-	
-	
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((ShoppingCart)obj).getId();
+	}	
 }

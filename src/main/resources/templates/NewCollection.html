@@ -1,0 +1,18 @@
+{{>header}}
+<form action="collection/new" method="POST">
+  <div class="container">
+    <!-- Titulo-->
+    <h1><center>¡Crea una colección!</center></h1>
+    <hr>
+    <!-- Nombrar colección-->
+    <label for="CollectionName"><b>Nombre</b></label>
+    <input type="text" placeholder="Nombra la colección" name="name" id="CollectionName" required/>
+	<!-- Describir colección-->
+    <label for="CollectionDescription"><b>Descripción:</b></label>
+    <input type="text" placeholder="Describe tu colección" name="description" id="CollectionDescription" required/>
+
+    <!-- Botón para subir el post-->
+    <button type="submit" class="uploadpic">CREAR</button>
+  </div>
+</form>
+{{>footer}}

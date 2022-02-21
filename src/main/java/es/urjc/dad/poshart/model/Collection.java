@@ -87,4 +87,11 @@ public class Collection {
 	public void removePost(ArtPost post) {
 		this.posts.remove(post);
 	}
+	
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((Collection)obj).getId();
+	}
 }

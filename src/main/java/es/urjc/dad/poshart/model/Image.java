@@ -60,4 +60,11 @@ public class Image {
 	public void setImageFile(Blob imageFile) {
 		this.imageFile = imageFile;
 	}
+	
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((Image)obj).getId();
+	}
 }

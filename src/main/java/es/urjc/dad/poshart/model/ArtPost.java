@@ -42,6 +42,14 @@ public class ArtPost {
 		this.name = name;
 		this.price = price;
 	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -111,5 +119,13 @@ public class ArtPost {
 	public void removeComment(Comment comment) {
 		postComments.remove(comment);
 		comment.setPost(this);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(this==obj) return true;
+		if(getClass()!=obj.getClass()) return false;
+		return getId()==((ArtPost)obj).getId();
 	}
 }
