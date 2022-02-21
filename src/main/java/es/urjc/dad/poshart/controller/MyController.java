@@ -54,6 +54,12 @@ public class MyController {
 	
 	@PostConstruct
 	public void init() {
+		User u1 = new User("a", "a", "a", "a", "a", "a");
+		for(int i = 30; i<50; i++){
+			ArtPost art = new ArtPost("Post "+i, i*10);
+			u1.addPost(art);
+		}
+		userRepository.save(u1);
 		for(int i = 0; i<20; i++){
 			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i, "Nombre "+i, "Apellidos "+i, "Descripción "+i);
 			Collection c = new Collection("Colección "+i, "Descripcion " + i);
@@ -66,38 +72,8 @@ public class MyController {
 		}
 	}
 		
-	@GetMapping("/")
-	public String startPage(Model model, HttpSession sesion) {
-		if(sesion.isNew()) {
-			log.warn("Usuario sin cuenta!");
-			long i = 0;
-			Optional<User> user;
-			do {
-				i++;
-				user = userRepository.findById(i);
-			}while(!user.isPresent());
-			sessionData.setUser(user.get().getId());
-			model.addAttribute("userid", user.get().getId());
-		}else {
-			log.warn("Usuario con cuenta!");
-			model.addAttribute("userid", sessionData.getUser());
-		}
-		return "start";
-	}
 	@GetMapping("/shopping")
-	public String getShopping(Model model, Pageable page) {
-		model.addAttribute("productos",true);
-		Page<ShoppingCart> p = shoppingCartRepository.findAll(page);
-		model.addAttribute("page", p);
-		List<Integer> pageNumbers = new ArrayList<>();
-		for(int i = 0; i < p.getTotalPages(); i++) {
-			pageNumbers.add(i);
-		}
-		model.addAttribute("totalPages", pageNumbers);
-		model.addAttribute("hasPrev", p.hasPrevious());
-		model.addAttribute("hasNext", p.hasNext());
-		model.addAttribute("nextPage", p.getNumber()+1);
-		model.addAttribute("prevPage", p.getNumber()-1);
+	public String getShopping(Model model) {
 		return "shoppingCart";
 	}
 	@GetMapping("/newPost")
@@ -108,10 +84,13 @@ public class MyController {
 	public String getComment(Model model) {
 		return "ViewCommentBuyPost";
 	}
+	@GetMapping("/")
+	public RedirectView getHome(Model model) {
+		return new RedirectView("home/?page=0&size=5");
+	}
 	@GetMapping("/home")
-	public String getHome(Model model, Pageable page) {
-		model.addAttribute("users",true);
-		Page<User> p = userRepository.findAll(page);
+	public String getHome2(Model model, Pageable page) {
+		Page<ArtPost> p = artRepository.findAll(page);
 		model.addAttribute("page", p);
 		List<Integer> pageNumbers = new ArrayList<>();
 		for(int i = 0; i < p.getTotalPages(); i++) {
@@ -144,7 +123,6 @@ public class MyController {
 	}
 	@GetMapping("/search/{id}")
 	public String getSearch(Model model, @PathVariable long id, Pageable page) {
-		
 		if(id==0) {
 			model.addAttribute("post",true);
 			Page<ArtPost> p = artRepository.findAll(page);

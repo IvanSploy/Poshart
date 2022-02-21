@@ -25,7 +25,7 @@ import es.urjc.dad.poshart.service.ImageService;
 import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 	
 	Logger log = LoggerFactory.getLogger(getClass());

@@ -4,66 +4,81 @@
 <table>
 	<tbody>
      <tr>
-	<td>
+	<td id="registrarse">
 		Nombre:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" value="{{user.name}}" name="name"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Apellidos:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" value="{{user.surname}}" name="surname"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Descripción:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" value="{{user.description}}" name="description"/>
 	</td>
 	</tr>
 	<tr>
-	<td>
+	<td id="registrarse">
 		Usuario:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" value="{{user.username}}" name="username"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Imagen: 
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png">
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Correo:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="text" value="{{user.mail}}" name="mail"/>
 	</td>
 	</tr>
       <tr>
-	<td>
+	<td id="registrarse">
 		Contraseña:
 	</td>
-	<td>
+	<td id="registrarse">
 		<input type="password" value="{{user.password}}" name="password"/>
 	</td>
 	</tr>
     
   </tbody>
 </table>
+
+<table>
+<tbody>
+<tr>
+<td id="registrarse">
 <button type="submit" class="uploadpic">CAMBIAR</button>
+</td>
 </form>
+<td id="registrarse">
+<button type="submit" class="uploadpic" onclick="location.href='/user/signOut'"">CERRAR SESIÓN</button>
+</td>
+</tr>
+<td colspan="2" id="registrarse">
 <button class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
+</td>
+</tbody>
+</table>
+
 </center>
 {{>footer}}
