@@ -15,8 +15,11 @@
     <!-- hacer comentario-->
     <label for="PostArtName"><b>Haz un comentario</b></label>
     <input type="text" placeholder="Comenta desde tu cuenta..." name="PostArtName" id="PostArtName" required/><button class="button">Comentar</button>
-  <!-- Botón para subir el post-->
-    <button type="submit" class="uploadpic">COMPRAR</button>
+  <!-- Botón para meter el post en la cesta-->
+    <button type="submit" class="uploadpic" onclick="location.href='/user/post/addToShopping'">COMPRAR</button>
+    <!-- Botón para editar el post-->
+    <button type="submit" class="uploadpic" onclick="location.href='/user/post/edit'">EDITAR</button>
+    
   </div>
   <!-- Enlace a crearse un perfil-->
   <div class="container create">

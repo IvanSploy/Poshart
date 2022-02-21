@@ -2,7 +2,7 @@
 <link href="/style.css" rel="stylesheet"/>
   <div class="container">
     <!-- Titulo-->
-    <h1><center>Post your brand new work of Art!</center></h1>
+    <h1><center>Edit this ArtPost</center></h1>
     <form action="/user/newPost" method="POST">
     <!-- Imagen central-->
     <hr>
@@ -15,13 +15,14 @@
     <br>
     <!-- Nombrar imagen-->
     <label for="PostArtName"><b>Name</b></label>
-    <input type="text" placeholder="Enter PostArt Name" name="name" id="PostArtName" required/>
+    <input type="text" value="{{thisArtPost.name}}" name="name" id="PostArtName" required/>
 	<!-- Descripcion imagen-->
     <label for="PostArtDescription"><b>Description:</b></label>
-    <textarea placeholder="PostArt Description" cols="50" rows="3" name="description" id="PostArtDescription" required></textarea>
-	
-    <!-- Botón para subir el post-->
-    <button type="submit" class="uploadpic">UPLOAD</button>
+    <textarea cols="50" rows="3" name="description" id="PostArtDescription" required>{{thisArtPost.description}}</textarea>
+    <!-- Eliminar el post-->
+    <button type="submit" class="uploadpic" onclick="location.href='/user/post/delete'">ELIMINAR</button>
+    <!-- Cambiar el post-->
+    <button type="submit" class="uploadpic">CAMBIAR</button>
   </div>
 
   <!-- Enlace a crearse un perfil-->

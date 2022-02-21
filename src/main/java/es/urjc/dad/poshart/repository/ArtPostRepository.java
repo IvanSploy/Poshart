@@ -12,7 +12,7 @@ import es.urjc.dad.poshart.model.ArtPost;
 
 public interface ArtPostRepository extends JpaRepository<ArtPost, Long> {
 	Page<ArtPost> findAll(Pageable page);
-	List<ArtPost> findByArtPostName (String ArtPostName);
+	List<ArtPost> findByName (String name);
 	//Esta petición busca dentro de todos los usuarios en busca del usuario indicado como seguidor.
 	//Después devuelve todas las obras de arte y finalmente las ordena por fecha.
 	@Query("SELECT ap FROM ArtPost ap WHERE ap.id in (SELECT uf.id FROM User uf WHERE (SELECT u FROM User u WHERE u.id = ?1)"

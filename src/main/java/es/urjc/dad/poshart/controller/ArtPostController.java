@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.Image;
+import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.repository.CommentRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
@@ -37,6 +38,77 @@ public class ArtPostController {
 	private ArtPostRepository artPostRepository;
 	
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private SessionData sessionData;//Permite saber si soy yo el usuario o no
+	
+	@GetMapping("/createPost")
+	public String newPost(Model model) {
+		return "newPost";
+	}
+	
+	@PostMapping("/newPost")
+	public RedirectView tryNewPost(Model model, ArtPost newArtPost, @RequestParam(required = false) MultipartFile imagen) throws IOException {
+		
+		if(!imagen.isEmpty()) {
+			Image newImage = imageService.createImage(imagen);
+			newArtPost.setImage(newImage);
+		}
+		newArtPost.addOwner(userRepository.findById(sessionData.getUser()).orElseThrow());
+		artPostRepository.save(newArtPost);
+		return new RedirectView("/post");
+	}
+	
+	@GetMapping("/post")
+	public String viewPost(Model model) {
+		return "ViewCommentBuyPost";
+	}
+	
+	@GetMapping("post/addToShopping")
+	public String añadeACesta(Model model, ArtPost thisArtPost) {
+		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+		//Solo te deja añadir al carro de la compra si no eres su dueño y si no lo tienes ya añadido
+		if(u != thisArtPost.getOwner()) {
+			if(!u.getCart().getArt().contains(thisArtPost))
+				u.getCart().addArt(thisArtPost);
+		}
+		
+		return "ViewCommentBuyPost";
+	}
+	
+	@GetMapping("/post/edit")
+	public String editPost(Model model, ArtPost thisArtPost) {
+		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+		if(u == thisArtPost.getOwner()) {
+			model.addAttribute("thisArtPost", thisArtPost);
+			return "editPost";
+		}else return "ViewCommentBuyPost";
+		
+	}
+
+	@PostMapping("/post/edit/confirm")
+	public RedirectView editPostConfirm(Model model, ArtPost thisArtPost, @RequestParam(required = false) MultipartFile imagen) throws IOException {
+		if(!imagen.isEmpty()) {
+			Image newImage = imageService.createImage(imagen);
+			thisArtPost.setImage(newImage);
+		}
+		artPostRepository.save(thisArtPost);
+		return new RedirectView("/post");
+	}
+	
+	@GetMapping("/post/delete")
+	public RedirectView deleteUser(Model model, ArtPost thisArtPost) {
+		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+		if(u != thisArtPost.getOwner()) {
+			u.getMyPosts().remove(thisArtPost);
+			artPostRepository.delete(thisArtPost);
+			return new RedirectView("/");
+		}else return new RedirectView("/post/edit");
+	}
+	
 
 }
