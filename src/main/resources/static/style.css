@@ -158,7 +158,7 @@ th{
 .tablaoverflowCesta {
      overflow:scroll;
      width:90%;
-  	 height:650px;
+  	 height:600px;
 }
 .tablaoverflowUsuarios {
      overflow:scroll;
@@ -168,4 +168,12 @@ th{
 #space{
 	padding-top: 50px;
 	padding-bottom: 100px;
+}
+#registrarse{
+	padding:5px;
+	margin:0px;
+}
+#tabla{
+	padding:100px;
+	margin:100px;
 }

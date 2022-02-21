@@ -24,14 +24,14 @@
 	<tr>
 	<td>
 		{{#image}}
-			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+			<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
 		{{/image}}
 		{{^image}}
-			<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
+			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
 		{{/image}}
 		</td>
     	<td>
-    	<a href="/search/0">
+    	<a href="/post/{{id}}">
    			{{name}} FALTA ENLACE
    			</a>
     	</td>
@@ -60,8 +60,8 @@
     <tbody>
 	<tr>
     	<td>
-    	<a href="/search/0">
-   			{{name}} FALTA ENLACE
+    	<a href="/user/{{owner.id}}/?colId={{id}}">
+   			{{name}}
    			</a>
     	</td>
 		<td>
@@ -97,8 +97,8 @@
 		{{/user.image}}
 		</td>
     	<td>
-    	<a href="/search/0">
-   			{{username}} FALTA ENLACE
+    	<a href="/user/{{id}}">
+   			{{username}}
    			</a>
     	</td>
 		<td>
