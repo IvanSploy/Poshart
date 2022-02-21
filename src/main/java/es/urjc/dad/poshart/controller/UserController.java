@@ -3,6 +3,8 @@ package es.urjc.dad.poshart.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,8 @@ import es.urjc.dad.poshart.service.SessionData;
 @Controller
 @RequestMapping("user")
 public class UserController {
+	
+	Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private ImageService imageService;
@@ -99,6 +103,7 @@ public class UserController {
 	
 	@GetMapping("/{id}")
 	public String getMuro(Model model, @PathVariable long id, @RequestParam(defaultValue = "-1") long colId) {
+		log.warn(""+id);
 		User u = userRepository.findById(id).orElseThrow();
 		model.addAttribute("follows", u.getFollows().size());
 		model.addAttribute("followers", u.getFollowers().size());
@@ -109,10 +114,12 @@ public class UserController {
 		}
 		boolean isMine = id==sessionData.getUser();
 		model.addAttribute("isMine", isMine);
-		if(!isMine) {
+		if(!isMine &&  sessionData.getUser()>0) {
 			User other = userRepository.findById(sessionData.getUser()).orElseThrow();
 			boolean followed = u.getFollows().contains(other);
 			model.addAttribute("followed", followed);
+		}else {
+			model.addAttribute("followed", false);
 		}
 		return "muro";
 	}
