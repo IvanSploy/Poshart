@@ -1,7 +1,9 @@
 package es.urjc.dad.poshart.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 public class User {
@@ -21,10 +24,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@Column(unique = true)
 	private String username;
 	private String password;
 	private String mail;
-	@Column(unique = true)
 	private String name;
 	private String surname;
 	private String description;
@@ -33,10 +36,10 @@ public class User {
 	private Image image;
 
 	@ManyToMany
-	private List<User> follows = new ArrayList<>();
+	private Set<User> follows = new HashSet<>();
 
 	@ManyToMany(mappedBy = "follows")
-	private List<User> followers = new ArrayList<>();
+	private Set<User> followers = new HashSet<>();
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Collection> collections = new ArrayList<>();
@@ -130,7 +133,7 @@ public class User {
 		this.follows.add(follow);
 	}
 
-	public List<User> getFollows() {
+	public Set<User> getFollows() {
 		return follows;
 	}
 	
@@ -142,7 +145,7 @@ public class User {
 		this.followers.add(follower);
 	}
 
-	public List<User> getFollowers() {
+	public Set<User> getFollowers() {
 		return followers;
 	}
 	

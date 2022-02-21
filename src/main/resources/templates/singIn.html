@@ -7,7 +7,6 @@
 <div id="space">
 <center>
 <h1>REGISTRARSE</h1>
-
 <form action="/user/signIn" method="POST" enctype="multipart/form-data">
 <table>
 	<tbody>
@@ -69,6 +68,9 @@
 	</tr>
   </tbody>
 </table>
+{{#hasFailed}}
+<h2>Usuario o correo ya utilizados.</h2>
+{{/hasFailed}}
 <button type="submit" class="uploadpic">REGISTRARSE</button>
 </form>
 </center>

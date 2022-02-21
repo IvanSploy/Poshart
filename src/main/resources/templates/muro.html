@@ -45,14 +45,14 @@
     <tr>
     	<td colspan="3">
     	{{#isMine}}
-   			<button type="button"class="uploadpic">SUBIR POST</button> 
+   			<button type="button"class="uploadpic" onclick="location.href=''">SUBIR POST</button> 
     	{{/isMine}}
     	{{^isMine}}
     		{{#followed}}
-   				<button type="button"class="uploadpic">DEJAR DE SEGUIR</button> 
+   				<button type="button"class="uploadpic" onclick="location.href='/user/{{user.id}}/unfollow'">DEJAR DE SEGUIR</button> 
     		{{/followed}}
     		{{^followed}}
-   				<button type="button"class="uploadpic">SEGUIR</button> 
+   				<button type="button"class="uploadpic" onclick="location.href='/user/{{user.id}}/follow'">SEGUIR</button> 
     		{{/followed}}
     	{{/isMine}}
     	</td>

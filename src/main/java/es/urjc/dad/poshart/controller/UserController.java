@@ -25,7 +25,7 @@ import es.urjc.dad.poshart.service.ImageService;
 import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 	
 	Logger log = LoggerFactory.getLogger(getClass());
@@ -48,10 +48,16 @@ public class UserController {
 		return "logIn";
 	}
 	
-	@GetMapping("/logIn")
-	public RedirectView tryLogIn(Model model, @RequestParam String username, @RequestParam String password) {
-		List<User> users = userRepository.findByUsername(username);
-		if(users.size()==0) return new RedirectView("/user?hasFailed=true");
+	@PostMapping("/logIn")
+	public RedirectView tryLogIn(Model model, @RequestParam String name, @RequestParam String password) {
+		//Se comprueba el nombre de usuario.
+		List<User> users = userRepository.findByUsername(name);
+		if(users.size()==0) {
+			//Si no, se comprueba el emai.
+			users = userRepository.findByMail(name);
+			if(users.size()==0) return new RedirectView("/user?hasFailed=true");
+		}
+		//Se comprueba la contraseña.
 		if(users.get(0).getPassword().equals(password)) {
 			sessionData.setUser(users.get(0).getId());
 			return new RedirectView("/");
@@ -61,18 +67,34 @@ public class UserController {
 	}
 	
 	@GetMapping("/create")
-	public String SingIn(Model model) {
+	public String SingIn(Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
+		model.addAttribute("hasFailed", hasFailed);
 		return "singIn";
 	}
 	
 	@PostMapping("/signIn")
 	public RedirectView trySingIn(Model model, User newUser, @RequestParam(required = false) MultipartFile imagen) throws IOException {
+		//Comprobamos que el usuario o correo no están repetidos.
+		List<User> u = userRepository.findByUsername(newUser.getUsername());
+		if(u.size()>0) {
+			return new RedirectView("/user/create/?hasFailed=true");
+		}
+		u = userRepository.findByMail(newUser.getMail());
+		if(u.size()>0) {
+			return new RedirectView("/user/create/?hasFailed=true");
+		}
 		if(!imagen.isEmpty()) {
 			Image newImage = imageService.createImage(imagen);
 			newUser.setImage(newImage);
 		}
 		userRepository.save(newUser);
 		sessionData.setUser(newUser.getId());
+		return new RedirectView("/");
+	}
+	
+	@PostMapping("/signOut")
+	public RedirectView singOut(Model model, User newUser, @RequestParam(required = false) MultipartFile imagen) throws IOException {
+		sessionData.setUser(0);
 		return new RedirectView("/");
 	}
 	
@@ -98,7 +120,7 @@ public class UserController {
 		}
 		newUser.setId(u.getId());
 		userRepository.save(newUser);
-		return new RedirectView("/user/{id}/edit");
+		return new RedirectView("/user/" + id + "/edit");
 	}
 	
 	@GetMapping("/{id}")
@@ -116,7 +138,7 @@ public class UserController {
 		model.addAttribute("isMine", isMine);
 		if(!isMine &&  sessionData.getUser()>0) {
 			User other = userRepository.findById(sessionData.getUser()).orElseThrow();
-			boolean followed = u.getFollows().contains(other);
+			boolean followed = u.getFollowers().contains(other);
 			model.addAttribute("followed", followed);
 		}else {
 			model.addAttribute("followed", false);
@@ -131,5 +153,37 @@ public class UserController {
 		userRepository.delete(u);
 		sessionData.setUser(0);
 		return new RedirectView("/");
+	}
+	
+	@GetMapping("/{id}/follow")
+	public RedirectView followUser(Model model, @PathVariable long id) {
+		User u = userRepository.findById(id).orElseThrow();
+		long myId = sessionData.getUser();
+		if(myId<=0) {
+			return new RedirectView("/user");
+		}else {
+			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
+			myUser.addFollow(u);
+			u.addFollower(myUser);
+			userRepository.save(myUser);
+			userRepository.save(u);
+			return new RedirectView("/user/"+id);
+		}
+	}
+	
+	@GetMapping("/{id}/unfollow")
+	public RedirectView unFollowUser(Model model, @PathVariable long id) {
+		User u = userRepository.findById(id).orElseThrow();
+		long myId = sessionData.getUser();
+		if(myId<=0) {
+			return new RedirectView("/user");
+		}else {
+			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
+			myUser.removeFollow(u);
+			u.removeFollower(myUser);
+			userRepository.save(myUser);
+			userRepository.save(u);
+			return new RedirectView("/user/"+id);
+		}
 	}
 }
