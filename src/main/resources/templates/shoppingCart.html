@@ -8,31 +8,44 @@
      <tr>
      <td>
 		{{#image}}
-			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+			<img src="/image/{{owner.image.id}}" width=100px alt="FOTOPERFIL">
 		{{/image}}
 		{{^image}}
 			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
 		{{/image}}
 		</td>
     	<td>
-    	<a href="/search/0">
+    	<a href="/shopping/{{cart.buyer.id}}/remove/{{-index}}">
    			{{name}} FALTA ENLACE
    			</a>
     	</td>
     	<td>
-   			{{price}}
+   			{{price}}$
     	</td>
 	<td>
-	FALTA ELIMINAR
+	<a href="/shopping/{{cart.buyer.id}}/remove/{{-index}}">
 		 <img src="/img/iconBasura.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
+	</a>
 	</td>
 	</tr>
+	{{/cart.art}}
+	{{^cart.art}}
+	<p>No tienes nada para comprar</p>
 	{{/cart.art}}
   </tbody>
 </table>
 </div> 
-<p>El precio total es: {{cart.price}}</p>
-<button type="submit" class="uploadpic">COMPRAR</button>
+<p>El precio total es: {{cart.price}}$</p>
+<table>
+<tbody>
+<tr>
+<th>
+<button type="submit" class="uploadpic" onclick="location.href='/shopping/{{cart.buyer.id}}/buy'">COMPRAR </button>
+</th><th>
+<button type="submit" class="uploadpic" onclick="location.href='/shopping/{{cart.buyer.id}}/clear'">ELIMINAR</button>
+</th></tr>
+</tbody>
+ </table>
  </center>
 {{>footer}}
 </html>
