@@ -59,7 +59,6 @@
 		<input type="password" value="{{user.password}}" name="password"/>
 	</td>
 	</tr>
-    
   </tbody>
 </table>
 
@@ -68,14 +67,14 @@
 <tr>
 <td id="registrarse">
 <button type="submit" class="uploadpic">CAMBIAR</button>
-</td>
 </form>
-<td id="registrarse">
-<button type="submit" class="uploadpic" onclick="location.href='/user/signOut'"">CERRAR SESIÓN</button>
+</td>
+<td id="registrarse2">
+<button type="button" class="uploadpic" onclick="location.href='/user/signOut'">CERRAR SESIÓN</button>
 </td>
 </tr>
-<td colspan="2" id="registrarse">
-<button class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
+<td colspan="2" id="registrarse2">
+<button type="button" class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
 </td>
 </tbody>
 </table>

@@ -35,7 +35,7 @@ public class CollectionController {
 
 	@GetMapping("")
 	public String createCollection(Model model) {
-		return "NewCollection";
+		return "collectionNew";
 	}
 	
 	@PostMapping("/new")
@@ -46,12 +46,30 @@ public class CollectionController {
 		return new RedirectView("/user/"+u.getId()+"/?colId=" + collection.getId());
 	}
 	
+	@GetMapping("/{id}/edit")
+	public String editUser(Model model, @PathVariable long id) {
+		Collection c = collectionRepository.findById(id).orElseThrow();
+		model.addAttribute("collection", c);
+		return "collectionEdit";
+	}
+	
+	@PostMapping("/{id}/edit/confirm")
+	public RedirectView editCollection(Model model, @PathVariable long id, Collection collection) {
+		Collection c = collectionRepository.findById(id).orElseThrow();
+		c.setName(collection.getName());
+		c.setDescription(collection.getDescription());
+		collectionRepository.save(c);
+		return new RedirectView("/user/"+ sessionData.getUser() +"/?colId=" + c.getId());
+	}
+	
 	@GetMapping("/{id}/delete")
-	public RedirectView deleteImage(Model model, @PathVariable long id) {
+	public RedirectView deleteCollection(Model model, @PathVariable long id) {
 		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
 		Collection col = collectionRepository.findById(id).orElseThrow();
-		if(u.getCollections().contains(col))
+		if(u.getCollections().contains(col)) {
+			col.removeOwner();
 			collectionRepository.delete(col);
+		}
 		return new RedirectView("/user/"+u.getId());
 	}
 	

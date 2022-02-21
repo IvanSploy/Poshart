@@ -3,6 +3,7 @@ package es.urjc.dad.poshart.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -74,7 +75,7 @@ public class Collection {
 		owner.addCollection(this);
 	}
 
-	public void removeOwner(User owner) {
+	public void removeOwner() {
 		owner.removeCollection(this);
 	}
 	

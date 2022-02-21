@@ -97,8 +97,8 @@ public class UserController {
 		return new RedirectView("/");
 	}
 	
-	@PostMapping("/signOut")
-	public RedirectView singOut(Model model, User newUser, @RequestParam(required = false) MultipartFile imagen) throws IOException {
+	@GetMapping("/signOut")
+	public RedirectView singOut(Model model) {
 		sessionData.setUser(0);
 		return new RedirectView("/");
 	}

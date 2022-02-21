@@ -1,0 +1,17 @@
+{{>header}}
+<form action="/collection/{{collection.id}}/edit/confirm" method="POST">
+  <div class="container">
+    <!-- Titulo-->
+    <h1><center>Modificar colección</center></h1>
+    <hr>
+    <!-- Nombrar colección-->
+    <label for="CollectionName"><b>Nombre</b></label>
+    <input type="text" name="name" id="CollectionName" value="{{collection.name}}" required/>
+	<!-- Describir colección-->
+    <label for="CollectionDescription"><b>Descripción:</b></label>
+	<textarea name="description" cols="50" rows="3" id="CollectionDescription">{{collection.description}}</textarea></p>
+    <!-- Botón para subir el post-->
+    <button type="submit" class="uploadpic">CAMBIAR</button>
+  </div>
+</form>
+{{>footer}}

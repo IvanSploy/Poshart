@@ -105,7 +105,7 @@ public class ArtPost {
 		owner.addPost(this);
 	}
 
-	public void removeOwner(User owner) {
+	public void removeOwner() {
 		owner.removePost(this);
 	}
 	
