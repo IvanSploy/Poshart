@@ -3,8 +3,6 @@ package es.urjc.dad.poshart.service;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import es.urjc.dad.poshart.model.User;
-
 @Component
 @SessionScope
 public class SessionData {
@@ -16,5 +14,12 @@ public class SessionData {
 
 	public void setUser(long id) {
 		this.userId = id;
+	}
+	
+	public boolean checkUser() {
+		return userId>0;
+	}
+	public boolean isMine(long id) {
+		return userId==id;
 	}
 }

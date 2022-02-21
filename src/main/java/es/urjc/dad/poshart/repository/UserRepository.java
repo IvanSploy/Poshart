@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	Page<User> findAll(Pageable page);
 	
-	List<User> findByUsername(String username);
+	User findFirstByUsername(String username);
 
-	List<User> findByMail(String mail);
+	User findFirstByMail(String mail);
 }

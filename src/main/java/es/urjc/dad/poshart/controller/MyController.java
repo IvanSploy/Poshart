@@ -1,6 +1,8 @@
 package es.urjc.dad.poshart.controller;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,9 +61,11 @@ public class MyController {
 			Collection c = new Collection("Colección "+i, "Descripcion " + i);
 			Collection c2 = new Collection("Colección2-"+i, "Descripcion2-" + i);
 			ArtPost art = new ArtPost("Post "+i, i*10);
+			ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
 			u.addPost(art);
 			u.addCollection(c);
 			u.addCollection(c2);
+			u.addCart(sc);
 			userRepository.save(u);
 		}
 	}
@@ -111,7 +115,12 @@ public class MyController {
 	@GetMapping("/home")
 	public String getHome(Model model, Pageable page) {
 		model.addAttribute("users",true);
-		Page<User> p = userRepository.findAll(page);
+		Page<ArtPost> p;
+		if(sessionData.checkUser()) {
+			p = artRepository.findByUserFollows(sessionData.getUser(), page);
+		}else {
+			p = artRepository.findAll(page);
+		}
 		model.addAttribute("page", p);
 		List<Integer> pageNumbers = new ArrayList<>();
 		for(int i = 0; i < p.getTotalPages(); i++) {

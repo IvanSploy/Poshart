@@ -1,6 +1,8 @@
 package es.urjc.dad.poshart.controller;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.Image;
+import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.CollectionRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
@@ -51,15 +54,15 @@ public class UserController {
 	@PostMapping("/logIn")
 	public RedirectView tryLogIn(Model model, @RequestParam String name, @RequestParam String password) {
 		//Se comprueba el nombre de usuario.
-		List<User> users = userRepository.findByUsername(name);
-		if(users.size()==0) {
+		User u = userRepository.findFirstByUsername(name);
+		if(u==null) {
 			//Si no, se comprueba el emai.
-			users = userRepository.findByMail(name);
-			if(users.size()==0) return new RedirectView("/user?hasFailed=true");
+			u = userRepository.findFirstByMail(name);
+			if(u==null) return new RedirectView("/user?hasFailed=true");
 		}
 		//Se comprueba la contraseña.
-		if(users.get(0).getPassword().equals(password)) {
-			sessionData.setUser(users.get(0).getId());
+		if(u.getPassword().equals(password)) {
+			sessionData.setUser(u.getId());
 			return new RedirectView("/");
 		}else {
 			return new RedirectView("/user?hasFailed=true");
@@ -75,18 +78,20 @@ public class UserController {
 	@PostMapping("/signIn")
 	public RedirectView trySingIn(Model model, User newUser, @RequestParam(required = false) MultipartFile imagen) throws IOException {
 		//Comprobamos que el usuario o correo no están repetidos.
-		List<User> u = userRepository.findByUsername(newUser.getUsername());
-		if(u.size()>0) {
+		User u = userRepository.findFirstByUsername(newUser.getUsername());
+		if(u!=null) {
 			return new RedirectView("/user/create/?hasFailed=true");
 		}
-		u = userRepository.findByMail(newUser.getMail());
-		if(u.size()>0) {
+		u = userRepository.findFirstByMail(newUser.getMail());
+		if(u!=null) {
 			return new RedirectView("/user/create/?hasFailed=true");
 		}
 		if(!imagen.isEmpty()) {
 			Image newImage = imageService.createImage(imagen);
 			newUser.setImage(newImage);
 		}
+		ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
+		newUser.addCart(sc);
 		userRepository.save(newUser);
 		sessionData.setUser(newUser.getId());
 		return new RedirectView("/");
@@ -136,7 +141,7 @@ public class UserController {
 		}
 		boolean isMine = id==sessionData.getUser();
 		model.addAttribute("isMine", isMine);
-		if(!isMine &&  sessionData.getUser()>0) {
+		if(!isMine &&  sessionData.checkUser()) {
 			User other = userRepository.findById(sessionData.getUser()).orElseThrow();
 			boolean followed = u.getFollowers().contains(other);
 			model.addAttribute("followed", followed);
@@ -158,15 +163,13 @@ public class UserController {
 	@GetMapping("/{id}/follow")
 	public RedirectView followUser(Model model, @PathVariable long id) {
 		User u = userRepository.findById(id).orElseThrow();
-		long myId = sessionData.getUser();
-		if(myId<=0) {
+		if(!sessionData.checkUser()) {
 			return new RedirectView("/user");
 		}else {
 			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
 			myUser.addFollow(u);
 			u.addFollower(myUser);
 			userRepository.save(myUser);
-			userRepository.save(u);
 			return new RedirectView("/user/"+id);
 		}
 	}
@@ -174,15 +177,13 @@ public class UserController {
 	@GetMapping("/{id}/unfollow")
 	public RedirectView unFollowUser(Model model, @PathVariable long id) {
 		User u = userRepository.findById(id).orElseThrow();
-		long myId = sessionData.getUser();
-		if(myId<=0) {
+		if(!sessionData.checkUser()) {
 			return new RedirectView("/user");
 		}else {
 			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
 			myUser.removeFollow(u);
 			u.removeFollower(myUser);
 			userRepository.save(myUser);
-			userRepository.save(u);
 			return new RedirectView("/user/"+id);
 		}
 	}

@@ -15,18 +15,20 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(initialValue = 1, name = "userGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userGen")
 	private long id;
 
 	@Column(unique = true)
 	private String username;
 	private String password;
+	@Column(unique = true)
 	private String mail;
 	private String name;
 	private String surname;

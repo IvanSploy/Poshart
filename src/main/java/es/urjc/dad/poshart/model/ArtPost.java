@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class ArtPost {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(initialValue = 1, name = "artGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artGen")
 	private long id;
 	
 	private String name;
