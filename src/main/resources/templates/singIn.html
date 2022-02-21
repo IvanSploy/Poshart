@@ -1,5 +1,12 @@
-{{>header}}
+<html>
+<head>
+<link href="/style.css" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+</head>
+<body>
+<div id="space">
 <center>
+<h1>REGISTRARSE</h1>
 <table>
 	<tbody>
      <tr>
@@ -7,7 +14,7 @@
 		Name: 
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usuario nuevo" name="username"/>
+		<input type="text" placeholder="Nombre de usuario nuevo" name="username" required/>
 	</td>
 	</tr>
       <tr>
@@ -31,7 +38,7 @@
 		Username: 
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usurario nuevo" name="username"/>
+		<input type="text" placeholder="Nombre de usurario nuevo" name="username" required/>
 	</td>
 	</tr>
       <tr>
@@ -39,7 +46,7 @@
 		Image: 
 	</td>
 	<td>
-		<input type="file" id="myFile" name="filename">
+		<input type="file" id="myFile" name="filename" required/>
 	</td>
 	</tr>
       <tr>
@@ -55,12 +62,11 @@
 		Password:
 	</td>
 	<td>
-		<input type="text" placeholder="Contraseña de usurario nueva" name="username"/>
+		<input type="text" placeholder="Contraseña de usurario nueva" name="username" required/>
 	</td>
 	</tr>
-    
   </tbody>
 </table>
-<button type="submit" class="uploadpic">CAMBIAR</button>
+<button type="submit" class="uploadpic">REGISTRARSE</button>
 </center>
 {{>footer}}

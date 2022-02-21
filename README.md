@@ -20,6 +20,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * **Usuario**: Persona registrada en la aplicación, emplea tanto funcionalidades públicas como privadas.
 * **Compra**: Obra comprada por un usuario a cambio de dinero.
 * **Comentario**: Comentario de un usuario sobre una obra u otro comentario.
+* **Imagen**: Entidad asociada tanto a las fotos de perfil como a las obras.
 
 ## Servicio interno 👮
 * Confirmación de creación de cuenta.
@@ -30,6 +31,12 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 ## Trello 🛠️
 Para la planificación del proyecto se ha hecho uso de la herramienta virtual Trello.
 * [Acceso al Trello](https://trello.com/b/WhTBchG9/ad)
+
+## Modelo de Datos 📇
+### Diagrama UML!
+![Diagrama UML (1)](https://user-images.githubusercontent.com/78254966/154862912-00f4e28c-75c6-4a15-8e59-8efe05a23014.png)
+### Diagrama Entidad/Relación
+![Diagrama E_R (1)](https://user-images.githubusercontent.com/78254966/154862744-b1db011d-58ef-4b56-b820-14d5f5dbcc82.png)
 
 ## Autores ✒️️
 * **Guillermo Juan García-Delgado Álvarez** - [Github](https://github.com/guilleingvid)
