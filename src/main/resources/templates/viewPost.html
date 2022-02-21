@@ -1,0 +1,42 @@
+{{>header}}
+<body>
+<!-- Imagen central-->
+    <hr>
+    {{#ArtPost.image}}
+		<h2><center><img src="/image/{{id}}" class="image" alt="FOTOPOST"></center></h2>
+	{{/ArtPost.image}}
+	{{^ArtPost.image}}
+		<h2><center><img src="/img/iconPost.png" class="image" alt="FOTOPOST"></center></h2>
+	{{/ArtPost.image}}
+	<p>Nombre: {{ArtPost.name}}</p>
+	{{#ArtPost.description}}
+	<p>Descripción: {{ArtPost.description}}</p>
+	{{/ArtPost.description}}
+    <p>Precio: {{ArtPost.price}}</p>
+    <p>De: {{ArtPost.owner.username}}</p>
+    <!-- hacer comentario-->
+    <label for="PostArtName"><b>Haz un comentario</b></label>
+    <input type="text" placeholder="Comenta desde tu cuenta..." name="PostArtName" id="PostArtName" required/><button class="button">Comentar</button>
+ 	<p>Comentarios:</p>
+    {{#ArtPost.postComments}}
+    <p>Usuario: {{owner.username}}</p>
+    <p>{{description}}</p>
+    <p>Fecha: {{commentDate}}</p>
+    <br>
+    {{/ArtPost.postComments}}
+    {{^isMine}}
+    {{^isBought}}
+  	<!-- Botón para meter el post en la cesta-->
+    <button type="button" class="uploadpic" onclick="location.href='/post/{{ArtPost.id}}/addToShopping'">COMPRAR</button>
+    {{/isBought}}
+    {{/isMine}}
+    {{#isMine}}
+    <!-- Botón para editar el post-->
+    <button type="button" class="uploadpic" onclick="location.href='/post/{{ArtPost.id}}/edit'">EDITAR</button>
+    {{/isMine}}
+  </div>
+  <!-- Enlace a crearse un perfil-->
+  <div class="container create">
+    <p><a href="/">Volver a la página principal</a></p>
+  </div>
+{{>footer}}

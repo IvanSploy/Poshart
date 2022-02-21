@@ -1,14 +1,12 @@
 package es.urjc.dad.poshart.model;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -20,19 +18,13 @@ public class Comment {
 	private long id;
 	
 	private String description;
-	private String commentDate;
+	private Date commentDate;
 	
 	@OneToOne
 	private User owner;
 	
 	@ManyToOne
 	private ArtPost post;
-	
-	@ManyToOne
-	private Comment responseTo;
-	
-	@OneToMany(mappedBy = "responseTo", cascade=CascadeType.ALL, orphanRemoval = true)
-	private List<Comment> responses= new ArrayList<>();
 	
 	
 	public Comment() {
@@ -60,11 +52,11 @@ public class Comment {
 		this.description = description;
 	}
 
-	public String getCommentDate() {
+	public Date getCommentDate() {
 		return commentDate;
 	}
 
-	public void setCommentDate(String commentDate) {
+	public void setCommentDate(Date commentDate) {
 		this.commentDate = commentDate;
 	}
 
@@ -82,28 +74,6 @@ public class Comment {
 
 	public void setPost(ArtPost post) {
 		this.post = post;
-	}
-
-	public Comment getResponseTo() {
-		return responseTo;
-	}
-
-	public void setResponseTo(Comment responseTo) {
-		this.responseTo = responseTo;
-	}
-
-	public List<Comment> getResponses() {
-		return responses;
-	}
-	
-	public void addResponse(Comment comment) {
-		responses.add(comment);
-		comment.setResponseTo(this);
-	}
-	
-	public void removeResponse(Comment comment) {
-		responses.remove(comment);
-		comment.setResponseTo(this);
 	}
 	
 	public boolean equals(Object obj) {

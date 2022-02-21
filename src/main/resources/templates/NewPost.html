@@ -1,31 +1,30 @@
-<form action="action_page.php">
+{{>header}}
+<form action="/post/newPost" method="POST" enctype="multipart/form-data">
 <link href="/style.css" rel="stylesheet"/>
   <div class="container">
     <!-- Titulo-->
-    <h1><center>Post your brand new work of Art!</center></h1>
-    <form action="/user/newPost" method="POST">
-    <!-- Imagen central-->
-    <hr>
-    <h2><center><img src="img_avatar.png" class="image"></center></h2>
-    	 
+    <h1><center>¡Enseña al mundo tu obra de arte!</center></h1>
     <!-- Buscar archivo para subir-->
-    <label for="PostArtPicture"><b>Upload your picture:</b></label>
-    <input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png">
-  	<input type="submit">
+    <label for="PostArtPicture"><b>Sube una foto:</b></label>
+    <input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png" required>
     <br>
     <!-- Nombrar imagen-->
-    <label for="PostArtName"><b>Name</b></label>
-    <input type="text" placeholder="Enter PostArt Name" name="name" id="PostArtName" required/>
+    <label for="PostArtName"><b>Nombre:</b></label>
+    <input type="text" placeholder="Nombre de obra" name="name" id="PostArtName" required/>
 	<!-- Descripcion imagen-->
-    <label for="PostArtDescription"><b>Description:</b></label>
-    <textarea placeholder="PostArt Description" cols="50" rows="3" name="description" id="PostArtDescription" required></textarea>
+    <label for="PostArtDescription"><b>Descripción:</b></label>
+    <textarea placeholder="Descripción de obra" cols="50" rows="3" name="description" id="PostArtDescription"></textarea>
+	<!-- Precio-->
+    <label for="PostArtPrecio"><b>Precio:</b></label>
+    <input type="number" placeholder="0" name="price" id="PostArtPrecio" required/>
 	
     <!-- Botón para subir el post-->
-    <button type="submit" class="uploadpic">UPLOAD</button>
+    <button type="submit" class="uploadpic">SUBIR OBRA</button>
   </div>
 
   <!-- Enlace a crearse un perfil-->
   <div class="container create">
-    <p>Don´t have an account yet? <a href="#">Create account</a>.</p>
+    <p>¿Aún no tienes una cuenta? <a href="/user/create">Crear cuenta</a>.</p>
   </div>
 </form>
+{{>footer}}

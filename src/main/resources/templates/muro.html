@@ -45,7 +45,7 @@
     <tr>
     	<td colspan="3">
     	{{#isMine}}
-   			<button type="button"class="uploadpic" onclick="location.href=''">SUBIR POST</button> 
+   			<button type="button" class="uploadpic" onclick="location.href='/post/createPost'">SUBIR POST</button> 
     	{{/isMine}}
     	{{^isMine}}
     		{{#followed}}
@@ -91,7 +91,7 @@
     <tr>
     		<td>
 		{{#image}}
-			<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
+			<img src="/image/{{id}}" width=100px alt="FOTOPERFIL">
 		{{/image}}
 		{{^image}}
 			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">

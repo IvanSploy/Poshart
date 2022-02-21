@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -27,6 +28,9 @@ public class ArtPost {
 	
 	@ManyToOne
 	private User owner;
+
+	@ManyToMany(mappedBy = "art")
+	private List<ShoppingCart> carts;
 	
 	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> postComments = new ArrayList<>();	
@@ -37,7 +41,7 @@ public class ArtPost {
 	public ArtPost() {
 		//Used by JPA
 	}
-	
+
 	//Constructor con lo necesario no estrictamente obligatorio.
 	public ArtPost(String name, float price) {
 		super();
@@ -107,6 +111,18 @@ public class ArtPost {
 
 	public void removeOwner() {
 		owner.removePost(this);
+	}
+	
+	public void addCart(ShoppingCart cart) {
+		carts.add(cart);
+	}
+	
+	public List<ShoppingCart> getCarts() {
+		return carts;
+	}
+	
+	public void removeCart(ShoppingCart cart) {
+		carts.remove(cart);
 	}
 	
 	public void addComment(Comment comment) {

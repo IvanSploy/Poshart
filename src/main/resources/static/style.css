@@ -5,6 +5,15 @@
   padding: 15px;
 }
 
+/* Paragraph */
+p {
+	font-size: 20;
+}
+
+label {
+	font-size: 20;
+}
+
 /* Formalizar textarea */
 textarea {
   font-family:Arial, Helvetica, sans-serif;
@@ -13,7 +22,7 @@ textarea {
   padding: 15px;
   margin: 5px 0 22px 0;
   display: inline-block;
-  border: 2px solid #ECD7F7;
+  border: 2px solid #FCD7F7;
   resize: none;
 }
 
@@ -25,6 +34,15 @@ input[type=text] {
   margin: 5px 0 22px 0;
   display: inline-block;
   border: 2px solid #ECD7F7;
+}
+/* Formalizar el campo de texto */
+input[type=number] {
+  border-radius: 25px;
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: 2px solid rgb(162, 220, 255);
 }
 /* Formalizar el campo de contraseña */
 input[type=password] {

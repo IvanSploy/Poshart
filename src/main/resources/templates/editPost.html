@@ -1,32 +1,33 @@
-<form action="action_page.php">
 <link href="/style.css" rel="stylesheet"/>
   <div class="container">
     <!-- Titulo-->
-    <h1><center>Edit this ArtPost</center></h1>
-    <form action="/user/newPost" method="POST">
+    <h1><center>Edita tu Obra</center></h1>
+    <form action="/post/{{thisArtPost.id}}/edit/confirm" method="POST">
     <!-- Imagen central-->
     <hr>
-    <h2><center><img src="img_avatar.png" class="image"></center></h2>
-    	 
-    <!-- Buscar archivo para subir-->
-    <label for="PostArtPicture"><b>Upload your picture:</b></label>
-    <input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png">
-  	<input type="submit">
-    <br>
-    <!-- Nombrar imagen-->
-    <label for="PostArtName"><b>Name</b></label>
+    {{#thisArtPost.image}}
+		<h2><center><img src="/image/{{id}}" class="image" alt="FOTOPOST"></center></h2>
+	{{/thisArtPost.image}}
+	{{^thisArtPost.image}}
+		<h2><center><img src="/img/iconPost.png" class="image" alt="FOTOPOST"></center></h2>
+	{{/thisArtPost.image}}
+	 <!-- Nombrar imagen-->
+    <label for="PostArtName"><b>Nombre:</b></label>
     <input type="text" value="{{thisArtPost.name}}" name="name" id="PostArtName" required/>
 	<!-- Descripcion imagen-->
-    <label for="PostArtDescription"><b>Description:</b></label>
-    <textarea cols="50" rows="3" name="description" id="PostArtDescription" required>{{thisArtPost.description}}</textarea>
-    <!-- Eliminar el post-->
-    <button type="submit" class="uploadpic" onclick="location.href='/user/post/delete'">ELIMINAR</button>
-    <!-- Cambiar el post-->
+    <label for="PostArtDescription"><b>Descripción:</b></label>
+    <textarea cols="50" rows="3" name="description" id="PostArtDescription">{{#thisArtPost.description}}{{.}}{{/thisArtPost.description}}</textarea>
+    <!-- Precio imagen-->
+    <label for="PostArtPrice"><b>Precio:</b></label>
+    <input type="number" value="{{thisArtPost.price}}" name="price" id="PostArtPrice" required/>
+	<!-- Cambiar el post-->
     <button type="submit" class="uploadpic">CAMBIAR</button>
+  	</form>
+  	<!-- Eliminar el post-->
+    <button type="submit" class="uploadpic" onclick="location.href='/post/{{thisArtPost.id}}/delete'">ELIMINAR</button>
   </div>
 
   <!-- Enlace a crearse un perfil-->
   <div class="container create">
     <p>Don´t have an account yet? <a href="#">Create account</a>.</p>
   </div>
-</form>

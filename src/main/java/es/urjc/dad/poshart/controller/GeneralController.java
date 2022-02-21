@@ -54,10 +54,9 @@ public class GeneralController {
 	@PostConstruct
 	public void init() {
 		User u1 = new User("a", "a", "a", "a", "a", "a");
-		ShoppingCart s = new ShoppingCart(100);
+		ShoppingCart s = new ShoppingCart(0);
 		for (int i = 30; i < 50; i++) {
 			ArtPost art = new ArtPost("Post " + i, i * 10);
-			s.addArt(art);
 			u1.addPost(art);
 		}
 		u1.addCart(s);

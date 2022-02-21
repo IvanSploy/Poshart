@@ -1,7 +1,6 @@
 package es.urjc.dad.poshart.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +17,19 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.Image;
+import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.repository.CommentRepository;
+import es.urjc.dad.poshart.repository.ShoppingCartRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
+import es.urjc.dad.poshart.repository.CollectionRepository;
 import es.urjc.dad.poshart.service.ImageService;
 import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
-@RequestMapping("post")
+@RequestMapping("/post")
 public class ArtPostController {
 	Logger log = LoggerFactory.getLogger(getClass());
 
@@ -41,7 +43,13 @@ public class ArtPostController {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private CollectionRepository collectionRepository;
+	
+	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private ShoppingCartRepository cartRepository;
 	
 	@Autowired
 	private SessionData sessionData;//Permite saber si soy yo el usuario o no
@@ -60,55 +68,103 @@ public class ArtPostController {
 		}
 		newArtPost.addOwner(userRepository.findById(sessionData.getUser()).orElseThrow());
 		artPostRepository.save(newArtPost);
-		return new RedirectView("/post");
+		return new RedirectView("/post/"+newArtPost.getId());
 	}
 	
-	@GetMapping("/post")
-	public String viewPost(Model model) {
-		return "ViewCommentBuyPost";
-	}
-	
-	@GetMapping("post/addToShopping")
-	public String añadeACesta(Model model, ArtPost thisArtPost) {
-		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
-		//Solo te deja añadir al carro de la compra si no eres su dueño y si no lo tienes ya añadido
-		if(u != thisArtPost.getOwner()) {
-			if(!u.getCart().getArt().contains(thisArtPost))
-				u.getCart().addArt(thisArtPost);
+	@GetMapping("/{id}")
+	public String viewPost(Model model, @PathVariable long id) {
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		if(sessionData.checkUser()) {
+			User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+			if(u == ap.getOwner()) {
+				model.addAttribute("isMine", true);
+			}
+			model.addAttribute("isBought", u.getCart().getArt().contains(ap));
 		}
-		
-		return "ViewCommentBuyPost";
+		model.addAttribute("ArtPost", ap);
+		return "viewPost";
 	}
 	
-	@GetMapping("/post/edit")
-	public String editPost(Model model, ArtPost thisArtPost) {
+	@GetMapping("/{id}/addToShopping")
+	public RedirectView addToCart(Model model, @PathVariable long id) {
+		if(sessionData.checkUser()) {
+			User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+			ArtPost ap = artPostRepository.findById(id).orElseThrow();
+			//Solo te deja añadir al carro de la compra si no eres su dueño y si no lo tienes ya añadido
+			if(u != ap.getOwner()) {
+				if(!u.getCart().getArt().contains(ap)) {
+					u.getCart().addArt(ap);
+					cartRepository.save(u.getCart());
+					return new RedirectView("/post/"+ap.getId());
+				}
+			}
+		}
+		return new RedirectView("/user");
+	}
+	
+	@GetMapping("/{id}/edit")
+	public String editPost(Model model, @PathVariable long id) {
 		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
-		if(u == thisArtPost.getOwner()) {
-			model.addAttribute("thisArtPost", thisArtPost);
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		model.addAttribute("thisArtPost", ap);
+		if(u == ap.getOwner()) {
 			return "editPost";
 		}else return "ViewCommentBuyPost";
-		
 	}
 
-	@PostMapping("/post/edit/confirm")
-	public RedirectView editPostConfirm(Model model, ArtPost thisArtPost, @RequestParam(required = false) MultipartFile imagen) throws IOException {
-		if(!imagen.isEmpty()) {
-			Image newImage = imageService.createImage(imagen);
-			thisArtPost.setImage(newImage);
-		}
-		artPostRepository.save(thisArtPost);
-		return new RedirectView("/post");
+	@PostMapping("/{id}/edit/confirm")
+	public RedirectView editPostConfirm(Model model, ArtPost newArtPost, @PathVariable long id) {
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		ap.setName(newArtPost.getName());
+		ap.setDescription(newArtPost.getDescription());
+		ap.setPrice(newArtPost.getPrice());
+		artPostRepository.save(ap);
+		return new RedirectView("/post/" + id);
 	}
 	
-	@GetMapping("/post/delete")
-	public RedirectView deleteUser(Model model, ArtPost thisArtPost) {
-		User u = userRepository.findById(sessionData.getUser()).orElseThrow();
-		if(u != thisArtPost.getOwner()) {
-			u.getMyPosts().remove(thisArtPost);
-			artPostRepository.delete(thisArtPost);
+	@GetMapping("{id}/delete")
+	public RedirectView deletePost(Model model, @PathVariable long id) {
+		if(sessionData.checkUser()) {
+			User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+			ArtPost ap = artPostRepository.findById(id).orElseThrow();
+			if(u == ap.getOwner()) {
+				u.removePost(ap);
+				for(ShoppingCart sc : ap.getCarts()) {
+					sc.removeArt(ap);
+				}
+				artPostRepository.delete(ap);
+			}
 			return new RedirectView("/");
 		}else return new RedirectView("/post/edit");
 	}
+	//RELACIONADO CON COMENTARIOS
 	
-
+	//RELACIONADO CON COLECCIONES
+	@GetMapping("/{id}/add/{colId}")
+	public RedirectView addPostToCollection(Model model, @PathVariable long id, @PathVariable long colId) {
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		Collection c = collectionRepository.findById(colId).orElseThrow();
+		if(sessionData.checkUser()) {
+			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
+			if(myUser.getCollections().contains(c)) {
+				c.addPost(ap);
+				collectionRepository.save(c);
+			}
+		}
+		return new RedirectView("/"+id);
+	}
+	
+	@GetMapping("/{id}/remove/{colId}")
+	public RedirectView removePostFromCollection(Model model, @PathVariable long id, @PathVariable long colId) {
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		Collection c = collectionRepository.findById(colId).orElseThrow();
+		if(sessionData.checkUser()) {
+			User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
+			if(myUser.getCollections().contains(c)) {
+				c.removePost(ap);
+				collectionRepository.save(c);
+			}
+		}
+		return new RedirectView("/"+id);
+	}
 }
