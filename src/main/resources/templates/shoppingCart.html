@@ -4,7 +4,7 @@
 <div class="tablaoverflowCesta">
 <table>
 	<tbody>
-	{{#art}}
+	{{#cart.art}}
      <tr>
      <td>
 		{{#image}}
@@ -27,11 +27,11 @@
 		 <img src="/img/iconBasura.png" width=30px alt="CONFIGURACION" title="Pinche aquí para ir a la configuracion">
 	</td>
 	</tr>
-	{{/art}}
+	{{/cart.art}}
   </tbody>
 </table>
 </div> 
-<p>El precio total es: {{precio}}</p>
+<p>El precio total es: {{cart.price}}</p>
 <button type="submit" class="uploadpic">COMPRAR</button>
  </center>
 {{>footer}}

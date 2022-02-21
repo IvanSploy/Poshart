@@ -32,8 +32,8 @@ import es.urjc.dad.poshart.service.ImageService;
 import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
-public class MyController {
-	
+public class GeneralController {
+
 	Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
@@ -41,35 +41,33 @@ public class MyController {
 
 	@Autowired
 	private ArtPostRepository artRepository;
-	
+
 	@Autowired
 	private CollectionRepository collectionRepository;
-	
+
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
-	
-	@Autowired
-	private ImageService imageService;
-	
+
 	@Autowired
 	private SessionData sessionData;
-	
+
 	@PostConstruct
 	public void init() {
 		User u1 = new User("a", "a", "a", "a", "a", "a");
-		ShoppingCart s =  new ShoppingCart(100);
-		for(int i = 30; i<50; i++){
-			ArtPost art = new ArtPost("Post "+i, i*10);
+		ShoppingCart s = new ShoppingCart(100);
+		for (int i = 30; i < 50; i++) {
+			ArtPost art = new ArtPost("Post " + i, i * 10);
 			s.addArt(art);
 			u1.addPost(art);
 		}
 		u1.addCart(s);
 		userRepository.save(u1);
-		for(int i = 0; i<20; i++){
-			User u = new User("Correo "+i, "Usuario "+i, "Contraseña "+i, "Nombre "+i, "Apellidos "+i, "Descripción "+i);
-			Collection c = new Collection("Colección "+i, "Descripcion " + i);
-			Collection c2 = new Collection("Colección2-"+i, "Descripcion2-" + i);
-			ArtPost art = new ArtPost("Post "+i, i*10);
+		for (int i = 0; i < 20; i++) {
+			User u = new User("Correo " + i, "Usuario " + i, "Contraseña " + i, "Nombre " + i, "Apellidos " + i,
+					"Descripción " + i);
+			Collection c = new Collection("Colección " + i, "Descripcion " + i);
+			Collection c2 = new Collection("Colección2-" + i, "Descripcion2-" + i);
+			ArtPost art = new ArtPost("Post " + i, i * 10);
 			ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
 			u.addPost(art);
 			u.addCollection(c);
@@ -78,122 +76,137 @@ public class MyController {
 			userRepository.save(u);
 		}
 	}
-		
+
+	@GetMapping("/shopping")
+	public RedirectView getShopping(Model model) {
+		if (sessionData.checkUser()) {
+			return new RedirectView("/shopping/" + sessionData.getUser());
+		} else {
+			return new RedirectView("/user");
+		}
+	}
+
 	@GetMapping("/shopping/{id}")
 	public String getShopping(Model model, @PathVariable long id) {
 		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		model.addAttribute("art", c.getArt());
-		model.addAttribute("precio", c.getPrice());
+		model.addAttribute("cart", c);
 		return "shoppingCart";
 	}
+
 	@GetMapping("/newPost")
 	public String getPost(Model model) {
 		return "NewPost";
 	}
+
 	@GetMapping("/viewComment")
 	public String getComment(Model model) {
 		return "ViewCommentBuyPost";
 	}
+
 	@GetMapping("/")
 	public RedirectView getHome(Model model) {
 		return new RedirectView("home/?page=0&size=5");
 	}
+
 	@GetMapping("/home")
 	public String getHome(Model model, Pageable page) {
-		model.addAttribute("users",true);
 		Page<ArtPost> p;
-		if(sessionData.checkUser()) {
+		if (sessionData.checkUser()) {
 			p = artRepository.findByUserFollows(sessionData.getUser(), page);
-		}else {
+		} else {
 			p = artRepository.findAll(page);
 		}
 		model.addAttribute("page", p);
 		List<Integer> pageNumbers = new ArrayList<>();
-		for(int i = 0; i < p.getTotalPages(); i++) {
+		for (int i = 0; i < p.getTotalPages(); i++) {
 			pageNumbers.add(i);
 		}
 		model.addAttribute("totalPages", pageNumbers);
 		model.addAttribute("hasPrev", p.hasPrevious());
 		model.addAttribute("hasNext", p.hasNext());
-		model.addAttribute("nextPage", p.getNumber()+1);
-		model.addAttribute("prevPage", p.getNumber()-1);
+		model.addAttribute("nextPage", p.getNumber() + 1);
+		model.addAttribute("prevPage", p.getNumber() - 1);
 		return "home";
 	}
+
 	@GetMapping("/checkUser")
 	public RedirectView checkUser(Model model) {
 		long userId = sessionData.getUser();
-		if(userId<=0) {
+		if (userId <= 0) {
 			return new RedirectView("/user/");
-		}else {
-			return new RedirectView("/user/"+userId);
+		} else {
+			return new RedirectView("/user/" + userId);
 		}
 	}
+
 	@GetMapping("/editUser")
 	public RedirectView editUser(Model model) {
 		long userId = sessionData.getUser();
-		if(userId<=0) {
+		if (userId <= 0) {
 			return new RedirectView("/user/create");
-		}else {
-			return new RedirectView("/user/"+userId+"/edit");
+		} else {
+			return new RedirectView("/user/" + userId + "/edit");
 		}
 	}
+
 	@GetMapping("/search/{id}")
-	public String getSearch(Model model, @PathVariable long id, Pageable page) {
-		if(id==0) {
-			model.addAttribute("post",true);
+	public String getSearch(Model model, @PathVariable int id, Pageable page) {
+		if (id == 0) {
+			model.addAttribute("post", true);
 			Page<ArtPost> p = artRepository.findAll(page);
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
-			for(int i = 0; i < p.getTotalPages(); i++) {
+			for (int i = 0; i < p.getTotalPages(); i++) {
 				pageNumbers.add(i);
 			}
 			model.addAttribute("totalPages", pageNumbers);
 			model.addAttribute("hasPrev", p.hasPrevious());
 			model.addAttribute("hasNext", p.hasNext());
-			model.addAttribute("nextPage", p.getNumber()+1);
-			model.addAttribute("prevPage", p.getNumber()-1);
-		}else if(id==1){
-			model.addAttribute("collections",true);
+			model.addAttribute("nextPage", p.getNumber() + 1);
+			model.addAttribute("prevPage", p.getNumber() - 1);
+		} else if (id == 1) {
+			model.addAttribute("collections", true);
 			Page<Collection> p = collectionRepository.findAll(page);
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
-			for(int i = 0; i < p.getTotalPages(); i++) {
+			for (int i = 0; i < p.getTotalPages(); i++) {
 				pageNumbers.add(i);
 			}
 			model.addAttribute("totalPages", pageNumbers);
 			model.addAttribute("hasPrev", p.hasPrevious());
 			model.addAttribute("hasNext", p.hasNext());
-			model.addAttribute("nextPage", p.getNumber()+1);
-			model.addAttribute("prevPage", p.getNumber()-1);
-		}else if(id==2){
-			model.addAttribute("users",true);
+			model.addAttribute("nextPage", p.getNumber() + 1);
+			model.addAttribute("prevPage", p.getNumber() - 1);
+		} else if (id == 2) {
+			model.addAttribute("users", true);
 			Page<User> p = userRepository.findAll(page);
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
-			for(int i = 0; i < p.getTotalPages(); i++) {
+			for (int i = 0; i < p.getTotalPages(); i++) {
 				pageNumbers.add(i);
 			}
 			model.addAttribute("totalPages", pageNumbers);
 			model.addAttribute("hasPrev", p.hasPrevious());
 			model.addAttribute("hasNext", p.hasNext());
-			model.addAttribute("nextPage", p.getNumber()+1);
-			model.addAttribute("prevPage", p.getNumber()-1);
+			model.addAttribute("nextPage", p.getNumber() + 1);
+			model.addAttribute("prevPage", p.getNumber() - 1);
 		}
 		return "search";
 	}
+
 	@GetMapping("/users")
-	public String getUser(Model model,Pageable page) {
+	public String getUser(Model model, Pageable page) {
 		Page<User> p = userRepository.findAll(page);
 		model.addAttribute("page", p);
 		List<Integer> pageNumbers = new ArrayList<>();
-		for(int i = 0; i < p.getTotalPages(); i++) {
+		for (int i = 0; i < p.getTotalPages(); i++) {
 			pageNumbers.add(i);
 		}
 		model.addAttribute("totalPages", pageNumbers);
 		model.addAttribute("hasPrev", p.hasPrevious());
 		model.addAttribute("hasNext", p.hasNext());
-		model.addAttribute("nextPage", p.getNumber()+1);
-		model.addAttribute("prevPage", p.getNumber()-1);
+		model.addAttribute("nextPage", p.getNumber() + 1);
+		model.addAttribute("prevPage", p.getNumber() - 1);
 		return "allusers";
 	}
 }
