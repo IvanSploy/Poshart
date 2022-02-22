@@ -1,20 +1,47 @@
 {{>header}}
 <body>
+<center>
 <!-- Imagen central-->
-    <hr>
+<table>
+<tbody>
+<tr>
+<th rowspan="5">
     {{#ArtPost.image}}
-		<h2><center><img src="/image/{{id}}" class="image" alt="FOTOPOST"></center></h2>
+		<h2><img src="/image/{{id}}" class="image" alt="FOTOPOST"></h2>
 	{{/ArtPost.image}}
 	{{^ArtPost.image}}
-		<h2><center><img src="/img/iconPost.png" class="image" alt="FOTOPOST"></center></h2>
+		<h2><img src="/img/iconPost.png" class="image" alt="FOTOPOST"></h2>
 	{{/ArtPost.image}}
-	<p>Nombre: {{ArtPost.name}}</p>
-	{{#ArtPost.description}}
+</th>
+<td>
+<p>Nombre: {{ArtPost.name}}</p>
+</td>
+</tr>
+{{#ArtPost.description}}
+<tr>
+<td>
 	<p>Descripción: {{ArtPost.description}}</p>
-	{{/ArtPost.description}}
-    <p>Precio: {{ArtPost.price}} €</p>
-    <p>De: {{ArtPost.owner.username}}</p>
-    <p>Fecha: {{ArtPost.date}}</p>
+</td>
+</tr>
+{{/ArtPost.description}}
+<tr>
+<td>
+ <p>Precio: {{ArtPost.price}} €</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>De: {{ArtPost.owner.username}}</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Fecha: {{ArtPost.date}}</p>
+</td>
+</tr>
+</tbody>
+</table>
+<hr>
     <!-- seleccionar coleccion-->
     <form action="/post/{{ArtPost.id}}/add">
     <select name="colId">
@@ -30,13 +57,14 @@
     <label for="PostArtName"><b>Haz un comentario</b></label>
     <input type="text" placeholder="Comenta desde tu cuenta..." name="description" id="PostArtName" required/><button class="button" type="submit">Comentar</button></input>
  	</form>
- 	<p>Comentarios:</p>
+ 	<h1>Comentarios:</h1>
     {{#ArtPost.postComments}}
-    <p>Usuario: {{owner.username}}</p>
+    <p>Usuario: <a href="/user/{{owner.id}}" >{{owner.username}}</a></p>
     <p>{{description}}</p>
     <p>Fecha: {{commentDate}}</p>
     <a href="/post/{{ArtPost.id}}/comment/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar comentario"/></a>
     <br>
+    <hr>
     {{/ArtPost.postComments}}
     {{^isMine}}
     {{^isBought}}
@@ -53,4 +81,5 @@
   <div class="container create">
     <p><a href="/">Volver a la página principal</a></p>
   </div>
+</center>
 {{>footer}}
