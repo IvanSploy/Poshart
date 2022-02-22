@@ -36,7 +36,7 @@ public class User {
 	private int countFollows;
 	private int countFollowers;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Image image;
 
 	@ManyToMany

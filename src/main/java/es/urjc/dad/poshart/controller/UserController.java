@@ -159,7 +159,7 @@ public class UserController {
 			userRepository.save(us);
 		}
 		//Desvinculamos todos los seguidos.
-		for(User us : u.getFollowers()) {
+		for(User us : u.getFollows()) {
 			us.removeFollower(u);
 			userRepository.save(us);
 		}

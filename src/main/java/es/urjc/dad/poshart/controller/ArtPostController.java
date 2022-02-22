@@ -114,7 +114,7 @@ public class ArtPostController {
 		model.addAttribute("thisArtPost", ap);
 		if(u == ap.getOwner()) {
 			return "editPost";
-		}else return "ViewCommentBuyPost";
+		}else return "viewPost";
 	}
 
 	@PostMapping("/{id}/edit/confirm")

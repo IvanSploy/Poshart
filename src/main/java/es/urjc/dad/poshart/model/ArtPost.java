@@ -36,7 +36,7 @@ public class ArtPost {
 	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> postComments = new ArrayList<>();	
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Image image;
 
 	public ArtPost() {
