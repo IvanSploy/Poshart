@@ -125,6 +125,22 @@ public class User {
 		this.description = description;
 	}
 	
+	public int getCountFollows() {
+		return countFollows;
+	}
+
+	public void setCountFollows(int countFollows) {
+		this.countFollows = countFollows;
+	}
+
+	public int getCountFollowers() {
+		return countFollowers;
+	}
+
+	public void setCountFollowers(int countFollowers) {
+		this.countFollowers = countFollowers;
+	}
+	
 	public Image getImage() {
 		return image;
 	}

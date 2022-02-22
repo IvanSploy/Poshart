@@ -71,6 +71,10 @@
   	<!-- Botón para meter el post en la cesta-->
     <button type="button" class="uploadpic" onclick="location.href='/post/{{ArtPost.id}}/addToShopping'">COMPRAR</button>
     {{/isBought}}
+    {{#isBought}}
+  	<!-- Cuando se tiene el item en la cesta-->
+    <button type="button" class="uploadpic" disabled>YA EN LA CESTA</button>
+    {{/isBought}}
     {{/isMine}}
     {{#isMine}}
     <!-- Botón para editar el post-->

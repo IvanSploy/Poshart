@@ -3,6 +3,16 @@
 	<table>
 		<tbody>
 			<tr>
+			<form>
+				<th colspan="2">
+					<input type="text" name="search" placeholder="Buscar algo..."/>
+				</th>
+				<th colspan="1">
+					<button type="submit" class="uploadpic">BUSCAR</button>
+				</th>
+			</form>
+			</tr>
+			<tr>
 				<td><a href="/search/0/?page=0&size=5">
 						<button type="button" class="uploadpic">OBRAS</button>
 					</a></td>
@@ -29,6 +39,9 @@
 					<th>
 						<p>Precio</p>
 					</th>
+					<th>
+						<p>Usuario</p>
+					</th>
 				</tr>
 				{{#page}}
 				<tr>
@@ -48,6 +61,9 @@
 					<td>
 						{{price}} €
 					</td>
+					<td>
+						<a href="/user/{{owner.id}}" >{{owner.username}}</a>
+					</td>
 				</tr>
 				<tr>
 					<th colspan="4">
@@ -59,13 +75,13 @@
 		</table>
 	</div>
 	{{#hasPrev}}
-	<a href="/search/0/?page={{prevPage}}&size=5">Prev</a>
+	<a href="/search/0/?page={{prevPage}}&size=5{{#search}}&search={{.}}{{/search}}">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
-	<a href="/search/0/?page={{.}}&size=5">{{.}}</a>
+	<a href="/search/0/?page={{.}}&size=5{{#search}}&search={{.}}{{/search}}">{{.}}</a>
 	{{/totalPages}}
 	{{#hasNext}}
-	<a href="/search/0/?page={{nextPage}}&size=5">Next</a>
+	<a href="/search/0/?page={{nextPage}}&size=5{{#search}}&search={{.}}{{/search}}">Next</a>
 	{{/hasNext}}
 	{{/post}}
 	{{#collections}}
@@ -80,6 +96,9 @@
 					<th>
 						<p>Descripción</p>
 					</th>
+					<th>
+						<p>Usuario</p>
+					</th>
 				</tr>
 				{{#page}}
 				<tr>
@@ -91,9 +110,12 @@
 					<td>
 						{{description}}
 					</td>
+					<td>
+						<a href="/user/{{owner.id}}" >{{owner.username}}</a>
+					</td>
 				</tr>
 				<tr>
-					<th colspan="4">
+					<th colspan="3">
     					<hr>
 					</th>
 				</tr>
@@ -102,13 +124,13 @@
 		</table>
 	</div>
 	{{#hasPrev}}
-	<a href="/search/1/?page={{prevPage}}&size=5">Prev</a>
+	<a href="/search/1/?page={{prevPage}}&size=5{{#search}}&search={{.}}{{/search}}">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
-	<a href="/search/1/?page={{.}}&size=5">{{.}}</a>
+	<a href="/search/1/?page={{.}}&size=5{{#search}}&search={{.}}{{/search}}">{{.}}</a>
 	{{/totalPages}}
 	{{#hasNext}}
-	<a href="/search/1/?page={{nextPage}}&size=5">Next</a>
+	<a href="/search/1/?page={{nextPage}}&size=5{{#search}}&search={{.}}{{/search}}">Next</a>
 	{{/hasNext}}
 	{{/collections}}
 	{{#users}}
@@ -161,13 +183,13 @@
 		</table>
 	</div>
 	{{#hasPrev}}
-	<a href="/search/2/?page={{prevPage}}&size=5">Prev</a>
+	<a href="/search/2/?page={{prevPage}}&size=5{{#search}}&search={{.}}{{/search}}">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
-	<a href="/search/2/?page={{.}}&size=5">{{.}}</a>
+	<a href="/search/2/?page={{.}}&size=5{{#search}}&search={{.}}{{/search}}">{{.}}</a>
 	{{/totalPages}}
 	{{#hasNext}}
-	<a href="/search/2/?page={{nextPage}}&size=5">Next</a>
+	<a href="/search/2/?page={{nextPage}}&size=5{{#search}}&search={{.}}{{/search}}">Next</a>
 	{{/hasNext}}
 	{{/users}}
 

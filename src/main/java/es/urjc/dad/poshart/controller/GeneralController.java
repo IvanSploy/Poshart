@@ -12,12 +12,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.ArtPost;
@@ -126,10 +128,17 @@ public class GeneralController {
 	}
 
 	@GetMapping("/search/{id}")
-	public String getSearch(Model model, @PathVariable int id, Pageable page) {
+	public String getSearch(Model model, @PathVariable int id, Pageable page, @RequestParam(defaultValue = "") String search) {
+		if(page.getPageSize()>=20) page = Pageable.ofSize(5).first();
 		if (id == 0) {
 			model.addAttribute("post", true);
-			Page<ArtPost> p = artRepository.findAll(page);
+			Page<ArtPost> p;
+			if(search.equals("")) {
+				p = artRepository.findAll(page);
+			}else {
+				p = artRepository.findBySearch(search, page);
+				model.addAttribute("search", search);
+			}
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
 			for (int i = 0; i < p.getTotalPages(); i++) {
@@ -142,7 +151,13 @@ public class GeneralController {
 			model.addAttribute("prevPage", p.getNumber() - 1);
 		} else if (id == 1) {
 			model.addAttribute("collections", true);
-			Page<Collection> p = collectionRepository.findAll(page);
+			Page<Collection> p;
+			if(search.equals("")) {
+				p = collectionRepository.findAll(page);
+			}else {
+				p = collectionRepository.findBySearch(search, page);
+				model.addAttribute("search", search);
+			}
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
 			for (int i = 0; i < p.getTotalPages(); i++) {
@@ -155,7 +170,13 @@ public class GeneralController {
 			model.addAttribute("prevPage", p.getNumber() - 1);
 		} else if (id == 2) {
 			model.addAttribute("users", true);
-			Page<User> p = userRepository.findAll(page);
+			Page<User> p;
+			if(search.equals("")) {
+				p = userRepository.findAll(page);
+			}else {
+				p = userRepository.findBySearch(search, page);
+				model.addAttribute("search", search);
+			}
 			model.addAttribute("page", p);
 			List<Integer> pageNumbers = new ArrayList<>();
 			for (int i = 0; i < p.getTotalPages(); i++) {
@@ -167,22 +188,7 @@ public class GeneralController {
 			model.addAttribute("nextPage", p.getNumber() + 1);
 			model.addAttribute("prevPage", p.getNumber() - 1);
 		}
+		model.addAttribute("type", id);
 		return "search";
-	}
-
-	@GetMapping("/users")
-	public String getUser(Model model, Pageable page) {
-		Page<User> p = userRepository.findAll(page);
-		model.addAttribute("page", p);
-		List<Integer> pageNumbers = new ArrayList<>();
-		for (int i = 0; i < p.getTotalPages(); i++) {
-			pageNumbers.add(i);
-		}
-		model.addAttribute("totalPages", pageNumbers);
-		model.addAttribute("hasPrev", p.hasPrevious());
-		model.addAttribute("hasNext", p.hasNext());
-		model.addAttribute("nextPage", p.getNumber() + 1);
-		model.addAttribute("prevPage", p.getNumber() - 1);
-		return "allusers";
 	}
 }

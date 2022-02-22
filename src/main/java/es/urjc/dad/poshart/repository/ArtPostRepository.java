@@ -19,4 +19,6 @@ public interface ArtPostRepository extends JpaRepository<ArtPost, Long> {
 			+ " MEMBER OF uf.followers) ORDER BY ap.date")
 	Page<ArtPost> findByUserFollows(long id, Pageable page);
 	
+	@Query("SELECT ap FROM ArtPost ap WHERE ap.name LIKE %?1% or ap.description LIKE %?1% or ap.owner.username LIKE %?1%")
+	Page<ArtPost> findBySearch(String search, Pageable page);
 }
