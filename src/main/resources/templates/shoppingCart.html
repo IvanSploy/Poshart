@@ -7,15 +7,15 @@
      <tr>
      <td>
 		{{#image}}
-			<img src="/image/{{owner.image.id}}" width=100px alt="FOTOPERFIL">
+			<img src="/image/{{id}}" width=100px alt="FOTOPERFIL">
 		{{/image}}
 		{{^image}}
 			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
 		{{/image}}
 		</td>
     	<td>
-    	<a href="/shopping/{{cart.buyer.id}}/remove/{{-index}}">
-   			{{name}} FALTA ENLACE
+    	<a href="/post/{{id}}">
+   			{{name}}
    			</a>
     	</td>
     	<td>
