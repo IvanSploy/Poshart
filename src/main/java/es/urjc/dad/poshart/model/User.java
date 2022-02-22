@@ -33,6 +33,8 @@ public class User {
 	private String name;
 	private String surname;
 	private String description;
+	private int countFollows;
+	private int countFollowers;
 	
 	@ManyToOne
 	private Image image;
@@ -133,6 +135,7 @@ public class User {
 	
 	public void addFollow(User follow) {
 		this.follows.add(follow);
+		countFollows++;
 	}
 
 	public Set<User> getFollows() {
@@ -141,10 +144,12 @@ public class User {
 	
 	public void removeFollow(User follow) {
 		this.follows.remove(follow);
+		countFollows--;
 	}
 	
 	public void addFollower(User follower) {
 		this.followers.add(follower);
+		countFollowers++;
 	}
 
 	public Set<User> getFollowers() {
@@ -153,6 +158,7 @@ public class User {
 	
 	public void removeFollower(User follower) {
 		this.followers.remove(follower);
+		countFollowers--;
 	}
 	
 	public void addCollection(Collection collection) {

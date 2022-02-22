@@ -132,8 +132,6 @@ public class UserController {
 	public String getMuro(Model model, @PathVariable long id, @RequestParam(defaultValue = "-1") long colId) {
 		log.warn(""+id);
 		User u = userRepository.findById(id).orElseThrow();
-		model.addAttribute("follows", u.getFollows().size());
-		model.addAttribute("followers", u.getFollowers().size());
 		model.addAttribute("user", u);
 		if(colId!=-1) {
 			Collection c = collectionRepository.findById(colId).orElseThrow();
@@ -155,6 +153,16 @@ public class UserController {
 	public RedirectView deleteUser(Model model, @PathVariable long id) {
 		User u = userRepository.findById(id).orElseThrow();
 		if(u.getImage()!=null) imageService.deleteImage(u.getImage().getId());
+		//Desvinculamos todos los seguidores.
+		for(User us : u.getFollowers()) {
+			us.removeFollow(u);
+			userRepository.save(us);
+		}
+		//Desvinculamos todos los seguidos.
+		for(User us : u.getFollowers()) {
+			us.removeFollower(u);
+			userRepository.save(us);
+		}
 		userRepository.delete(u);
 		sessionData.setUser(0);
 		return new RedirectView("/");

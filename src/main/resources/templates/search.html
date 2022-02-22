@@ -1,46 +1,62 @@
 {{>header}}
 <center>
-<table>
-	<tbody>
-	<tr>
-		<td><a href="/search/0/?page=0&size=5">
-			<button type="button"class="uploadpic">POST</button>
-		</a></td>
-		<td><a href="/search/1/?page=0&size=5">
-   			<button type="button"class="uploadpic">COLLECTIONS</button>
-		</a></td>
-    	<td><a href="/search/2/?page=0&size=5">
-   			<button type="button"class="uploadpic">USERS</button>
-       	</a></td>
-    </tr>
-    </tbody>
-</table>
-    {{#post}}
-    <h1> Estas viendo los posts </h1>
-    <div class=tablaoverflowUsuarios>
-    {{#page}}
-    <table>
-    <tbody>
-	<tr>
-	<td>
-		{{#image}}
-			<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
-		{{/image}}
-		{{^image}}
-			<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
-		{{/image}}
-		</td>
-    	<td>
-    	<a href="/post/{{id}}">
-   			{{name}}
-   			</a>
-    	</td>
-    	<td>
-   			{{price}} €
-    	</td>
-    </tr>
-    </tbody></table>
-	{{/page}}
+	<table>
+		<tbody>
+			<tr>
+				<td><a href="/search/0/?page=0&size=5">
+						<button type="button" class="uploadpic">OBRAS</button>
+					</a></td>
+				<td><a href="/search/1/?page=0&size=5">
+						<button type="button" class="uploadpic">COLECCIONES</button>
+					</a></td>
+				<td><a href="/search/2/?page=0&size=5">
+						<button type="button" class="uploadpic">USUARIOS</button>
+					</a></td>
+			</tr>
+		</tbody>
+	</table>
+	{{#post}}
+	<h1> Estas viendo las obras </h1>
+	<div class=tablaoverflowUsuarios>
+		<table>
+			<tbody>
+				<tr>
+					<th>
+					</th>
+					<th>
+						<p>Nombre</p>
+					</th>
+					<th>
+						<p>Precio</p>
+					</th>
+				</tr>
+				{{#page}}
+				<tr>
+					<td>
+						{{#image}}
+						<img src="/image/{{image.id}}" width=100px alt="FOTOPERFIL">
+						{{/image}}
+						{{^image}}
+						<img src="/img/iconPost.png" width=50px alt="FOTOPERFIL">
+						{{/image}}
+					</td>
+					<td>
+						<a href="/post/{{id}}">
+							{{name}}
+						</a>
+					</td>
+					<td>
+						{{price}} €
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">
+    					<hr>
+					</th>
+				</tr>
+				{{/page}}
+			</tbody>
+		</table>
 	</div>
 	{{#hasPrev}}
 	<a href="/search/0/?page={{prevPage}}&size=5">Prev</a>
@@ -51,27 +67,41 @@
 	{{#hasNext}}
 	<a href="/search/0/?page={{nextPage}}&size=5">Next</a>
 	{{/hasNext}}
-    {{/post}}
-    {{#collections}}
-    <h1> Estas viendo las collections </h1>
-    <div class=tablaoverflowUsuarios>
-    {{#page}}
-    <table>
-    <tbody>
-	<tr>
-    	<td>
-    	<a href="/user/{{owner.id}}/?colId={{id}}">
-   			{{name}}
-   			</a>
-    	</td>
-		<td>
-   			{{description}}
-    	</td>
-    </tr>
-    </tbody></table>
-	{{/page}}
+	{{/post}}
+	{{#collections}}
+	<h1> Estas viendo las colecciones </h1>
+	<div class=tablaoverflowUsuarios>
+		<table>
+			<tbody>
+				<tr>
+					<th>
+						<p>Nombre</p>
+					</th>
+					<th>
+						<p>Descripción</p>
+					</th>
+				</tr>
+				{{#page}}
+				<tr>
+					<td>
+						<a href="/user/{{owner.id}}/?colId={{id}}">
+							{{name}}
+						</a>
+					</td>
+					<td>
+						{{description}}
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">
+    					<hr>
+					</th>
+				</tr>
+				{{/page}}
+			</tbody>
+		</table>
 	</div>
-    {{#hasPrev}}
+	{{#hasPrev}}
 	<a href="/search/1/?page={{prevPage}}&size=5">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
@@ -80,40 +110,57 @@
 	{{#hasNext}}
 	<a href="/search/1/?page={{nextPage}}&size=5">Next</a>
 	{{/hasNext}}
-    {{/collections}}
-    {{#users}}
-    <h1> Estas viendo los users </h1>
-    <div class=tablaoverflowUsuarios>
-    {{#page}}
-    <table>
-    <tbody>
-	<tr>
-		<td>
-		{{#user.image}}
-			<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
-		{{/user.image}}
-		{{^user.image}}
-			<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
-		{{/user.image}}
-		</td>
-    	<td>
-    	<a href="/user/{{id}}">
-   			{{username}}
-   			</a>
-    	</td>
-    	<!--
-		<td>
-   			{{follows}}
-    	</td>
-    	<td>
-   			{{followers}}
-    	</td>
-    	-->
-    </tr>
-    </tbody></table>
-	{{/page}}
+	{{/collections}}
+	{{#users}}
+	<h1> Estas viendo los usuarios </h1>
+	<div class=tablaoverflowUsuarios>
+		<table>
+			<tbody>
+				<tr>
+					<th>
+					</th>
+					<th>
+						Nombre
+					</th>
+					<th>
+						<p>Seguidos</p>
+					</th>
+					<th>
+						<p>Seguidores</p>
+					</th>
+				</tr>
+				{{#page}}
+				<tr>
+					<td>
+						{{#user.image}}
+						<img src="/image/{{user.image.id}}" width=100px alt="FOTOPERFIL">
+						{{/user.image}}
+						{{^user.image}}
+						<img src="/img/iconUser.png" width=50px alt="FOTOPERFIL">
+						{{/user.image}}
+					</td>
+					<td>
+						<a href="/user/{{id}}">
+							{{username}}
+						</a>
+					</td>
+					<td>
+						{{countFollows}}
+					</td>
+					<td>
+						{{countFollowers}}
+					</td>
+				</tr>
+				<tr>
+					<th colspan="4">
+    					<hr>
+					</th>
+				</tr>
+				{{/page}}
+			</tbody>
+		</table>
 	</div>
-    {{#hasPrev}}
+	{{#hasPrev}}
 	<a href="/search/2/?page={{prevPage}}&size=5">Prev</a>
 	{{/hasPrev}}
 	{{#totalPages}}
@@ -122,7 +169,7 @@
 	{{#hasNext}}
 	<a href="/search/2/?page={{nextPage}}&size=5">Next</a>
 	{{/hasNext}}
-    {{/users}}
-    
+	{{/users}}
+
 </center>
 {{>footer}}
