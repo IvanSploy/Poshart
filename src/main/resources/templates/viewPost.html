@@ -12,16 +12,30 @@
 	{{#ArtPost.description}}
 	<p>Descripción: {{ArtPost.description}}</p>
 	{{/ArtPost.description}}
-    <p>Precio: {{ArtPost.price}}</p>
+    <p>Precio: {{ArtPost.price}} €</p>
     <p>De: {{ArtPost.owner.username}}</p>
+    <p>Fecha: {{ArtPost.date}}</p>
+    <!-- seleccionar coleccion-->
+    <form action="/post/{{ArtPost.id}}/add">
+    <select name="colId">
+  		<option value="0" selected>Seleccione una colección</option>
+  		{{#myCollections}}
+  		<option value="{{id}}">{{name}}</option>
+  		{{/myCollections}}
+	</select>
+	<button class="button" type="submit">Guardar</button>
+	</form>
     <!-- hacer comentario-->
+    <form action="/post/{{ArtPost.id}}/comment/new" method="POST">
     <label for="PostArtName"><b>Haz un comentario</b></label>
-    <input type="text" placeholder="Comenta desde tu cuenta..." name="PostArtName" id="PostArtName" required/><button class="button">Comentar</button>
+    <input type="text" placeholder="Comenta desde tu cuenta..." name="description" id="PostArtName" required/><button class="button" type="submit">Comentar</button></input>
+ 	</form>
  	<p>Comentarios:</p>
     {{#ArtPost.postComments}}
     <p>Usuario: {{owner.username}}</p>
     <p>{{description}}</p>
     <p>Fecha: {{commentDate}}</p>
+    <a href="/post/{{ArtPost.id}}/comment/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar comentario"/></a>
     <br>
     {{/ArtPost.postComments}}
     {{^isMine}}

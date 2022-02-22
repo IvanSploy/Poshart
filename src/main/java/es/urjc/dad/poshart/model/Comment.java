@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -16,22 +15,21 @@ public class Comment {
 	@SequenceGenerator(initialValue = 1, name = "commentGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGen")
 	private long id;
-	
+
 	private String description;
 	private Date commentDate;
-	
-	@OneToOne
+
+	@ManyToOne
 	private User owner;
-	
+
 	@ManyToOne
 	private ArtPost post;
-	
-	
+
 	public Comment() {
-		//Used by JPA.
+		// Used by JPA.
 	}
-	
-	//Constructor con lo necesario no estrictamente obligatorio.
+
+	// Constructor con lo necesario no estrictamente obligatorio.
 	public Comment(String description) {
 		super();
 		this.description = description;
@@ -44,6 +42,7 @@ public class Comment {
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -75,11 +74,22 @@ public class Comment {
 	public void setPost(ArtPost post) {
 		this.post = post;
 	}
-	
+
+	public void addPost(ArtPost post) {
+		post.addComment(this);
+	}
+
+	public void removePost(ArtPost post) {
+		post.removeComment(this);
+	}
+
 	public boolean equals(Object obj) {
-		if(obj==null) return false;
-		if(this==obj) return true;
-		if(getClass()!=obj.getClass()) return false;
-		return getId()==((Comment)obj).getId();
+		if (obj == null)
+			return false;
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		return getId() == ((Comment) obj).getId();
 	}
 }

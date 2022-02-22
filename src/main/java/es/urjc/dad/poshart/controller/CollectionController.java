@@ -72,33 +72,4 @@ public class CollectionController {
 		}
 		return new RedirectView("/user/"+u.getId());
 	}
-	
-	//Va en PostController.
-		@GetMapping("/{id}/add/{colId}")
-		public RedirectView addPostToCollection(Model model, @PathVariable long id, @PathVariable long colId) {
-			ArtPost ap = postRepository.findById(id).orElseThrow();
-			Collection c = collectionRepository.findById(colId).orElseThrow();
-			if(sessionData.checkUser()) {
-				User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
-				if(myUser.getCollections().contains(c)) {
-					c.addPost(ap);
-					collectionRepository.save(c);
-				}
-			}
-			return new RedirectView("/"+id);
-		}
-		
-		@GetMapping("/{id}/remove/{colId}")
-		public RedirectView removePostFromCollection(Model model, @PathVariable long id, @PathVariable long colId) {
-			ArtPost ap = postRepository.findById(id).orElseThrow();
-			Collection c = collectionRepository.findById(colId).orElseThrow();
-			if(sessionData.checkUser()) {
-				User myUser = userRepository.findById(sessionData.getUser()).orElseThrow();
-				if(myUser.getCollections().contains(c)) {
-					c.removePost(ap);
-					collectionRepository.save(c);
-				}
-			}
-			return new RedirectView("/"+id);
-		}
 }

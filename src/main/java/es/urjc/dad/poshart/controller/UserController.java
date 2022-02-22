@@ -120,7 +120,7 @@ public class UserController {
 			Image newImage = imageService.createImage(imagen);
 			newUser.setImage(newImage);
 		}
-		if(u.getImage()!=null) {
+		else if(u.getImage()!=null) {
 			newUser.setImage(u.getImage());
 		}
 		newUser.setId(u.getId());

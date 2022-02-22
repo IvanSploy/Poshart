@@ -46,9 +46,6 @@ public class GeneralController {
 	private CollectionRepository collectionRepository;
 
 	@Autowired
-	private ShoppingCartRepository shoppingCartRepository;
-
-	@Autowired
 	private SessionData sessionData;
 
 	@PostConstruct
@@ -76,50 +73,6 @@ public class GeneralController {
 		}
 	}
 
-	@GetMapping("/shopping")
-	public RedirectView getShopping(Model model) {
-		if (sessionData.checkUser()) {
-			return new RedirectView("/shopping/" + sessionData.getUser());
-		} else {
-			return new RedirectView("/user");
-		}
-	}
-	@GetMapping("/shopping/{id}")
-	public String getShopping(Model model, @PathVariable long id) {
-		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		model.addAttribute("cart", c);
-		return "shoppingCart";
-	}
-	@GetMapping("/shopping/{id}/clear")
-	public String getShoppingClear(Model model, @PathVariable long id) {
-		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		c.clear();
-		shoppingCartRepository.save(c);
-		model.addAttribute("cart", c);
-		return "shoppingCart";
-	}
-	@GetMapping("/shopping/{id}/buy")
-	public String getShoppingBuy(Model model, @PathVariable long id) {
-		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		c.buy();
-		userRepository.save(c.getBuyer());
-		shoppingCartRepository.save(c);
-		model.addAttribute("cart", c);
-		return "shoppingCart";
-	}
-	@GetMapping("/shopping/{id}/remove/{id2}")
-	public String getShoppingRemove(Model model, @PathVariable long id, @PathVariable long id2) {
-		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		c.removeArt((int)id2);
-		shoppingCartRepository.save(c);
-		model.addAttribute("cart", c);
-		return "shoppingCart";
-	}
-	@GetMapping("/newPost")
-	public String getPost(Model model) {
-		return "NewPost";
-	}
-
 	@GetMapping("/viewComment")
 	public String getComment(Model model) {
 		return "ViewCommentBuyPost";
@@ -134,6 +87,7 @@ public class GeneralController {
 	public String getHome(Model model, Pageable page) {
 		Page<ArtPost> p;
 		if (sessionData.checkUser()) {
+			model.addAttribute("hasUser", true);
 			p = artRepository.findByUserFollows(sessionData.getUser(), page);
 		} else {
 			p = artRepository.findAll(page);

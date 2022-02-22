@@ -1,4 +1,5 @@
 package es.urjc.dad.poshart.model;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,7 @@ public class ArtPost {
 		super();
 		this.name = name;
 		this.price = price;
+		this.date = Date.from(Instant.now());
 	}
 	
 	public long getId() {
@@ -136,7 +138,7 @@ public class ArtPost {
 	
 	public void removeComment(Comment comment) {
 		postComments.remove(comment);
-		comment.setPost(this);
+		comment.setPost(null);
 	}
 	
 	@Override

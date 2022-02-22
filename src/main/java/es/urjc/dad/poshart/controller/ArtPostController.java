@@ -1,6 +1,8 @@
 package es.urjc.dad.poshart.controller;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.model.Collection;
+import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.Image;
 import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
@@ -67,6 +70,7 @@ public class ArtPostController {
 			newArtPost.setImage(newImage);
 		}
 		newArtPost.addOwner(userRepository.findById(sessionData.getUser()).orElseThrow());
+		newArtPost.setDate(Date.from(Instant.now()));
 		artPostRepository.save(newArtPost);
 		return new RedirectView("/post/"+newArtPost.getId());
 	}
@@ -80,6 +84,7 @@ public class ArtPostController {
 				model.addAttribute("isMine", true);
 			}
 			model.addAttribute("isBought", u.getCart().getArt().contains(ap));
+			model.addAttribute("myCollections", u.getCollections());
 		}
 		model.addAttribute("ArtPost", ap);
 		return "viewPost";
@@ -138,10 +143,35 @@ public class ArtPostController {
 		}else return new RedirectView("/post/edit");
 	}
 	//RELACIONADO CON COMENTARIOS
+	@PostMapping("/{id}/comment/new")
+	public RedirectView createComment(Model model, @PathVariable long id, Comment comment) {
+		if(sessionData.checkUser()) {
+			User u = userRepository.findById(sessionData.getUser()).orElseThrow();
+			ArtPost ap = artPostRepository.findById(id).orElseThrow();
+			comment.setId(0);
+			comment.setOwner(u);
+			comment.setCommentDate(Date.from(Instant.now()));
+			ap.addComment(comment);
+			artPostRepository.save(ap);
+			return new RedirectView("/post/"+id);
+		}else {
+			return new RedirectView("/user");
+		}
+	}
+	
+	@GetMapping("/{id}/comment/{idComment}/delete")
+	public RedirectView removeComment(Model model, @PathVariable long id, @PathVariable long idComment) {
+		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		Comment c = commentRepository.findById(idComment).orElseThrow();
+		c.removePost(ap);
+		c.setOwner(null);
+		commentRepository.delete(c);
+		return new RedirectView("/post/"+id);
+	}
 	
 	//RELACIONADO CON COLECCIONES
-	@GetMapping("/{id}/add/{colId}")
-	public RedirectView addPostToCollection(Model model, @PathVariable long id, @PathVariable long colId) {
+	@GetMapping("/{id}/add")
+	public RedirectView addPostToCollection(Model model, @PathVariable long id, @RequestParam long colId) {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		Collection c = collectionRepository.findById(colId).orElseThrow();
 		if(sessionData.checkUser()) {
@@ -151,7 +181,7 @@ public class ArtPostController {
 				collectionRepository.save(c);
 			}
 		}
-		return new RedirectView("/"+id);
+		return new RedirectView("/post/"+id);
 	}
 	
 	@GetMapping("/{id}/remove/{colId}")
@@ -165,6 +195,6 @@ public class ArtPostController {
 				collectionRepository.save(c);
 			}
 		}
-		return new RedirectView("/"+id);
+		return new RedirectView("/user/"+sessionData.getUser()+"/?colId="+colId);
 	}
 }

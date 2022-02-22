@@ -1,7 +1,12 @@
 {{>header}}
 <center>
 </table>
-    <h1> Estas viendo los posts de los usuarios que sigues </h1>
+	{{#hasUser}}
+    <h1> Posts de las personas a las que sigues</h1>
+	{{/hasUser}}
+	{{^hasUser}}
+    <h1>Últimos posts</h1>
+	{{/hasUser}}
     <div class=tablaoverflowCesta>
     {{#page}}
     <table>
@@ -16,12 +21,12 @@
 		{{/image}}
 		</td>
     	<td>
-    	<a href="/search/0">
-   			{{name}} FALTA ENLACE
+    	<a href="/post/{{id}}">
+   			{{name}}
    			</a>
     	</td>
     	<td>
-   			{{price}}$
+   			{{price}} €
     	</td>
     </tr>
     </tbody></table>
