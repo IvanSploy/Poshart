@@ -33,10 +33,14 @@ Para la planificación del proyecto se ha hecho uso de la herramienta virtual Tr
 * [Acceso al Trello](https://trello.com/b/WhTBchG9/ad)
 
 ## Modelo de Datos 📇
-### Diagrama UML!
+### Páginas principales
+![Descripción Pantallas principales](https://user-images.githubusercontent.com/78254966/155119736-d1933ba6-1f0f-4a85-b0d8-47618bc5d369.png)
+### Diagrama de navegación
+![Diagrama de flujo](https://user-images.githubusercontent.com/78254966/155119901-9b898496-dd74-40bb-a3c7-cc925d60b805.jpg)
+### Diagrama UML
 ![Diagrama UML (1)](https://user-images.githubusercontent.com/78254966/154862912-00f4e28c-75c6-4a15-8e59-8efe05a23014.png)
 ### Diagrama Entidad/Relación
-![Diagrama E_R (1)](https://user-images.githubusercontent.com/78254966/154862744-b1db011d-58ef-4b56-b820-14d5f5dbcc82.png)
+![Diagrama E_R (2)](https://user-images.githubusercontent.com/78254966/155119384-fddbb7a7-896f-4313-80a2-48f10f26a037.png)
 
 ## Autores ✒️️
 * **Guillermo Juan García-Delgado Álvarez** - [Github](https://github.com/guilleingvid)
