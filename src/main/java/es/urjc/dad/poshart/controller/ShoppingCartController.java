@@ -59,9 +59,9 @@ public class ShoppingCartController {
 		return "shoppingCart";
 	}
 	@GetMapping("/{id}/remove/{id2}")
-	public String getShoppingRemove(Model model, @PathVariable long id, @PathVariable long id2) {
+	public String getShoppingRemove(Model model, @PathVariable long id, @PathVariable int id2) {
 		ShoppingCart c = shoppingCartRepository.findById(id).orElseThrow();
-		c.removeArt((int)id2);
+		c.removeArt(id2-1);
 		shoppingCartRepository.save(c);
 		model.addAttribute("cart", c);
 		return "shoppingCart";
