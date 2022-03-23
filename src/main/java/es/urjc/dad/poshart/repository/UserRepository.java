@@ -10,6 +10,8 @@ import es.urjc.dad.poshart.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 
 	@Query("SELECT u FROM User u WHERE u.name LIKE %?1% or u.username LIKE %?1% or u.surname LIKE %?1%")
+	User findByName(String name);
+	
 	Page<User> findBySearch(String search, Pageable page);
 	
 	Page<User> findAll(Pageable page);
