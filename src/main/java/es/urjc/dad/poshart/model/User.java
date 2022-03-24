@@ -1,6 +1,7 @@
 package es.urjc.dad.poshart.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,17 +64,15 @@ public class User {
 		// Used by JPA.
 	}
 
-	// Constructor con lo necesario no estrictamente obligatorio.
-	public User(String mail, String username, String password, String name, String surname, String description) {
+	// Constructor con lo necesario estrictamente obligatorio.
+	public User(String mail, String username, String password, String... roles) {
 		super();
 		this.mail = mail;
 		this.username = username;
 		this.password = password;
-		this.name = name;
-		this.surname = surname;
-		this.description = description;
+		setRoles(Arrays.asList(roles));
 	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -167,6 +166,10 @@ public class User {
 	
 	public List<String> getRoles() {
 	    return roles;
+	}
+	
+	public void setRoles(List<String> roles) {
+	   	this.roles = roles;
 	}
 	
 	public void removeFollow(User follow) {

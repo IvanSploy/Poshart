@@ -1,13 +1,14 @@
 <html>
 <head>
-<link href="/style.css" rel="stylesheet"/>
+<base href="/">
+<link rel="stylesheet" href="/css/style.css" />
 <meta charset="UTF-8"/>
 </head>
 <body>
 <div id="space">
 <center>
 <h1>UNIRSE</h1>
-<form action="/user/logIn" method="POST">
+<form action="/user" method="POST">
 <table>
 <tbody>
 	<tr>
@@ -15,7 +16,7 @@
 		Usuario/Correo:
 	</td>
 	<td>
-		<input type="text" placeholder="Nombre de usuario/correo" name="name"/>
+		<input type="text" placeholder="Nombre de usuario/correo" name="username"/>
 	</td>
 	</tr>
 	<tr>
@@ -33,6 +34,8 @@
 	</tr>
 </tbody>
 </table>
+<input type="hidden" name="_csrf" 
+ value="{{token}}" />
 {{#hasFailed}}
 <p>Usuario/Correo o contraseña incorrectos. Inténtelo de nuevo.</p>
 {{/hasFailed}}

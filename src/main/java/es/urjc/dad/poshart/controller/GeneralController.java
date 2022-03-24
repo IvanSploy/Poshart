@@ -52,8 +52,8 @@ public class GeneralController {
 
 	@PostConstruct
 	public void init() {
-		userRepository.save(new User("user","pass","ROLE_USER"));
-		userRepository.save(new User("admin","adminpass","ROLE_USER","ROLE_ADMIN"));
+		//userRepository.save(new User("user@gmail.com", "user", "pass", "ROLE_USER"));
+		//userRepository.save(new User("admin@gmail.com", "admin", "adminpass", "ROLE_USER", "ROLE_ADMIN"));
 		/*User u1 = new User("a", "a", "a", "a", "a", "a");
 		ShoppingCart s = new ShoppingCart(0);
 		for (int i = 30; i < 50; i++) {

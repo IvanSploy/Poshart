@@ -2,12 +2,16 @@ package es.urjc.dad.poshart.controller;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,31 +50,17 @@ public class UserController {
 	private SessionData sessionData;
 
 	@GetMapping("")
-	public String logIn(Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
+	public String logIn(HttpServletRequest request, Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
+		CsrfToken token = (CsrfToken) request.getAttribute("_csrf"); 
+		 model.addAttribute("token", token.getToken());
 		model.addAttribute("hasFailed", hasFailed);
 		return "logIn";
 	}
 	
-	@PostMapping("/logIn")
-	public RedirectView tryLogIn(Model model, @RequestParam String name, @RequestParam String password) {
-		//Se comprueba el nombre de usuario.
-		User u = userRepository.findFirstByUsername(name);
-		if(u==null) {
-			//Si no, se comprueba el emai.
-			u = userRepository.findFirstByMail(name);
-			if(u==null) return new RedirectView("/user?hasFailed=true");
-		}
-		//Se comprueba la contraseña.
-		if(u.getPassword().equals(password)) {
-			sessionData.setUser(u.getId());
-			return new RedirectView("/");
-		}else {
-			return new RedirectView("/user?hasFailed=true");
-		}
-	}
-	
 	@GetMapping("/create")
-	public String SingIn(Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
+	public String SingIn(HttpServletRequest request, Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
+		CsrfToken token = (CsrfToken) request.getAttribute("_csrf"); 
+		 model.addAttribute("token", token.getToken());
 		model.addAttribute("hasFailed", hasFailed);
 		return "singIn";
 	}
@@ -78,11 +68,11 @@ public class UserController {
 	@PostMapping("/signIn")
 	public RedirectView trySingIn(Model model, User newUser, @RequestParam(required = false) MultipartFile imagen) throws IOException {
 		//Comprobamos que el usuario o correo no están repetidos.
-		User u = userRepository.findFirstByUsername(newUser.getUsername());
+		User u = userRepository.findByUsername(newUser.getUsername());
 		if(u!=null) {
 			return new RedirectView("/user/create/?hasFailed=true");
 		}
-		u = userRepository.findFirstByMail(newUser.getMail());
+		u = userRepository.findByMail(newUser.getMail());
 		if(u!=null) {
 			return new RedirectView("/user/create/?hasFailed=true");
 		}
@@ -92,6 +82,9 @@ public class UserController {
 		}
 		ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
 		newUser.addCart(sc);
+		List<String> roles = new ArrayList<String>();
+		roles.add("ROLE_USER");
+		newUser.setRoles(roles);
 		userRepository.save(newUser);
 		sessionData.setUser(newUser.getId());
 		return new RedirectView("/");

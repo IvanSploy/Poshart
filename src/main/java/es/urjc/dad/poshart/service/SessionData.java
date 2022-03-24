@@ -19,6 +19,7 @@ public class SessionData {
 	public boolean checkUser() {
 		return userId>0;
 	}
+	
 	public boolean isMine(long id) {
 		return userId==id;
 	}
