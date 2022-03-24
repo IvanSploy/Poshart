@@ -52,7 +52,7 @@ public class GeneralController {
 
 	@PostConstruct
 	public void init() {
-		User u1 = new User("a", "a", "a", "a", "a", "a");
+		/*User u1 = new User("a", "a", "a", "a", "a", "a");
 		ShoppingCart s = new ShoppingCart(0);
 		for (int i = 30; i < 50; i++) {
 			ArtPost art = new ArtPost("Post " + i, i * 10);
@@ -72,7 +72,7 @@ public class GeneralController {
 			u.addCollection(c2);
 			u.addCart(sc);
 			userRepository.save(u);
-		}
+		}*/
 	}
 
 	@GetMapping("/viewComment")
