@@ -7,7 +7,9 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,6 +40,9 @@ public class User {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Image image;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;//lista de los roles que puede tomar un usuario
 
 	@ManyToMany
 	private Set<User> follows = new HashSet<>();
@@ -149,6 +154,8 @@ public class User {
 		this.image = image;
 	}
 	
+	
+	
 	public void addFollow(User follow) {
 		this.follows.add(follow);
 		countFollows++;
@@ -156,6 +163,10 @@ public class User {
 
 	public Set<User> getFollows() {
 		return follows;
+	}
+	
+	public List<String> getRoles() {
+	    return roles;
 	}
 	
 	public void removeFollow(User follow) {
