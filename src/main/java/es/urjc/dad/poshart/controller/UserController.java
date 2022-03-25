@@ -7,11 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,17 +53,13 @@ public class UserController {
 	private SessionData sessionData;
 
 	@GetMapping("")
-	public String logIn(HttpServletRequest request, Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
-		CsrfToken token = (CsrfToken) request.getAttribute("_csrf"); 
-		 model.addAttribute("token", token.getToken());
+	public String logIn(Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
 		model.addAttribute("hasFailed", hasFailed);
 		return "logIn";
 	}
 	
 	@GetMapping("/create")
-	public String SingIn(HttpServletRequest request, Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
-		CsrfToken token = (CsrfToken) request.getAttribute("_csrf"); 
-		 model.addAttribute("token", token.getToken());
+	public String SingIn(Model model, @RequestParam(defaultValue = "false") boolean hasFailed) {
 		model.addAttribute("hasFailed", hasFailed);
 		return "singIn";
 	}
@@ -90,7 +89,7 @@ public class UserController {
 		return new RedirectView("/");
 	}
 	
-	@GetMapping("/signOut")
+	@GetMapping("/signOut/confirm")
 	public RedirectView singOut(Model model) {
 		sessionData.setUser(0);
 		return new RedirectView("/");
@@ -143,7 +142,14 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}/delete")
-	public RedirectView deleteUser(Model model, @PathVariable long id) {
+	public RedirectView deleteUser(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable long id) {
+		//Cerramos la sesión.
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    
+	    //Se elimina el usuario.
 		User u = userRepository.findById(id).orElseThrow();
 		if(u.getImage()!=null) imageService.deleteImage(u.getImage().getId());
 		//Desvinculamos todos los seguidores.
@@ -157,7 +163,6 @@ public class UserController {
 			userRepository.save(us);
 		}
 		userRepository.delete(u);
-		sessionData.setUser(0);
 		return new RedirectView("/");
 	}
 	

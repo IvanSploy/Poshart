@@ -1,6 +1,5 @@
 {{>header}}
 <form action="/post/newPost" method="POST" enctype="multipart/form-data">
-<link href="/style.css" rel="stylesheet"/>
   <div class="container">
     <!-- Titulo-->
     <h1><center>¡Enseña al mundo tu obra de arte!</center></h1>
@@ -26,5 +25,6 @@
   <div class="container create">
     <p>¿Aún no tienes una cuenta? <a href="/user/create">Crear cuenta</a>.</p>
   </div>
+  <input type="hidden" name="_csrf"	value="{{token}}" />
 </form>
 {{>footer}}

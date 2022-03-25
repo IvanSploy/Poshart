@@ -56,6 +56,7 @@
     <form action="/post/{{ArtPost.id}}/comment/new" method="POST">
     <label for="PostArtName"><b>Haz un comentario</b></label>
     <input type="text" placeholder="Comenta desde tu cuenta..." name="description" id="PostArtName" required/><button class="button" type="submit">Comentar</button></input>
+ 	<input type="hidden" name="_csrf" value="{{token}}" />
  	</form>
  	<h1>Comentarios:</h1>
     {{#ArtPost.postComments}}

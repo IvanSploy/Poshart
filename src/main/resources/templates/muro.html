@@ -12,10 +12,10 @@
 		{{/user.image}}
 		</td>
 		<td>
-   			<u>Nombre:</u> {{user.name}}
+   			<u>Nombre:</u> {{#user.name}}{{user.name}}{{/user.name}}
     	</td>
     	<td>
-   			<u>Apellidos:</u> {{user.surname}}
+   			<u>Apellidos:</u> {{#user.surname}}{{user.surname}}{{/user.surname}}
     	</td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@
     </tr>
     <tr>
     	<td colspan="3">
-   			<u>Descripción:</u> {{user.description}}
+   			<u>Descripción:</u> {{#user.description}}{{user.description}}{{/user.description}}
     	</td>
     </tr>
     <tr>

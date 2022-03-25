@@ -1,4 +1,4 @@
-<link href="/style.css" rel="stylesheet"/>
+{{>header}}
   <div class="container">
     <!-- Titulo-->
     <h1><center>Edita tu Obra</center></h1>
@@ -22,6 +22,7 @@
     <input type="number" value="{{thisArtPost.price}}" name="price" id="PostArtPrice" required/>
 	<!-- Cambiar el post-->
     <button type="submit" class="uploadpic">CAMBIAR</button>
+    <input type="hidden" name="_csrf" value="{{token}}" />
   	</form>
   	<!-- Eliminar el post-->
     <button type="submit" class="uploadpic" onclick="location.href='/post/{{thisArtPost.id}}/delete'">ELIMINAR</button>
@@ -31,3 +32,4 @@
   <div class="container create">
     <p>Don´t have an account yet? <a href="#">Create account</a>.</p>
   </div>
+  {{>footer}}

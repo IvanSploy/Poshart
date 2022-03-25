@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import es.urjc.dad.poshart.repository.UserRepositoryAuthenticationProvider;
 
@@ -34,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.formLogin().failureUrl("/user?hasFailed=true");
 		// Logout
 		http.logout().logoutUrl("/user/signOut");
-		http.logout().logoutSuccessUrl("/");
+		http.logout().logoutSuccessUrl("/user/signOut/confirm");
+		http.logout().invalidateHttpSession(true);
 		// Desactiva el uso de CSRF por el momento
 		//http.csrf().disable();
 	}

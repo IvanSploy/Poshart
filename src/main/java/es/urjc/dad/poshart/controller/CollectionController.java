@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.User;
-import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.CollectionRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.service.SessionData;
@@ -23,9 +21,6 @@ public class CollectionController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private ArtPostRepository postRepository;
 	
 	@Autowired
 	private CollectionRepository collectionRepository;

@@ -8,7 +8,7 @@
 		Nombre:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{user.name}}" name="name"/>
+		<input type="text" value="{{#user.name}}{{user.name}}{{/user.name}}" name="name"/>
 	</td>
 	</tr>
       <tr>
@@ -16,7 +16,7 @@
 		Apellidos:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{user.surname}}" name="surname"/>
+		<input type="text" value="{{#user.surname}}{{user.surname}}{{/user.surname}}" name="surname"/>
 	</td>
 	</tr>
       <tr>
@@ -24,7 +24,7 @@
 		Descripción:
 	</td>
 	<td id="registrarse">
-		<textarea cols="50" rows="3" name="description">{{user.description}}</textarea>
+		<textarea cols="50" rows="3" name="description">{{#user.description}}{{user.description}}{{/user.description}}</textarea>
 	</td>
 	</tr>
 	<tr>
@@ -65,14 +65,18 @@
 <tbody>
 <tr>
 <td id="registrarse">
-<button type="submit" class="uploadpic">CAMBIAR</button>
-</form>
+	<button type="submit" class="uploadpic">CAMBIAR</button>
+	<input type="hidden" name="_csrf" value="{{token}}" />
+	</form>
 </td>
-<td id="registrarse2">
-<button type="button" class="uploadpic" onclick="location.href='/user/signOut'">CERRAR SESIÓN</button>
+<td id="cerrarsesion">
+	<form action="/user/signOut" method=POST>
+		<input type="hidden" name="_csrf" value="{{token}}" />
+		<button type="submit" class="uploadpic">CERRAR SESIÓN</input>
+	</form>
 </td>
 </tr><tr>
-<td colspan="2" id="registrarse2">
+<td colspan="2" id="eliminarcuenta">
 <button type="button" class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
 </td>
 <tr>
