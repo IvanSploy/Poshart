@@ -14,28 +14,44 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
 public class ArtPost {
+	
+	public interface Basico {}
+	public interface DetallesAvanzados{}
+	//interface Comentarios{}
 	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "artGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artGen")
 	private long id;
 	
+	@JsonView(Basico.class)
 	private String name;
+	@JsonView(Basico.class)
 	private String description;
+	@JsonView(DetallesAvanzados.class)
 	private float price;
+	@JsonView(DetallesAvanzados.class)
 	private Date date;
 	
+	
+	@JsonView(DetallesAvanzados.class)
 	@ManyToOne
 	private User owner;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "art")
 	private List<ShoppingCart> carts;
 	
+	@JsonIgnore
 	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> postComments = new ArrayList<>();	
 	
+	@JsonView(DetallesAvanzados.class)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Image image;
 
