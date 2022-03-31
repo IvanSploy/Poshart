@@ -18,11 +18,11 @@ public class Image {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imageGen")
 	private long id;
 
+	@JsonIgnore
 	private String image;
 	private String imageType;
 
 	@Lob
-	@JsonIgnore
 	private Blob imageFile;
 
 	public Image() {

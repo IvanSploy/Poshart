@@ -10,19 +10,30 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.urjc.dad.poshart.model.ArtPost.Basico;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
 public class ShoppingCart {
+	
+	public interface Basico {}
+	public interface ArteComprado {}
+	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "cartGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartGen")
 	private long id;
 	
+	@JsonView(Basico.class)
 	private float price;
+	@JsonView(Basico.class)
 	private Date date;
 	
+	@JsonView(ArteComprado.class)
 	@ManyToMany
 	private List<ArtPost> art= new ArrayList<>();
 	
