@@ -12,8 +12,9 @@ public class NoSuchElementExceptionControllerAdvice {
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(NoSuchElementException.class)
-	public void handleNotFound() {
+	public String handleNotFound() {
 		//Aquí va el código a ejecutar cuando no se encuentra 
 		//un objeto en la base de datos.
+		return "/";
 	}
 }

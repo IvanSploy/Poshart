@@ -4,17 +4,16 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +27,7 @@ import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.CollectionRepository;
-import es.urjc.dad.poshart.repository.ShoppingCartRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
-import es.urjc.dad.poshart.service.ImageService;
-import es.urjc.dad.poshart.service.SessionData;
 
 @Controller
 public class GeneralController {
@@ -46,15 +42,18 @@ public class GeneralController {
 
 	@Autowired
 	private CollectionRepository collectionRepository;
-
+	
 	@Autowired
-	private SessionData sessionData;
+	private PasswordEncoder passwordEncoder;
 
 	@PostConstruct
 	public void init() {
-		//userRepository.save(new User("user@gmail.com", "user", "pass", "ROLE_USER"));
-		//userRepository.save(new User("admin@gmail.com", "admin", "adminpass", "ROLE_USER", "ROLE_ADMIN"));
-		/*User u1 = new User("a", "a", "a", "a", "a", "a");
+		/*userRepository.save(new User("user@gmail.com", "user", passwordEncoder.encode("pass"), "ROLE_USER"));
+		userRepository.save(new User("admin@gmail.com", "admin", passwordEncoder.encode("adminpass"), "ROLE_USER", "ROLE_ADMIN"));
+		User u1 = new User("a", "a", passwordEncoder.encode("a"), "ROLE_USER");
+		u1.setName("a");
+		u1.setSurname("a");
+		u1.setDescription("a");
 		ShoppingCart s = new ShoppingCart(0);
 		for (int i = 30; i < 50; i++) {
 			ArtPost art = new ArtPost("Post " + i, i * 10);
@@ -63,8 +62,10 @@ public class GeneralController {
 		u1.addCart(s);
 		userRepository.save(u1);
 		for (int i = 0; i < 20; i++) {
-			User u = new User("Correo " + i, "Usuario " + i, "Contraseña " + i, "Nombre " + i, "Apellidos " + i,
-					"Descripción " + i);
+			User u = new User("Correo " + i, "Usuario " + i, passwordEncoder.encode("Contraseña " + i), "ROLE_USER");
+			u.setName("Nombre " + i);
+			u.setSurname("Apellidos " + i);
+			u.setDescription("Descripción " + i);
 			Collection c = new Collection("Colección " + i, "Descripcion " + i);
 			Collection c2 = new Collection("Colección2-" + i, "Descripcion2-" + i);
 			ArtPost art = new ArtPost("Post " + i, i * 10);
@@ -77,22 +78,19 @@ public class GeneralController {
 		}*/
 	}
 
-	@GetMapping("/viewComment")
-	public String getComment(Model model) {
-		return "ViewCommentBuyPost";
-	}
-
 	@GetMapping("/")
 	public RedirectView getHome(Model model) {
 		return new RedirectView("home/?page=0&size=5");
 	}
 
 	@GetMapping("/home")
-	public String getHome(Model model, Pageable page) {
+	public String getHome(HttpServletRequest request, Model model, Pageable page) {
 		Page<ArtPost> p;
-		if (sessionData.checkUser()) {
+		
+		if (request.isUserInRole("ROLE_USER")) {
+			User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 			model.addAttribute("hasUser", true);
-			p = artRepository.findByUserFollows(sessionData.getUser(), page);
+			p = artRepository.findByUserFollows(u.getId(), page);
 		} else {
 			p = artRepository.findAll(page);
 		}
@@ -109,24 +107,19 @@ public class GeneralController {
 		return "home";
 	}
 
+	
+	//Este controlador requiere de autentificación.
 	@GetMapping("/checkUser")
-	public RedirectView checkUser(Model model) {
-		long userId = sessionData.getUser();
-		if (userId <= 0) {
-			return new RedirectView("/user/");
-		} else {
-			return new RedirectView("/user/" + userId);
-		}
+	public RedirectView checkUser(HttpServletRequest request, Model model) {
+		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
+		return new RedirectView("/user/" + u.getId());
 	}
 
+	//Este controlador requiere de autentificación.
 	@GetMapping("/editUser")
-	public RedirectView editUser(Model model) {
-		long userId = sessionData.getUser();
-		if (userId <= 0) {
-			return new RedirectView("/user/create");
-		} else {
-			return new RedirectView("/user/" + userId + "/edit");
-		}
+	public RedirectView editUser(HttpServletRequest request, Model model) {
+		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
+		return new RedirectView("/user/" + u.getId() + "/edit");
 	}
 
 	@GetMapping("/search/{id}")

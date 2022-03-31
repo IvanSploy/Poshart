@@ -9,14 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import es.urjc.dad.poshart.repository.UserRepositoryAuthenticationProvider;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	public UserRepositoryAuthenticationProvider authenticationProvider;
+	public UserAuthenticationProvider authenticationProvider;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -25,6 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/search/**").permitAll();
 		http.authorizeRequests().antMatchers("/home/**").permitAll();
 		http.authorizeRequests().antMatchers("/user/**").permitAll();
+		http.authorizeRequests().antMatchers("/post/{id}").permitAll();
 		// Private pages (el resto de páginas)
 		http.authorizeRequests().anyRequest().authenticated();
 		// Login form
@@ -35,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.formLogin().failureUrl("/user?hasFailed=true");
 		// Logout
 		http.logout().logoutUrl("/user/signOut");
-		http.logout().logoutSuccessUrl("/user/signOut/confirm");
+		http.logout().logoutSuccessUrl("/");
 		http.logout().invalidateHttpSession(true);
 		// Desactiva el uso de CSRF por el momento
 		//http.csrf().disable();

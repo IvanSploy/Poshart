@@ -15,10 +15,12 @@ public interface ArtPostRepository extends JpaRepository<ArtPost, Long> {
 	List<ArtPost> findByName (String name);
 	//Esta petición busca dentro de todos los usuarios en busca del usuario indicado como seguidor.
 	//Después devuelve todas las obras de arte y finalmente las ordena por fecha.
-	@Query("SELECT ap FROM ArtPost ap WHERE ap.id in (SELECT uf.id FROM User uf WHERE (SELECT u FROM User u WHERE u.id = ?1)"
+	@Query("SELECT ap FROM ArtPost ap WHERE ap.id in (SELECT uf.id FROM User uf WHERE "
+			+ "(SELECT u FROM User u WHERE u.id = ?1)"
 			+ " MEMBER OF uf.followers) ORDER BY ap.date")
 	Page<ArtPost> findByUserFollows(long id, Pageable page);
 	
-	@Query("SELECT ap FROM ArtPost ap WHERE ap.name LIKE %?1% or ap.description LIKE %?1% or ap.owner.username LIKE %?1%")
+	@Query("SELECT ap FROM ArtPost ap WHERE ap.name LIKE %?1% "
+			+ "or ap.description LIKE %?1% or ap.owner.username LIKE %?1% ORDER BY ap.name")
 	Page<ArtPost> findBySearch(String search, Pageable page);
 }
