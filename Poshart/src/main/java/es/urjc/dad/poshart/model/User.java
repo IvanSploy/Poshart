@@ -20,44 +20,76 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import es.urjc.dad.poshart.model.ArtPost.Basico;
+import es.urjc.dad.poshart.model.ArtPost.DetallesAvanzados;
+
 @Entity
 public class User {
 
+	public interface Basico {}
+	public interface DetallesAvanzados{}
+	public interface UserDetalle extends Basico, DetallesAvanzados {}
+	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "userGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userGen")
 	private long id;
 
 	@Column(unique = true)
+	@JsonView(Basico.class)
 	private String username;
+	
+	@JsonIgnore
 	private String password;
+	
 	@Column(unique = true)
+	@JsonView(Basico.class)
 	private String mail;
+	
+	@JsonView(Basico.class)
 	private String name;
+	
+	@JsonView(Basico.class)
 	private String surname;
+	
+	@JsonView(Basico.class)
 	private String description;
+	
+	@JsonView(Basico.class)
 	private int countFollows;
+	
+	@JsonView(Basico.class)
 	private int countFollowers;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonView(Basico.class)
 	private Image image;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<String> roles;//lista de los roles que puede tomar un usuario
 
 	@ManyToMany
+	@JsonIgnore
 	private Set<User> follows = new HashSet<>();
 
 	@ManyToMany(mappedBy = "follows")
+	@JsonIgnore
 	private Set<User> followers = new HashSet<>();
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonView(DetallesAvanzados.class)
 	private List<Collection> collections = new ArrayList<>();
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonView(DetallesAvanzados.class)
 	private List<ArtPost> myPosts = new ArrayList<>();
 
 	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private ShoppingCart cart;
 
 	public User() {

@@ -22,6 +22,7 @@ public class ArtPost {
 	
 	public interface Basico {}
 	public interface DetallesAvanzados{}
+	public interface ArtPostDetalle extends Basico, DetallesAvanzados {}
 	//interface Comentarios{}
 	
 	@Id
@@ -31,13 +32,15 @@ public class ArtPost {
 	
 	@JsonView(Basico.class)
 	private String name;
+	
 	@JsonView(Basico.class)
 	private String description;
+	
 	@JsonView(DetallesAvanzados.class)
 	private float price;
+	
 	@JsonView(DetallesAvanzados.class)
 	private Date date;
-	
 	
 	@JsonView(DetallesAvanzados.class)
 	@ManyToOne

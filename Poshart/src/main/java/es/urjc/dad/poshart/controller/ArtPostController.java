@@ -24,6 +24,7 @@ import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.Image;
 import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
+import es.urjc.dad.poshart.internalService.EmailService;
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.repository.CommentRepository;
 import es.urjc.dad.poshart.repository.ShoppingCartRepository;
@@ -55,6 +56,9 @@ public class ArtPostController {
 	@Autowired
 	private ShoppingCartRepository cartRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@GetMapping("/createPost")
 	public String newPost(Model model) {
 		return "newPost";
@@ -79,6 +83,7 @@ public class ArtPostController {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		if(request.isUserInRole("USER")) {
 			User u = userRepository.findByUsername(request.getUserPrincipal().getName());
+			emailService.sendRecommendedPostsEmail(u.getId());
 			if(u == ap.getOwner()) {
 				model.addAttribute("isMine", true);
 			}
@@ -86,6 +91,7 @@ public class ArtPostController {
 			model.addAttribute("myCollections", u.getCollections());
 		}
 		model.addAttribute("ArtPost", ap);
+		//emailService.sendRecommendedPostEmail(id);
 		return "viewPost";
 	}
 	

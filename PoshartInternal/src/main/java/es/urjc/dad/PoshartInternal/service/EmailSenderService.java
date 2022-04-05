@@ -1,4 +1,4 @@
-package es.urjc.dad.PoshartInternal;
+package es.urjc.dad.PoshartInternal.service;
 
 import java.net.PasswordAuthentication;
 import java.util.Properties;
