@@ -83,7 +83,7 @@ public class ArtPostController {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		if(request.isUserInRole("USER")) {
 			User u = userRepository.findByUsername(request.getUserPrincipal().getName());
-			emailService.sendRecommendedPostsEmail(u.getId());
+			//emailService.sendRecommendedPostsEmail(u.getId());
 			if(u == ap.getOwner()) {
 				model.addAttribute("isMine", true);
 			}
