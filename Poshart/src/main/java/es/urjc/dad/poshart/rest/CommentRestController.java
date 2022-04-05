@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.urjc.dad.poshart.model.Comment;
+import es.urjc.dad.poshart.model.JsonInterfaces;
 import es.urjc.dad.poshart.repository.CommentRepository;
 
 // Usada para ver la estructura de los JSON via Web.
@@ -16,7 +17,7 @@ public class CommentRestController {
 	@Autowired
 	private CommentRepository comments;
 	
-	@JsonView(Comment.Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	@GetMapping("/comments/{id}")
 	public ResponseEntity<Comment> getComment(@PathVariable long id) {
 		Comment artpost = comments.findById(id).orElseThrow();
@@ -27,9 +28,7 @@ public class CommentRestController {
 		}
 	}
 	
-	interface CommentArtPostDetalle extends Comment.Basico, Comment.DetallesAvanzados {
-	}
-	@JsonView(CommentArtPostDetalle.class)
+	@JsonView(JsonInterfaces.BasicoAvanzado.class)
 	@GetMapping("/comments/{id}/showDetails")
 	public ResponseEntity<Comment> getCommentMoreDetails(@PathVariable long id) {
 		Comment comment = comments.findById(id).orElseThrow();

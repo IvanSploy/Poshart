@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.urjc.dad.poshart.model.ArtPost;
+import es.urjc.dad.poshart.model.JsonInterfaces;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
@@ -40,7 +41,7 @@ public class EmailService {
 	public void sendConfimationEmail(long id) {
 		User u = userRepository.findById(id).orElseThrow();
 		List<ArtPost> post = u.getMyPosts();
-		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), ArtPost.Basico.class);
+		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), JsonInterfaces.Basico.class);
 		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/artposts", request);
 	}
 	
@@ -48,9 +49,11 @@ public class EmailService {
 	//seguir a un nuevo usuario.
 	public void sendRecommendedPostEmail(String email, long id) {
 		ArtPost post = artPostRepository.findById(id).orElseThrow();
-		ObjectNode request = mapper.convertObjectToNode(post, ArtPost.Basico.class);
-		request.put("email", email);
-		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/artpost", request);
+		ObjectNode request = mapper.convertObjectToNode(post, JsonInterfaces.Basico.class);
+		if(request!=null) {
+			request.put("email", email);
+			restTemplate.postForLocation("http://localhost:8080/email/artpost", request);
+		}
 	}
 	
 	//Se enviará un Email con los posts recomendados tras
@@ -58,10 +61,12 @@ public class EmailService {
 	public void sendRecommendedPostsEmail(long id) {
 		User u = userRepository.findById(id).orElseThrow();
 		List<ArtPost> post = u.getMyPosts();
-		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), ArtPost.Basico.class);
+		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), JsonInterfaces.Basico.class);
 		
 		//Para añadir el campo de correo necesario en la petición.
-		request.get(0).put("email", u.getMail());
-		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/artposts", request);
+		if(request.size()>0) {
+			request.get(0).put("email", u.getMail());
+			restTemplate.postForLocation("http://localhost:8080/email/artposts", request);
+		}
 	}
 }

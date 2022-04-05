@@ -28,7 +28,7 @@ import es.urjc.dad.poshart.repository.ImageRepository;
 public class ImageService {
 
 	Logger console = LoggerFactory.getLogger(ImageService.class);
-	
+
 	@Autowired
 	private ImageRepository repository;
 
@@ -39,9 +39,9 @@ public class ImageService {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
 		image.setImage(location.toString());
-		
+
 		console.warn(imageFile.getOriginalFilename());
-		
+
 		String[] urlType = imageFile.getOriginalFilename().split("\\.");
 
 		image.setImageType(urlType[urlType.length - 1]);

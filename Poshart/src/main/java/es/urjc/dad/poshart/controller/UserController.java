@@ -125,26 +125,39 @@ public class UserController {
 			}else {
 				u = userRepository.findById(id).orElseThrow();
 			}
+			long oldImageId = -1;
 			if(!imagen.isEmpty()) {
-				if(u.getImage()!=null) {
-					imageService.deleteImage(u.getImage().getId());
-				}
+				if(u.getImage()!=null) oldImageId = u.getImage().getId();
 				Image newImage = imageService.createImage(imagen);
-				newUser.setImage(newImage);
+				u.setImage(newImage);
 			}
-			else if(u.getImage()!=null) {
-				newUser.setImage(u.getImage());
-			}
-			//Se gestiona la contraseña si se requiere reemplazar o no.
-			if(newUser.getPassword().equals(""))
-				newUser.setPassword(u.getPassword());
-			else
-				newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-			newUser.setId(u.getId());
 			
-			//Mantenemos los roles antiguos.
-			newUser.setRoles(u.getRoles());
-			userRepository.save(newUser);
+			//Comprobamos que el usuario o correo no están repetidos.
+			User checkUser = userRepository.findByUsername(newUser.getUsername());
+			if(checkUser==null) {
+				u.setUsername(newUser.getUsername());
+			}
+			u = userRepository.findByMail(newUser.getMail());
+			if(checkUser==null) {
+				u.setMail(newUser.getMail());
+			}
+			
+			//Se gestiona la contraseña si se requiere reemplazar o no.
+			if(!newUser.getPassword().equals(""))
+				u.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+			//Cambiamos los datos.
+			u.setName(newUser.getName());
+			u.setSurname(newUser.getDescription());
+			u.setDescription(newUser.getDescription());
+			
+			//Actualizamos el usuario
+			userRepository.save(u);
+			
+			//En caso de que se haya cambiado la imagen, se elimina la foto anterior.
+			if(oldImageId!=-1)
+				imageService.deleteImage(oldImageId);
+			
 			return "redirect:/user/" + id + "/edit";
 		}
 		return "redirect:/";

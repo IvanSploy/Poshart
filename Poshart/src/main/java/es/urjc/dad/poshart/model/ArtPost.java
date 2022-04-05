@@ -20,29 +20,25 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Entity
 public class ArtPost {
 	
-	public interface Basico {}
-	public interface DetallesAvanzados{}
-	public interface ArtPostDetalle extends Basico, DetallesAvanzados {}
-	//interface Comentarios{}
-	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "artGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artGen")
+	@JsonView(JsonInterfaces.Basico.class)
 	private long id;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String name;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String description;
 	
-	@JsonView(DetallesAvanzados.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	private float price;
 	
-	@JsonView(DetallesAvanzados.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	private Date date;
 	
-	@JsonView(DetallesAvanzados.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@ManyToOne
 	private User owner;
 
@@ -54,7 +50,7 @@ public class ArtPost {
 	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> postComments = new ArrayList<>();	
 	
-	@JsonView(DetallesAvanzados.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Image image;
 

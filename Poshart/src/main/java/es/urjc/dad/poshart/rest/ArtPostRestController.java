@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.urjc.dad.poshart.model.ArtPost;
+import es.urjc.dad.poshart.model.JsonInterfaces;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
 
 //Usada para ver la estructura de los JSON via Web.
@@ -19,7 +20,7 @@ public class ArtPostRestController {
 	private ArtPostRepository posts;
 	
 	@GetMapping("/posts/{id}")
-	@JsonView(ArtPost.Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	public ResponseEntity<ArtPost> getPost(@PathVariable long id) {
 		ArtPost artpost = posts.findById(id).orElseThrow();
 		if (artpost != null) {
@@ -30,7 +31,7 @@ public class ArtPostRestController {
 	}
 
 	@GetMapping("/posts/{id}/showDetails")
-	@JsonView(ArtPost.ArtPostDetalle.class)
+	@JsonView(JsonInterfaces.BasicoAvanzado.class)
 	public ResponseEntity<ArtPost> getPostMoreDetails(@PathVariable long id) {
 		ArtPost artpost = posts.findById(id).orElseThrow();
 		if (artpost != null) {

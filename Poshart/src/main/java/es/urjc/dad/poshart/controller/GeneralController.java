@@ -48,9 +48,7 @@ public class GeneralController {
 
 	@PostConstruct
 	public void init() {
-		/*userRepository.save(new User("user@gmail.com", "user", passwordEncoder.encode("pass"), "ROLE_USER"));
-		userRepository.save(new User("admin@gmail.com", "admin", passwordEncoder.encode("adminpass"), "ROLE_USER", "ROLE_ADMIN"));
-		User u1 = new User("a", "a", passwordEncoder.encode("a"), "ROLE_USER");
+		/*User u1 = new User("a", "a", passwordEncoder.encode("a"), "ROLE_USER", "ROLE_ADMIN");
 		u1.setName("a");
 		u1.setSurname("a");
 		u1.setDescription("a");

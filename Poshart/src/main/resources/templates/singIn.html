@@ -10,12 +10,36 @@
 <form action="/user/signIn" method="POST" enctype="multipart/form-data">
 <table>
 	<tbody>
-     <tr>
+	<tr>
+	<td id="registrarse">
+		Usuario: 
+	</td>
+	<td id="registrarse">
+		<input type="text" placeholder="Nombre de usuario" name="username" required/>
+	</td>
+	</tr>
+	<tr>
+	<td id="registrarse">
+		Correo:
+	</td>
+	<td id="registrarse">
+		<input type="text" placeholder="Correo electrónico" name="mail" required/>
+	</td>
+	</tr>
+	<tr>
+	<td id="registrarse">
+		Contraseña:
+	</td>
+	<td id="registrarse">
+		<input type="password" placeholder="Contraseña" name="password" required/>
+	</td>
+	</tr>
+    <tr>
 	<td id="registrarse">
 		Nombre: 
 	</td>
 	<td id="registrarse">
-		<input type="text" placeholder="Nombre de usuario" name="name"/>
+		<input type="text" placeholder="Nombre" name="name"/>
 	</td>
 	</tr>
       <tr>
@@ -23,23 +47,15 @@
 		Apellidos:
 	</td>
 	<td id="registrarse">
-		<input type="text" placeholder="Apellido de usuario" name="surname"/>
+		<input type="text" placeholder="Apellidos" name="surname"/>
 	</td>
 	</tr>
-      <tr>
+      <tr>>
 	<td id="registrarse">
 		Descripción: 
 	</td>
 	<td id="registrarse">
-		<textarea placeholder="Descipción del usuario" cols="50" rows="3" name="description"></textarea>
-	</td>
-	</tr>
-	<tr>
-	<td id="registrarse">
-		Usuario: 
-	</td>
-	<td id="registrarse">
-		<input type="text" placeholder="Nombre de usurario" name="username" required/>
+		<textarea placeholder="Descripción del usuario" cols="50" rows="3" name="description"></textarea>
 	</td>
 	</tr>
     <tr>
@@ -48,22 +64,6 @@
 	</td>
 	<td id="registrarse">
 		<input type="file" id="myFile" name="imagen"/>
-	</td>
-	</tr>
-      <tr>
-	<td id="registrarse">
-		Correo:
-	</td>
-	<td id="registrarse">
-		<input type="text" placeholder="Mail de usuario" name="mail" required/>
-	</td>
-	</tr>
-      <tr>
-	<td id="registrarse">
-		Contraseña:
-	</td>
-	<td id="registrarse">
-		<input type="password" placeholder="Contraseña de usuario" name="password" required/>
 	</td>
 	</tr>
 	<tr>

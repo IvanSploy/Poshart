@@ -23,49 +23,43 @@ import javax.persistence.SequenceGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.urjc.dad.poshart.model.ArtPost.Basico;
-import es.urjc.dad.poshart.model.ArtPost.DetallesAvanzados;
-
 @Entity
 public class User {
 
-	public interface Basico {}
-	public interface DetallesAvanzados{}
-	public interface UserDetalle extends Basico, DetallesAvanzados {}
-	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "userGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userGen")
+	@JsonView(JsonInterfaces.Basico.class)
 	private long id;
 
 	@Column(unique = true)
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String username;
 	
 	@JsonIgnore
 	private String password;
 	
 	@Column(unique = true)
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String mail;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String name;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String surname;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String description;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private int countFollows;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private int countFollowers;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonView(Basico.class)
+	@ManyToOne(cascade = CascadeType.REMOVE)
+	@JsonView(JsonInterfaces.Basico.class)
 	private Image image;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -81,11 +75,11 @@ public class User {
 	private Set<User> followers = new HashSet<>();
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonView(DetallesAvanzados.class)
+	@JsonIgnore
 	private List<Collection> collections = new ArrayList<>();
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonView(DetallesAvanzados.class)
+	@JsonIgnore
 	private List<ArtPost> myPosts = new ArrayList<>();
 
 	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)

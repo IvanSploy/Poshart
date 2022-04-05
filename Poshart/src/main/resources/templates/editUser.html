@@ -3,7 +3,31 @@
 <form action="/user/{{id}}/edit/confirm" method="POST" enctype="multipart/form-data">
 <table>
 	<tbody>
-     <tr>
+	<tr>
+	<td id="registrarse">
+		Usuario:
+	</td>
+	<td id="registrarse">
+		<input type="text" value="{{user.username}}" name="username" required/>
+	</td>
+	</tr>
+	<tr>
+	<td id="registrarse">
+		Correo:
+	</td>
+	<td id="registrarse">
+		<input type="text" value="{{user.mail}}" name="mail" required/>
+	</td>
+	</tr>
+	<tr>
+	<td id="registrarse">
+		Contraseña:
+	</td>
+	<td id="registrarse">
+		<input type="password" name="password"/>
+	</td>
+	</tr>
+    <tr>
 	<td id="registrarse">
 		Nombre:
 	</td>
@@ -27,36 +51,12 @@
 		<textarea cols="50" rows="3" name="description">{{#user.description}}{{user.description}}{{/user.description}}</textarea>
 	</td>
 	</tr>
-	<tr>
-	<td id="registrarse">
-		Usuario:
-	</td>
-	<td id="registrarse">
-		<input type="text" value="{{user.username}}" name="username" required/>
-	</td>
-	</tr>
-      <tr>
+    <tr>
 	<td id="registrarse">
 		Imagen: 
 	</td>
 	<td id="registrarse">
 		<input type="file" id="myFile" name="imagen" accept=".jpg, .jpeg, .png">
-	</td>
-	</tr>
-      <tr>
-	<td id="registrarse">
-		Correo:
-	</td>
-	<td id="registrarse">
-		<input type="text" value="{{user.mail}}" name="mail" required/>
-	</td>
-	</tr>
-      <tr>
-	<td id="registrarse">
-		Contraseña:
-	</td>
-	<td id="registrarse">
-		<input type="password" name="password"/>
 	</td>
 	</tr>
   </tbody>

@@ -11,28 +11,25 @@ import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.urjc.dad.poshart.model.ArtPost.Basico;
-
 @Entity
 public class Comment {
-	public interface Basico {}
-	public interface DetallesAvanzados{}
 	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "commentGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentGen")
+	@JsonView(JsonInterfaces.Basico.class)
 	private long id;
 
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private String description;
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private Date commentDate;
 
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	@ManyToOne
 	private User owner;
 
-	@JsonView(DetallesAvanzados.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@ManyToOne
 	private ArtPost post;
 

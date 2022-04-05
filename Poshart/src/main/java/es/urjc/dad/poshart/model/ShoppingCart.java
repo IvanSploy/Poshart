@@ -12,28 +12,25 @@ import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import es.urjc.dad.poshart.model.ArtPost.Basico;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
 public class ShoppingCart {
 	
-	public interface Basico {}
-	public interface ArteComprado {}
-	
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "cartGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartGen")
+	@JsonView(JsonInterfaces.Basico.class)
 	private long id;
 	
-	@JsonView(Basico.class)
+	@JsonView(JsonInterfaces.Basico.class)
 	private float price;
-	@JsonView(Basico.class)
+	
+	@JsonView(JsonInterfaces.Basico.class)
 	private Date date;
 	
-	@JsonView(ArteComprado.class)
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@ManyToMany
 	private List<ArtPost> art= new ArrayList<>();
 	
