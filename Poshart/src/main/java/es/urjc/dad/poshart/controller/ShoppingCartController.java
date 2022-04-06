@@ -6,19 +6,24 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 import es.urjc.dad.poshart.internal_service.EmailService;
+import es.urjc.dad.poshart.internalService.DownloadService;
 import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ShoppingCartRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 
+
+import org.springframework.core.io.ByteArrayResource;
 @Controller
 @RequestMapping("/shopping")
 public class ShoppingCartController {
@@ -31,6 +36,9 @@ public class ShoppingCartController {
 	
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
+	
+	@Autowired
+	DownloadService downloadService;
 
 	
 	@GetMapping("")
@@ -59,7 +67,7 @@ public class ShoppingCartController {
 		return "shoppingCart";
 	}
 	
-	@GetMapping("/{id}/buy")
+	/*@GetMapping("/{id}/buy")
 	public String getShoppingBuy(HttpServletRequest request, Model model, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		if(u.getId()!=id) {
@@ -85,6 +93,14 @@ public class ShoppingCartController {
 		}
 		
 		model.addAttribute("cart", c);
+		return "shoppingCart";
+	}*/
+	
+	@GetMapping(value="/{id}/buy")
+	public String getShoppingBuy(HttpServletRequest request, @PathVariable long id) {
+		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
+		ShoppingCart c = u.getCart();
+		downloadService.downloadPdf(c);
 		return "shoppingCart";
 	}
 	
