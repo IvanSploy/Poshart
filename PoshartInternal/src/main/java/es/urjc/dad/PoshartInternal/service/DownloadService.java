@@ -20,12 +20,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.nio.file.Path;
 import java.sql.Blob;
 
 @Service
 public class DownloadService {
 
-	public ResponseEntity<ByteArrayResource> downloadPDF(String jsonInput) {
+	public void downloadPDF(String jsonInput, Path dir) {
 		
 		// create a blank Workbook object
 		Workbook workbook = new Workbook();
@@ -39,82 +40,12 @@ public class DownloadService {
 		// import JSON data to default worksheet starting at cell A1
 		JsonUtility.importData(jsonInput, worksheet.getCells(), 0, 0, layoutOptions);
 
-		
 		// save resultant file in JSON-TO-PDF format
 		try {
-			workbook.save("output.pdf", SaveFormat.PDF);
+			workbook.save(dir.toString(), SaveFormat.PDF);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		/*
-@RequestMapping(value = "/files/list", method = RequestMethod.GET)
-public String listFiles(Model model) {
-	List<Path> lodf = new ArrayList<>();
-	List<HRefModel> uris = new ArrayList<>();
-	
-	try {
-		lodf = storageService.listSourceFiles(storageService.getUploadLocation());
-		for(Path pt : lodf) {
-			HRefModel href = new HRefModel();
-			href.setHref(MvcUriComponentsBuilder
-					.fromMethodName(UploadController.class, "serveFile", pt.getFileName().toString())
-					.build()
-					.toString());
-			
-			href.setHrefText(pt.getFileName().toString());
-			uris.add(href);
-		}
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	model.addAttribute("listOfEntries", uris);
-	return "file_list :: urlFileList";
-}
-
-@GetMapping("/files/{filename:.+}")
-@ResponseBody
-public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-	Resource file = storageService.loadAsResource(filename);
-	return ResponseEntity.ok()
-			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-			.body(file);
-}
-
-@RequestMapping(value = "/files/list", method = RequestMethod.GET)
-public String listFiles(Model model) {
- List<Path> lodf = new ArrayList<>();
- List<HRefModel> uris = new ArrayList<>();
- 
- try {
- lodf = storageService.listSourceFiles(storageService.getUploadLocation());
- for(Path pt : lodf) {
- HRefModel href = new HRefModel();
- href.setHref(MvcUriComponentsBuilder
- .fromMethodName(UploadController.class, "serveFile", pt.getFileName().toString())
- .build()
- .toString());
- 
- href.setHrefText(pt.getFileName().toString());
- uris.add(href);
- }
- } catch (IOException e) {
- // TODO Auto-generated catch block
- e.printStackTrace();
- }
- model.addAttribute("listOfEntries", uris);
- return "file_list :: urlFileList";
-}
- 
-@GetMapping("/files/{filename:.+}")
-@ResponseBody
-public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
- Resource file = storageService.loadAsResource(filename);
- return ResponseEntity.ok()
- .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
- .body(file);
-}
-		 * */
 	}
 }

@@ -74,11 +74,12 @@ public class ShoppingCartController {
 		return "shoppingCart";
 	}*/
 	
-	@GetMapping(value="/{id}/buy", produces = "application/pdf")
-	public ResponseEntity<ByteArrayResource> getShoppingBuy(HttpServletRequest request, @PathVariable long id) {
+	@GetMapping(value="/{id}/buy")
+	public String getShoppingBuy(HttpServletRequest request, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ShoppingCart c = u.getCart();
-		return downloadService.downloadPdf(c);
+		downloadService.downloadPdf(c);
+		return "shoppingCart";
 	}
 	
 	@GetMapping("/{id}/remove/{id2}")

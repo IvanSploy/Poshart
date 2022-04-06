@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,10 @@ public class DownloadController {
 	private DownloadService downloadService;
 	
 	@PostMapping("/receipt")
-	public void downloadPDFResource(@RequestBody ObjectNode post) throws URISyntaxException {
-		downloadService.downloadPDF(post.asText());
+	public void downloadPDFResource(HttpServletRequest request, @RequestBody ObjectNode post) throws URISyntaxException {
+		String dataDirectory = request.getServletContext().getRealPath("/WEB-INF/downloads/pdf/");
+		String fileName="recibo.pdf";
+		Path file = Paths.get(dataDirectory, fileName);
+		downloadService.downloadPDF(post.asText(), file);
 	}
 }

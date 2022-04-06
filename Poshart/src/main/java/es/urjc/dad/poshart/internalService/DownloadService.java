@@ -39,9 +39,9 @@ public class DownloadService {
 	@Autowired
 	ShoppingCartRepository shoppingCartRepository;
 	
-    public ResponseEntity<ByteArrayResource> downloadPdf(ShoppingCart s){
+    public void downloadPdf(ShoppingCart s){
     	ObjectNode request = mapper.convertObjectToNode(s, JsonInterfaces.Avanzado.class);
         String url = "http://localhost:8080/download/receipt/";
-        return restTemplate.postForEntity(url, request, ByteArrayResource.class);
+        restTemplate.postForObject(url, request, ByteArrayResource.class);
     }
 }
