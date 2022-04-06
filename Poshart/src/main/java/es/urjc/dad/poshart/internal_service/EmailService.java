@@ -1,9 +1,12 @@
-package es.urjc.dad.poshart.internalService;
+package es.urjc.dad.poshart.internal_service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,9 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.urjc.dad.poshart.model.ArtPost;
+import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.JsonInterfaces;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
+import es.urjc.dad.poshart.repository.CommentRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.rest.ArtPostRestController;
 
@@ -32,41 +37,38 @@ public class EmailService {
 	
 	@Autowired
 	ArtPostRepository artPostRepository;
+
+	@Autowired
+	CommentRepository commentRepository;
 	
 	@Autowired
 	RestTemplate restTemplate;
 	
+	Logger log = LoggerFactory.getLogger(getClass());
+	
 	//Se enviará un Email de confimación cuando un usuario cree o
 	//realice algún cambio en su usuario.
+	@Async
 	public void sendConfimationEmail(long id) {
 		User u = userRepository.findById(id).orElseThrow();
-		List<ArtPost> post = u.getMyPosts();
-		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), JsonInterfaces.Basico.class);
-		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/artposts", request);
+		ObjectNode request = mapper.convertObjectToNode(u, JsonInterfaces.Basico.class);
+		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/confirmUser", request);
 	}
 	
-	//Se enviará un Email con los posts recomendados tras
-	//seguir a un nuevo usuario.
-	public void sendRecommendedPostEmail(String email, long id) {
+	//Se enviará un Email con el comentario realizado sobre una publicación.
+	@Async
+	public void sendNotifyCommentEmail(Comment comment) {
+		ObjectNode request = mapper.convertObjectToNode(comment, JsonInterfaces.BasicoAvanzado.class);
+		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/notifyComment", request);
+	}
+	
+	//Se enviará un Email para avisar a un usuario de que su obra ha sido comprada.
+	@Async
+	public void sendNotifyPurchase(String email, long id) {
 		ArtPost post = artPostRepository.findById(id).orElseThrow();
-		ObjectNode request = mapper.convertObjectToNode(post, JsonInterfaces.Basico.class);
-		if(request!=null) {
-			request.put("email", email);
-			restTemplate.postForLocation("http://localhost:8080/email/artpost", request);
-		}
-	}
-	
-	//Se enviará un Email con los posts recomendados tras
-	//seguir a un nuevo usuario.
-	public void sendRecommendedPostsEmail(long id) {
-		User u = userRepository.findById(id).orElseThrow();
-		List<ArtPost> post = u.getMyPosts();
-		List<ObjectNode> request = mapper.convertObjectsToNodes(post.toArray(), JsonInterfaces.Basico.class);
-		
+		ObjectNode request = mapper.convertObjectToNode(post, JsonInterfaces.BasicoAvanzado.class);
 		//Para añadir el campo de correo necesario en la petición.
-		if(request.size()>0) {
-			request.get(0).put("email", u.getMail());
-			restTemplate.postForLocation("http://localhost:8080/email/artposts", request);
-		}
+		request.put("email", email);
+		restTemplate.postForLocation("http://localhost:8080/email/purchase", request);
 	}
 }

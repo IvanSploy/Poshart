@@ -17,16 +17,12 @@ public class Image {
 	@Id
 	@SequenceGenerator(initialValue = 1, name = "imageGen")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imageGen")
-	@JsonView(JsonInterfaces.Basico.class)
 	private long id;
 
-	@JsonIgnore
 	private String image;
 	
-	@JsonView(JsonInterfaces.Basico.class)
 	private String imageType;
 
-	@JsonView(JsonInterfaces.Basico.class)
 	@Lob
 	private Blob imageFile;
 

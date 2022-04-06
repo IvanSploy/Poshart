@@ -1,5 +1,8 @@
 package es.urjc.dad.poshart.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import es.urjc.dad.poshart.internal_service.EmailService;
 import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ShoppingCartRepository;
@@ -18,6 +22,9 @@ import es.urjc.dad.poshart.repository.UserRepository;
 @Controller
 @RequestMapping("/shopping")
 public class ShoppingCartController {
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -58,10 +65,25 @@ public class ShoppingCartController {
 		if(u.getId()!=id) {
 			return "redirect:/shopping";
 		}
+		
+		List<String> emails = new ArrayList<>();
+		List<Long> idPosts = new ArrayList<>();
 		ShoppingCart c = u.getCart();
-		c.buy();
+		for(int i=0; i<c.getArt().size(); i++) {
+			emails.add(c.getArt().get(i).getOwner().getMail());
+			idPosts.add(c.getArt().get(i).getId());
+			c.getBuyer().addPost(c.getArt().get(i));
+		}
+		c.getArt().clear();
+		
 		userRepository.save(c.getBuyer());
 		shoppingCartRepository.save(c);
+		
+		//Se envía un correo a todas las personas cuyo arte ha sido comprado.
+		for(int i = 0; i < emails.size(); i++) {
+			emailService.sendNotifyPurchase(emails.get(i), idPosts.get(i));
+		}
+		
 		model.addAttribute("cart", c);
 		return "shoppingCart";
 	}

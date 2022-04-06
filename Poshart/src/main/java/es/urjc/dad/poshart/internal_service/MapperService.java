@@ -1,4 +1,4 @@
-package es.urjc.dad.poshart.internalService;
+package es.urjc.dad.poshart.internal_service;
 
 import java.util.ArrayList;
 import java.util.List;

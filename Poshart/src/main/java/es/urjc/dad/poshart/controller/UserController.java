@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import es.urjc.dad.poshart.internal_service.EmailService;
 import es.urjc.dad.poshart.model.Collection;
 import es.urjc.dad.poshart.model.Image;
 import es.urjc.dad.poshart.model.ShoppingCart;
@@ -41,6 +46,9 @@ public class UserController {
 	
 	Logger log = LoggerFactory.getLogger(getClass());
 
+	@Autowired
+	private EmailService emailService;
+	
 	@Autowired
 	private ImageService imageService;
 	
@@ -89,6 +97,9 @@ public class UserController {
 		newUser.setRoles(roles);
 		userRepository.save(newUser);
 		
+		//Se envía correo de confirmación empleando el servicio interno. 
+		emailService.sendConfimationEmail(newUser.getId());
+		
 		//Tras crear el usuario se inicia la sesión automáticamente.
 		try {
 			request.login(newUser.getUsername(), realPassword);
@@ -109,7 +120,7 @@ public class UserController {
 			}else {
 				u = userRepository.findById(id).orElseThrow();
 			}
-			model.addAttribute("user", u);
+			model.addAttribute("webuser", u);
 			return "editUser";
 		}
 		return "redirect:/";
@@ -134,25 +145,42 @@ public class UserController {
 			
 			//Comprobamos que el usuario o correo no están repetidos.
 			User checkUser = userRepository.findByUsername(newUser.getUsername());
+			
+			String newUsername = "";
 			if(checkUser==null) {
 				u.setUsername(newUser.getUsername());
+				newUsername = u.getUsername();
 			}
-			u = userRepository.findByMail(newUser.getMail());
+			checkUser = userRepository.findByMail(newUser.getMail());
 			if(checkUser==null) {
 				u.setMail(newUser.getMail());
 			}
 			
 			//Se gestiona la contraseña si se requiere reemplazar o no.
-			if(!newUser.getPassword().equals(""))
+			String newPassword = "";
+			if(!newUser.getPassword().equals("")) {
 				u.setPassword(passwordEncoder.encode(newUser.getPassword()));
+				newPassword = u.getPassword();
+			}
 
 			//Cambiamos los datos.
 			u.setName(newUser.getName());
-			u.setSurname(newUser.getDescription());
+			u.setSurname(newUser.getSurname());
 			u.setDescription(newUser.getDescription());
 			
 			//Actualizamos el usuario
 			userRepository.save(u);
+			
+			//Actualizamos la sesión con el nuevo usuario.
+			if(!newUsername.equals("") || !newPassword.equals("")) {
+				List<GrantedAuthority> roles = new ArrayList<>();
+				 for (String role : u.getRoles()) {
+					 roles.add(new SimpleGrantedAuthority(role));
+				 }
+				UsernamePasswordAuthenticationToken authentication = 
+						new UsernamePasswordAuthenticationToken(newUsername, newPassword, roles);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
 			
 			//En caso de que se haya cambiado la imagen, se elimina la foto anterior.
 			if(oldImageId!=-1)
@@ -166,20 +194,22 @@ public class UserController {
 	@GetMapping("/{id}")
 	public String getMuro(HttpServletRequest request, Model model, @PathVariable long id, @RequestParam(defaultValue = "-1") long colId) {
 		User u = userRepository.findById(id).orElseThrow();
-		model.addAttribute("user", u);
+		model.addAttribute("webuser", u);
 		if(colId!=-1) {
-			Collection c = collectionRepository.findById(colId).orElseThrow();
-			model.addAttribute("selectedCol", c);
+			Optional<Collection> c = collectionRepository.findById(colId);
+			if(c.isPresent())
+				if(u.getCollections().contains(c.get())) 
+					model.addAttribute("selectedCol", c.get());
 		}
-		User uMine = userRepository.findByUsername(request.getUserPrincipal().getName());
-		boolean isMine = id==uMine.getId();
+		boolean isMine = false;
+		boolean followed = false;
+		if(request.isUserInRole("USER")) {
+			User uMine = userRepository.findByUsername(request.getUserPrincipal().getName());
+			isMine = id==uMine.getId();
+			if(!isMine) followed = u.getFollowers().contains(uMine);
+		}
 		model.addAttribute("isMine", isMine);
-		if(!isMine && request.isUserInRole("USER")) {
-			boolean followed = u.getFollowers().contains(uMine);
-			model.addAttribute("followed", followed);
-		}else {
-			model.addAttribute("followed", false);
-		}
+		model.addAttribute("followed", followed);
 		return "muro";
 	}
 	
@@ -208,7 +238,7 @@ public class UserController {
 				userRepository.save(us);
 			}
 			userRepository.delete(u);
-			return "/";
+			return "redirect:/";
 		}
 		return "redirect:/user/" + id;
 	}

@@ -10,16 +10,8 @@ import es.urjc.dad.PoshartInternal.service.EmailSenderService;
 
 @SpringBootApplication
 public class PoshartInternalApplication {
-
-	@Autowired
-	private EmailSenderService senderService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PoshartInternalApplication.class, args);
-	}
-	
-	@EventListener(ApplicationReadyEvent.class)
-	public void sendMail(){
-		senderService.sendEmail("poshartco@gmail.com", "S", "B");
 	}
 }

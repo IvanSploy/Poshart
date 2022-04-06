@@ -1,5 +1,6 @@
 package es.urjc.dad.poshart.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ public class Comment {
 
 	@JsonView(JsonInterfaces.Basico.class)
 	private String description;
+	
 	@JsonView(JsonInterfaces.Basico.class)
 	private Date commentDate;
 

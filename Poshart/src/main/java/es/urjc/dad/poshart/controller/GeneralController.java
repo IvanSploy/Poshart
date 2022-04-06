@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -48,32 +49,35 @@ public class GeneralController {
 
 	@PostConstruct
 	public void init() {
-		/*User u1 = new User("a", "a", passwordEncoder.encode("a"), "ROLE_USER", "ROLE_ADMIN");
-		u1.setName("a");
-		u1.setSurname("a");
-		u1.setDescription("a");
-		ShoppingCart s = new ShoppingCart(0);
-		for (int i = 30; i < 50; i++) {
-			ArtPost art = new ArtPost("Post " + i, i * 10);
-			u1.addPost(art);
+		User main = userRepository.findByUsername("a");
+		if(main==null) {
+			User u1 = new User("poshartco@gmail.com", "a", passwordEncoder.encode("a"), "ROLE_USER", "ROLE_ADMIN");
+			u1.setName("a");
+			u1.setSurname("a");
+			u1.setDescription("a");
+			ShoppingCart s = new ShoppingCart(0);
+			for (int i = 30; i < 50; i++) {
+				ArtPost art = new ArtPost("Post " + i, i * 10);
+				u1.addPost(art);
+			}
+			u1.addCart(s);
+			userRepository.save(u1);
+			for (int i = 0; i < 20; i++) {
+				User u = new User("Correo " + i, "Usuario " + i, passwordEncoder.encode("Contraseña " + i), "ROLE_USER");
+				u.setName("Nombre " + i);
+				u.setSurname("Apellidos " + i);
+				u.setDescription("Descripción " + i);
+				Collection c = new Collection("Colección " + i, "Descripcion " + i);
+				Collection c2 = new Collection("Colección2-" + i, "Descripcion2-" + i);
+				ArtPost art = new ArtPost("Post " + i, i * 10);
+				ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
+				u.addPost(art);
+				u.addCollection(c);
+				u.addCollection(c2);
+				u.addCart(sc);
+				userRepository.save(u);
+			}
 		}
-		u1.addCart(s);
-		userRepository.save(u1);
-		for (int i = 0; i < 20; i++) {
-			User u = new User("Correo " + i, "Usuario " + i, passwordEncoder.encode("Contraseña " + i), "ROLE_USER");
-			u.setName("Nombre " + i);
-			u.setSurname("Apellidos " + i);
-			u.setDescription("Descripción " + i);
-			Collection c = new Collection("Colección " + i, "Descripcion " + i);
-			Collection c2 = new Collection("Colección2-" + i, "Descripcion2-" + i);
-			ArtPost art = new ArtPost("Post " + i, i * 10);
-			ShoppingCart sc = new ShoppingCart(0, Date.from(Instant.now()));
-			u.addPost(art);
-			u.addCollection(c);
-			u.addCollection(c2);
-			u.addCart(sc);
-			userRepository.save(u);
-		}*/
 	}
 
 	@GetMapping("/")
