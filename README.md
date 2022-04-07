@@ -24,9 +24,9 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 
 ## Servicio interno 👮
 * Confirmación de creación de cuenta.
-* Envío de correo al usuario para confirmar la realización de una compra adjuntado con el PDF de la factura.
-* Notificación semanal con obras que puedan interesar al usuario.
-* Notificar al usuario cuando otro usuario ha dado _me gusta_ o comentado en alguna obra de su propiedad.
+* Envío de correo al usuario para confirmar la realización de una compra.
+* Notificación cuando un usuario compra una obra en propiedad de otro usuario.
+* Notificar al usuario cuando otro usuario ha comentado en alguna obra de su propiedad.
 
 ## Despliegue de la aplicación 📇
 Para la compilación del proyecto vamos a serguir los siguientes pasos:
@@ -61,6 +61,8 @@ Para la planificación del proyecto se ha hecho uso de la herramienta virtual Tr
 ![Diagrama UML (1)](https://user-images.githubusercontent.com/78254966/154862912-00f4e28c-75c6-4a15-8e59-8efe05a23014.png)
 ### Diagrama Entidad/Relación
 ![Diagrama E_R (2)](https://user-images.githubusercontent.com/78254966/155119384-fddbb7a7-896f-4313-80a2-48f10f26a037.png)
+### Diagrama de Clases y Templates
+![DiagramaClasesFase3](https://user-images.githubusercontent.com/78254966/162157514-fd664f1d-21e6-49e9-a88c-3b2528db102e.png)
 
 ## Autores ✒️️
 * **Guillermo Juan García-Delgado Álvarez** - [Github](https://github.com/guilleingvid)
