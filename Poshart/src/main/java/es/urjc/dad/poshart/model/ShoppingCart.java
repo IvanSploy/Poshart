@@ -42,6 +42,7 @@ public class ShoppingCart {
 		art.remove(post);
 	}
 
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@OneToOne
 	private User buyer; 
 	

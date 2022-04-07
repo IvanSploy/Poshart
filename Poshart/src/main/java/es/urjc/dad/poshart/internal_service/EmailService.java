@@ -18,9 +18,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.JsonInterfaces;
+import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
 import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.CommentRepository;
+import es.urjc.dad.poshart.repository.ShoppingCartRepository;
 import es.urjc.dad.poshart.repository.UserRepository;
 import es.urjc.dad.poshart.rest.ArtPostRestController;
 
@@ -40,6 +42,9 @@ public class EmailService {
 
 	@Autowired
 	CommentRepository commentRepository;
+	
+	@Autowired
+	ShoppingCartRepository shoppingCartRepository;
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -70,5 +75,12 @@ public class EmailService {
 		//Para añadir el campo de correo necesario en la petición.
 		request.put("email", email);
 		restTemplate.postForLocation("http://localhost:8080/email/purchase", request);
+	}
+	
+	//Se enviará un Email con el recibo de la compra realizada.
+	public void sendPurchaseReceipt(long id) {
+		ShoppingCart sc = shoppingCartRepository.getById(id);
+		ObjectNode request = mapper.convertObjectToNode(sc, JsonInterfaces.BasicoAvanzado.class);
+		restTemplate.postForLocation("http://localhost:8080/email/receipt", request);
 	}
 }

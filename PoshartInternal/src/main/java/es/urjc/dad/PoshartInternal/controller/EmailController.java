@@ -6,18 +6,22 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.urjc.dad.PoshartInternal.service.EmailSenderService;
 
 @RestController
 @RequestMapping("/email")
+@EnableAsync
 public class EmailController {
 	
 	@Autowired
@@ -84,6 +88,33 @@ public class EmailController {
 		String body = "Enhorabuena,\n" +
 				"el usuario " + username + " ha comprado tu obra " + postName +" por la cantidad de " + price +"€\n\n" +
 				"¡Siga ganando dinero con nuestra web!";
+		emailService.sendEmail(email, subject, body);
+	}
+	
+	@PostMapping("/receipt")
+	@Async
+	public void sendPurchaseReceipt(@RequestBody ObjectNode post) throws URISyntaxException {
+		JsonNode owner = post.get("buyer");
+		ArrayNode arts = (ArrayNode) post.get("art");
+		
+		String email = owner.get("mail").asText();
+		String price = post.get("price").asText();
+		
+		String body = "Su compra ha sido realizada completamente,\n" +
+			"a continuación se le muestra el resumen de su compra:\n";
+		
+		for (int i = 0; i < arts.size(); i++) {
+			 JsonNode item = arts.get(i);
+			 String nombre = item.get("name").asText();
+			 String precioItem = item.get("price").asText();
+			 body += "\t" + nombre + "\t" + precioItem + "€\n";
+		}
+		
+		body += "Gasto total realizado: " + price + "€\n" +
+		"¡No deje de ver nuestra web!";
+		
+		String subject = "¡Compra realizada!";
+		
 		emailService.sendEmail(email, subject, body);
 	}
 }
