@@ -29,21 +29,22 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * Notificar al usuario cuando otro usuario ha comentado en alguna obra de su propiedad.
 
 ## Despliegue de la aplicación 📇
-Para la compilación del proyecto vamos a serguir los siguientes pasos:
-* Instalar el JDK y Maven
-* Añadir JDK y Maven a las variables de entorno 
+Para la compilación del proyecto vamos a seguir los siguientes pasos:
+* Instalar el JDK y Maven.
+* Añadir JDK y Maven a las variables de entorno.
 * Abrimos una PowerShell en la carpeta del proyecto y ejecutamos ````mvn clean package````. Repetimos este paso por ambos proyectos.
 * Para finalizar se nos habrá creado una carpeta Target con dentro el .jar que utilizaremos en la siguiente parte.
+
 A continuación desplegamos la máquina virtual:
 * Installar JDK con el comando ````sudo apt install openjdk-17-jre-headless````
-* Installar y configurar MySQL con los comandos 
+* Installar y configurar MySQL con los comandos:
 * ````sudo apt install mysql-server````
 * ````sudo mysql````
 * ````ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'GEIposhart#333';````
 * ````flush privileges;````
 * ````exit;````
-* Iniciamos sesión en la base de datos ````sudo mysql -u root -p```` y uilizamos la contraseña que hemos uilizado previamente 'GEIposhart#333'
-* Creamos la base de datos````CREATE DATABASE poshart;````
+* Iniciamos sesión en la base de datos ````sudo mysql -u root -p```` y utilizamos la contraseña que hemos usado previamente 'GEIposhart#333'.
+* Creamos la base de datos ````CREATE DATABASE poshart;````
 * ````USE poshart;````
 * ````exit;````
 * Por último ejecutamos el comando para descomprimir los .jar anteriores que hemos descargado en la máquina ````java -jar "nombreProyecto.jar"````
