@@ -24,7 +24,7 @@ import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.Image;
 import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.model.User;
-import es.urjc.dad.poshart.internalService.EmailService;
+import es.urjc.dad.poshart.internal_service.EmailService;
 import es.urjc.dad.poshart.model.ArtPost;
 import es.urjc.dad.poshart.repository.CommentRepository;
 import es.urjc.dad.poshart.repository.ShoppingCartRepository;
@@ -83,7 +83,6 @@ public class ArtPostController {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		if(request.isUserInRole("USER")) {
 			User u = userRepository.findByUsername(request.getUserPrincipal().getName());
-			emailService.sendRecommendedPostsEmail(u.getId());
 			if(u == ap.getOwner()) {
 				model.addAttribute("isMine", true);
 			}
@@ -91,7 +90,6 @@ public class ArtPostController {
 			model.addAttribute("myCollections", u.getCollections());
 		}
 		model.addAttribute("ArtPost", ap);
-		//emailService.sendRecommendedPostEmail(id);
 		return "viewPost";
 	}
 	
@@ -147,11 +145,11 @@ public class ArtPostController {
 	public RedirectView createComment(HttpServletRequest request, Model model, @PathVariable long id, Comment comment) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
-		comment.setId(0);
 		comment.setOwner(u);
 		comment.setCommentDate(Date.from(Instant.now()));
 		ap.addComment(comment);
 		artPostRepository.save(ap);
+		emailService.sendNotifyCommentEmail(comment);
 		return new RedirectView("/post/"+id);
 	}
 	

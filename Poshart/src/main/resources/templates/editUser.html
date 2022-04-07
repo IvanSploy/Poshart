@@ -8,7 +8,7 @@
 		Usuario:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{user.username}}" name="username" required/>
+		<input type="text" value="{{webuser.username}}" name="username" required/>
 	</td>
 	</tr>
 	<tr>
@@ -16,7 +16,7 @@
 		Correo:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{user.mail}}" name="mail" required/>
+		<input type="text" value="{{webuser.mail}}" name="mail" required/>
 	</td>
 	</tr>
 	<tr>
@@ -32,7 +32,7 @@
 		Nombre:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{#user.name}}{{user.name}}{{/user.name}}" name="name"/>
+		<input type="text" value="{{#webuser.name}}{{webuser.name}}{{/webuser.name}}" name="name"/>
 	</td>
 	</tr>
       <tr>
@@ -40,7 +40,7 @@
 		Apellidos:
 	</td>
 	<td id="registrarse">
-		<input type="text" value="{{#user.surname}}{{user.surname}}{{/user.surname}}" name="surname"/>
+		<input type="text" value="{{#webuser.surname}}{{webuser.surname}}{{/webuser.surname}}" name="surname"/>
 	</td>
 	</tr>
       <tr>
@@ -48,7 +48,7 @@
 		Descripción:
 	</td>
 	<td id="registrarse">
-		<textarea cols="50" rows="3" name="description">{{#user.description}}{{user.description}}{{/user.description}}</textarea>
+		<textarea cols="50" rows="3" name="description">{{#webuser.description}}{{webuser.description}}{{/webuser.description}}</textarea>
 	</td>
 	</tr>
     <tr>
@@ -77,7 +77,7 @@
 </td>
 </tr><tr>
 <td colspan="2" id="eliminarcuenta">
-<button type="button" class="uploadpic" onclick="location.href='/user/{{user.id}}/delete'">ELIMINAR CUENTA</button>
+<button type="button" class="uploadpic" onclick="location.href='/user/{{webuser.id}}/delete'">ELIMINAR CUENTA</button>
 </td>
 <tr>
 </tr>

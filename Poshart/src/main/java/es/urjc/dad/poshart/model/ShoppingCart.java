@@ -42,6 +42,7 @@ public class ShoppingCart {
 		art.remove(post);
 	}
 
+	@JsonView(JsonInterfaces.Avanzado.class)
 	@OneToOne
 	private User buyer; 
 	
@@ -119,12 +120,7 @@ public class ShoppingCart {
 	public void clear() {
 		art.clear();
 	}
-	public void buy() {
-		for(int i=0; i<art.size(); i++) {
-			buyer.addPost(art.get(i));
-		}
-		art.clear();
-	}
+	
 	public void removeArt(int i) {
 		if(i<art.size()) {
 			art.remove(i);

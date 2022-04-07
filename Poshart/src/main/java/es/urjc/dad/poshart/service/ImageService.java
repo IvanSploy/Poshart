@@ -58,7 +58,6 @@ public class ImageService {
 	public ResponseEntity<Object> createResponseFromImage(long id) throws SQLException {
 
 		Image image = repository.findById(id).orElseThrow();
-
 		if (image.getImageFile() != null) {
 			Resource file = new InputStreamResource(image.getImageFile().getBinaryStream());
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/" + image.getImageType())

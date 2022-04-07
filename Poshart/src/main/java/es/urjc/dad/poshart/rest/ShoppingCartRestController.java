@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -12,6 +13,7 @@ import es.urjc.dad.poshart.model.ShoppingCart;
 import es.urjc.dad.poshart.repository.ShoppingCartRepository;
 
 //Usada para ver la estructura de los JSON via Web.
+@RestController
 public class ShoppingCartRestController {
 	@Autowired
 	private ShoppingCartRepository carts;
@@ -28,7 +30,7 @@ public class ShoppingCartRestController {
 	}
 	
 	@JsonView(JsonInterfaces.BasicoAvanzado.class)
-	@GetMapping("/carts/{id}/listaDeArte")
+	@GetMapping("/carts/{id}/showDetails")
 	public ResponseEntity<ShoppingCart> getCartMoreDetails(@PathVariable long id) {
 		ShoppingCart shopcart = carts.findById(id).orElseThrow();
 		if (shopcart != null) {
