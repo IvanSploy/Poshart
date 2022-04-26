@@ -81,6 +81,11 @@ public class EmailService {
 	public void sendPurchaseReceipt(long id) {
 		ShoppingCart sc = shoppingCartRepository.getById(id);
 		ObjectNode request = mapper.convertObjectToNode(sc, JsonInterfaces.BasicoAvanzado.class);
+		sendPurchaseReceiptAsync(request);
+	}
+	
+	@Async
+	public void sendPurchaseReceiptAsync(ObjectNode request) {
 		restTemplate.postForLocation("http://localhost:8080/email/receipt", request);
 	}
 }
