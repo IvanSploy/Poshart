@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +37,7 @@ import es.urjc.dad.poshart.repository.ArtPostRepository;
 import es.urjc.dad.poshart.repository.CollectionRepository;
 import es.urjc.dad.poshart.service.ImageService;
 
+@CacheConfig(cacheNames="Posts")
 @Controller
 @RequestMapping("/post")
 public class ArtPostController {
@@ -77,7 +82,7 @@ public class ArtPostController {
 		artPostRepository.save(newArtPost);
 		return new RedirectView("/post/"+newArtPost.getId());
 	}
-	
+	@Cacheable
 	@GetMapping("/{id}")
 	public String viewPost(HttpServletRequest request, Model model, @PathVariable long id) {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
@@ -92,7 +97,7 @@ public class ArtPostController {
 		model.addAttribute("ArtPost", ap);
 		return "viewPost";
 	}
-	
+	@CachePut
 	@GetMapping("/{id}/addToShopping")
 	public RedirectView addToCart(HttpServletRequest request, Model model, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -106,7 +111,7 @@ public class ArtPostController {
 		}
 		return new RedirectView("/post/"+ap.getId());
 	}
-	
+	@CachePut
 	@GetMapping("/{id}/edit")
 	public String editPost(HttpServletRequest request, Model model, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -116,7 +121,7 @@ public class ArtPostController {
 			return "editPost";
 		}else return "viewPost";
 	}
-
+	@CachePut
 	@PostMapping("/{id}/edit/confirm")
 	public RedirectView editPostConfirm(Model model, ArtPost newArtPost, @PathVariable long id) {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
@@ -126,7 +131,7 @@ public class ArtPostController {
 		artPostRepository.save(ap);
 		return new RedirectView("/post/" + id);
 	}
-	
+	@CacheEvict(allEntries=false)
 	@GetMapping("{id}/delete")
 	public RedirectView deletePost(HttpServletRequest request, Model model, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -141,6 +146,7 @@ public class ArtPostController {
 		return new RedirectView("/");
 	}
 	//RELACIONADO CON COMENTARIOS
+	@CacheEvict(allEntries=false)
 	@PostMapping("/{id}/comment/new")
 	public RedirectView createComment(HttpServletRequest request, Model model, @PathVariable long id, Comment comment) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
@@ -152,7 +158,7 @@ public class ArtPostController {
 		emailService.sendNotifyCommentEmail(comment);
 		return new RedirectView("/post/"+id);
 	}
-	
+	@CacheEvict(allEntries=false)
 	@GetMapping("/{id}/comment/{idComment}/delete")
 	public RedirectView removeComment(Model model, @PathVariable long id, @PathVariable long idComment) {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
