@@ -21,7 +21,6 @@ import es.urjc.dad.PoshartInternal.service.EmailSenderService;
 
 @RestController
 @RequestMapping("/email")
-@EnableAsync
 public class EmailController {
 	
 	@Autowired
@@ -92,7 +91,6 @@ public class EmailController {
 	}
 	
 	@PostMapping("/receipt")
-	@Async
 	public void sendPurchaseReceipt(@RequestBody ObjectNode post) throws URISyntaxException {
 		JsonNode owner = post.get("buyer");
 		ArrayNode arts = (ArrayNode) post.get("art");
