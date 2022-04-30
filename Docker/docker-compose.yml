@@ -1,10 +1,19 @@
 version: "3.9"
 
 services:
-  poshart-app:
-    image: poshart/poshart-app
+  poshart-loadbalancer:
+    image: poshart/poshart-haproxy
     ports:
-      - 443:443
+      - 8080:80
+    links:
+      - poshart-app1
+      - poshart-app2
+    restart: always
+    expose:
+      - 80
+
+  poshart-app1:
+    image: poshart/poshart-app
     volumes:
       - ./poshart-compose/app:/app
     environment:
@@ -14,14 +23,35 @@ services:
       SPRING_DATASOURCE_PASSWORD: GEIposhart#333
       POSHART_INTERNAL_URI: http://poshart-internal-app:8080
     links:
-      - mysql
+      - poshart-db
       - poshart-internal-app
+    expose:
+      - 8080
+    command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
+
+  poshart-app2:
+    image: poshart/poshart-app
+    volumes:
+      - ./poshart-compose/app:/app
+    environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_DATASOURCE_URL: jdbc:mysql://poshart-db/poshart
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: GEIposhart#333
+      POSHART_INTERNAL_URI: http://poshart-internal-app:8080
+    links:
+      - poshart-db
+      - poshart-internal-app
+    expose:
+      - 8080
     command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
 
   poshart-internal-app:
     image: poshart/poshart-internal-app
     volumes:
       - ./poshart-compose/internal-app:/internal-app
+    expose:
+      - 8080
 
   poshart-db:
     image: mysql:5.7
@@ -30,3 +60,5 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: GEIposhart#333
       MYSQL_DATABASE: poshart
+    expose:
+      - 3306
