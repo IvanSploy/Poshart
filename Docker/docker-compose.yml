@@ -4,20 +4,20 @@ services:
   poshart-loadbalancer:
     image: poshart/poshart-haproxy
     ports:
-      - 8080:80
+      - 443:443
     links:
       - poshart-app1
       - poshart-app2
     restart: always
     expose:
-      - 80
+      - 443
 
   poshart-app1:
     image: poshart/poshart-app
     volumes:
       - ./poshart-compose/app:/app
     environment:
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
       SPRING_DATASOURCE_URL: jdbc:mysql://poshart-db/poshart
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: GEIposhart#333
@@ -26,7 +26,7 @@ services:
       - poshart-db
       - poshart-internal-app
     expose:
-      - 8080
+      - 443
     command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
 
   poshart-app2:
@@ -43,7 +43,7 @@ services:
       - poshart-db
       - poshart-internal-app
     expose:
-      - 8080
+      - 443
     command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
 
   poshart-internal-app:
