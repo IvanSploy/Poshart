@@ -5,6 +5,7 @@ services:
     image: poshart/poshart-haproxy
     ports:
       - 443:443
+      - 1936:1936
     links:
       - poshart-app1
       - poshart-app2
