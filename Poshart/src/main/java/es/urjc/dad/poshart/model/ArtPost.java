@@ -44,7 +44,7 @@ public class ArtPost {
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "art")
-	private List<ShoppingCart> carts;
+	private List<ShoppingCart> carts = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

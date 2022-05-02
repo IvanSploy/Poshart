@@ -145,6 +145,7 @@ public class ArtPostController {
 	public RedirectView createComment(HttpServletRequest request, Model model, @PathVariable long id, Comment comment) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
+		comment.setId(0);
 		comment.setOwner(u);
 		comment.setCommentDate(Date.from(Instant.now()));
 		ap.addComment(comment);

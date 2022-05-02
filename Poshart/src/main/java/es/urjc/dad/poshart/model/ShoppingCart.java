@@ -32,7 +32,7 @@ public class ShoppingCart {
 	
 	@JsonView(JsonInterfaces.Avanzado.class)
 	@ManyToMany
-	private List<ArtPost> art= new ArrayList<>();
+	private List<ArtPost> art = new ArrayList<>();
 	
 	public void addArtPost(ArtPost post) {
 		art.add(post);
