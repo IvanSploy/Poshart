@@ -28,6 +28,9 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * Notificación cuando un usuario compra una obra en propiedad de otro usuario.
 * Notificar al usuario cuando otro usuario ha comentado en alguna obra de su propiedad.
 
+## Despliegue con docker compose 🐋
+Para desplegar la aplicación teniendo docker compose (v.2.4.1) ya instalado solo necesitamos ejecutar el siguiente comando: ````curl -L https://bit.ly/3F6x6Hw | docker compose -f - up -d````
+
 ## Despliegue de la aplicación 📇
 Para la compilación del proyecto vamos a seguir los siguientes pasos:
 * Instalar el JDK y Maven.

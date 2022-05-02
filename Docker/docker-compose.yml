@@ -20,7 +20,7 @@ services:
     ports:
       - 8081:443
     environment:
-      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_DATASOURCE_URL: jdbc:mysql://poshart-db/poshart
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: GEIposhart#333
@@ -28,6 +28,7 @@ services:
     links:
       - poshart-db
       - poshart-loadbalancer-internal
+    restart: on-failure
     expose:
       - 443
     command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
@@ -47,6 +48,7 @@ services:
     links:
       - poshart-db
       - poshart-loadbalancer-internal
+    restart: on-failure
     expose:
       - 443
     command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
@@ -66,6 +68,7 @@ services:
     image: poshart/poshart-internal-app
     volumes:
       - ./poshart-compose/internal-app1:/internal-app
+    restart: on-failure
     expose:
       - 8080
       
@@ -73,6 +76,7 @@ services:
     image: poshart/poshart-internal-app
     volumes:
       - ./poshart-compose/internal-app2:/internal-app
+    restart: on-failure
     expose:
       - 8080
 
@@ -83,5 +87,6 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: GEIposhart#333
       MYSQL_DATABASE: poshart
+    restart: on-failure
     expose:
       - 3306
