@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -30,6 +31,9 @@ import es.urjc.dad.poshart.rest.ArtPostRestController;
 @Service
 @EnableAsync
 public class EmailService {
+	
+	@Value("${poshart.internal.uri}")
+	private String uri;
 	
 	@Autowired
 	MapperService mapper;
@@ -57,14 +61,14 @@ public class EmailService {
 	public void sendConfimationEmail(long id) {
 		User u = userRepository.findById(id).orElseThrow();
 		ObjectNode request = mapper.convertObjectToNode(u, JsonInterfaces.Basico.class);
-		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/confirmUser", request);
+		if(request!=null) restTemplate.postForLocation(uri + "/email/confirmUser", request);
 	}
 	
 	//Se enviará un Email con el comentario realizado sobre una publicación.
 	@Async
 	public void sendNotifyCommentEmail(Comment comment) {
 		ObjectNode request = mapper.convertObjectToNode(comment, JsonInterfaces.BasicoAvanzado.class);
-		if(request!=null) restTemplate.postForLocation("http://localhost:8080/email/notifyComment", request);
+		if(request!=null) restTemplate.postForLocation(uri + "/email/notifyComment", request);
 	}
 	
 	//Se enviará un Email para avisar a un usuario de que su obra ha sido comprada.
@@ -74,7 +78,7 @@ public class EmailService {
 		ObjectNode request = mapper.convertObjectToNode(post, JsonInterfaces.BasicoAvanzado.class);
 		//Para añadir el campo de correo necesario en la petición.
 		request.put("email", email);
-		restTemplate.postForLocation("http://localhost:8080/email/purchase", request);
+		restTemplate.postForLocation(uri + "/email/purchase", request);
 	}
 	
 	//Se enviará un Email con el recibo de la compra realizada.
@@ -86,6 +90,6 @@ public class EmailService {
 	
 	@Async
 	public void sendPurchaseReceiptAsync(ObjectNode request) {
-		restTemplate.postForLocation("http://localhost:8080/email/receipt", request);
+		restTemplate.postForLocation(uri + "/email/receipt", request);
 	}
 }

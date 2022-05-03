@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+  poshart-loadbalancer:
+    image: poshart/poshart-haproxy
+    ports:
+      - 443:443
+      - 1936:1936
+    links:
+      - poshart-app1
+      - poshart-app2
+    restart: always
+    expose:
+      - 443
+
+  poshart-app1:
+    image: poshart/poshart-app
+    volumes:
+      - ./poshart-compose/app:/app
+    ports:
+      - 8081:443
+    environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_DATASOURCE_URL: jdbc:mysql://poshart-db/poshart
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: GEIposhart#333
+      POSHART_INTERNAL_URI: http://poshart-loadbalancer-internal:8080
+    links:
+      - poshart-db
+      - poshart-loadbalancer-internal
+    restart: on-failure
+    expose:
+      - 443
+    command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
+
+  poshart-app2:
+    image: poshart/poshart-app
+    volumes:
+      - ./poshart-compose/app:/app
+    ports:
+      - 8082:443
+    environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_DATASOURCE_URL: jdbc:mysql://poshart-db/poshart
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: GEIposhart#333
+      POSHART_INTERNAL_URI: http://poshart-loadbalancer-internal:8080
+    links:
+      - poshart-db
+      - poshart-loadbalancer-internal
+    restart: on-failure
+    expose:
+      - 443
+    command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
+
+  poshart-loadbalancer-internal:
+    image: poshart/poshart-haproxy-internal
+    ports:
+      - 1937:1937
+    links:
+      - poshart-internal-app1
+      - poshart-internal-app2
+    restart: always
+    expose:
+      - 8080
+
+  poshart-internal-app1:
+    image: poshart/poshart-internal-app
+    volumes:
+      - ./poshart-compose/internal-app1:/internal-app
+    restart: on-failure
+    expose:
+      - 8080
+      
+  poshart-internal-app2:
+    image: poshart/poshart-internal-app
+    volumes:
+      - ./poshart-compose/internal-app2:/internal-app
+    restart: on-failure
+    expose:
+      - 8080
+
+  poshart-db:
+    image: mysql:5.7
+    volumes:
+      - ./poshart-compose/sql:/var/lib/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: GEIposhart#333
+      MYSQL_DATABASE: poshart
+    restart: on-failure
+    expose:
+      - 3306
