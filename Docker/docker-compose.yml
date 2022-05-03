@@ -81,12 +81,11 @@ services:
       - 8080
       
   poshart-db-proxy:
-    image: proxysql/proxysql:2.3.2
+    image: poshart/poshart-proxysql
     ports:
       - 6032:6032
       - 6033:6033
     volumes:
-      - ./poshart-compose/proxysql/proxysql.cnf:/etc/proxysql.cnf
       - ./poshart-compose/proxysql/data:/var/lib/proxysql
     links:
       - poshart-db-master
