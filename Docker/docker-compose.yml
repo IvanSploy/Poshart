@@ -4,6 +4,7 @@ services:
   poshart-loadbalancer:
     image: poshart/poshart-haproxy
     ports:
+      - 80:80
       - 443:443
       - 1936:1936
     links:
