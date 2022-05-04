@@ -12,12 +12,11 @@ import es.urjc.dad.poshart.model.Comment;
 import es.urjc.dad.poshart.model.User;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+	@CacheEvict(value = "Posts", allEntries = true)
 	@Cacheable("Comments")
 	List<Comment> findByPostId(long id);
-	
 	@CacheEvict(value = "Comments", allEntries = true)
 	void delete(Comment newComment);
-	
-	@CachePut(value = "Comments")
+	@CacheEvict(value = "Comments", allEntries = true)
 	Comment save(Comment newComment);
 }

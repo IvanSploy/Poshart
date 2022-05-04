@@ -61,7 +61,8 @@ public class User {
 	@JsonView(JsonInterfaces.Basico.class)
 	private int countFollowers;
 	
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private Image image;
 	

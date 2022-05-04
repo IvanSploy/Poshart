@@ -48,7 +48,8 @@ public class ArtPost {
 	private User owner;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "art")
+	@ManyToMany(mappedBy = "art", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private List<ShoppingCart> carts = new ArrayList<>();
 	
 	@JsonIgnore
@@ -57,7 +58,8 @@ public class ArtPost {
 	private List<Comment> postComments = new ArrayList<>();	
 	
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private Image image;
 
 	public ArtPost() {
