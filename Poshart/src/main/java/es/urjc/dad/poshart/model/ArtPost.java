@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -39,7 +43,8 @@ public class ArtPost {
 	private Date date;
 	
 	@JsonView(JsonInterfaces.Avanzado.class)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private User owner;
 
 	@JsonIgnore
@@ -47,7 +52,8 @@ public class ArtPost {
 	private List<ShoppingCart> carts = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private List<Comment> postComments = new ArrayList<>();	
 	
 	@JsonIgnore

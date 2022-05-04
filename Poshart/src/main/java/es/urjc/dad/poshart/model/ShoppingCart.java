@@ -3,12 +3,16 @@ package es.urjc.dad.poshart.model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -31,7 +35,8 @@ public class ShoppingCart {
 	private Date date;
 	
 	@JsonView(JsonInterfaces.Avanzado.class)
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private List<ArtPost> art = new ArrayList<>();
 	
 	public void addArtPost(ArtPost post) {

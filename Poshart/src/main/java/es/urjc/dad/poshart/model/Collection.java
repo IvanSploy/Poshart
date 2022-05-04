@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class Collection {
@@ -21,10 +25,12 @@ public class Collection {
 	private String name;
 	private String description;
 
-	@ManyToOne
+	@ManyToOne (fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private User owner;
 
-	@ManyToMany
+	@ManyToMany (fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private List<ArtPost> posts = new ArrayList<>();
 
 	public Collection() {

@@ -47,11 +47,5 @@ public class PoshartApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PoshartApplication.class, args);
 	}
-	
-	@Bean
-	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager("Posts");
-		
-	}
 
 }

@@ -4,11 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -28,11 +32,13 @@ public class Comment {
 	private Date commentDate;
 
 	@JsonView(JsonInterfaces.Basico.class)
-	@ManyToOne
+	@ManyToOne (fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private User owner;
 
 	@JsonView(JsonInterfaces.Avanzado.class)
-	@ManyToOne
+	@ManyToOne (fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	private ArtPost post;
 
 	public Comment() {

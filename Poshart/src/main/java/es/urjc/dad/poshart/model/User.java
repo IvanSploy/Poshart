@@ -20,6 +20,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -66,23 +69,28 @@ public class User {
 	@JsonIgnore
 	private List<String> roles;//lista de los roles que puede tomar un usuario
 
-	@ManyToMany
+	@ManyToMany (fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private Set<User> follows = new HashSet<>();
 
-	@ManyToMany(mappedBy = "follows")
+	@ManyToMany(mappedBy = "follows", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private Set<User> followers = new HashSet<>();
 
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private List<Collection> collections = new ArrayList<>();
 
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private List<ArtPost> myPosts = new ArrayList<>();
 
-	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	@JsonIgnore
 	private ShoppingCart cart;
 
