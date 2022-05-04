@@ -1,6 +1,9 @@
 # Poshart 🎨
 Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura, dibujo, fotografía, escultura, impresiones, arte virtual y elementos relacionados. Los usuarios podrán dar _me gusta_ y comentar en las obras que deseen ayudando a decidir a otros usuarios acerca de la compra de esa obra en concreto.
 
+## Vídeo 📺
+[![Poshart | Funcionamiento de la web](https://img.youtube.com/vi/z-_W8c4hlaQ/0.jpg)](https://www.youtube.com/watch?v=z-_W8c4hlaQ "Poshart | Funcionamiento de la web")
+
 ## Funcionalidad pública 📢
 * Observar las colecciones de obras de arte u obras en venta pertenecientes a usuarios privados.
 * Observar los muros de otros usuarios.
@@ -67,6 +70,8 @@ Para la planificación del proyecto se ha hecho uso de la herramienta virtual Tr
 ![Diagrama E_R (2)](https://user-images.githubusercontent.com/78254966/155119384-fddbb7a7-896f-4313-80a2-48f10f26a037.png)
 ### Diagrama de Clases y Templates
 ![DiagramaClasesFase3](https://user-images.githubusercontent.com/78254966/162157514-fd664f1d-21e6-49e9-a88c-3b2528db102e.png)
+### Diagrama de Infraestructura y Componentes
+![Dibujo sin título](https://user-images.githubusercontent.com/78254966/166808732-0d790de4-0e13-4ead-acb4-625b4934d020.jpg)
 
 ## Autores ✒️️
 * **Guillermo Juan García-Delgado Álvarez** - [Github](https://github.com/guilleingvid)
