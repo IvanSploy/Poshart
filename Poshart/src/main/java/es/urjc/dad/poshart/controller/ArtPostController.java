@@ -3,6 +3,7 @@ package es.urjc.dad.poshart.controller;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,13 +88,15 @@ public class ArtPostController {
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		if(request.isUserInRole("USER")) {
 			User u = userRepository.findByUsername(request.getUserPrincipal().getName());
-			if(u == ap.getOwner()) {
+			if(u.equals(ap.getOwner())) {
 				model.addAttribute("isMine", true);
 			}
 			model.addAttribute("isBought", u.getCart().getArt().contains(ap));
 			model.addAttribute("myCollections", u.getCollections());
 		}
 		model.addAttribute("ArtPost", ap);
+		List<Comment> comments = commentRepository.findByPostId(id);
+		model.addAttribute("comments", comments);
 		return "viewPost";
 	}
 	@GetMapping("/{id}/addToShopping")
@@ -101,7 +104,7 @@ public class ArtPostController {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		//Solo te deja añadir al carro de la compra si no eres su dueño y si no lo tienes ya añadido
-		if(u != ap.getOwner()) {
+		if(!u.equals(ap.getOwner())) {
 			if(!u.getCart().getArt().contains(ap)) {
 				u.getCart().addArt(ap);
 				cartRepository.save(u.getCart());
@@ -114,9 +117,11 @@ public class ArtPostController {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
 		model.addAttribute("thisArtPost", ap);
-		if(u == ap.getOwner()) {
+		if(u.equals(ap.getOwner())) {
 			return "editPost";
-		}else return "viewPost";
+		}else {
+			return "redirect:/post/" + id;
+		}
 	}
 	@PostMapping("/{id}/edit/confirm")
 	public RedirectView editPostConfirm(Model model, ArtPost newArtPost, @PathVariable long id) {
@@ -131,7 +136,7 @@ public class ArtPostController {
 	public RedirectView deletePost(HttpServletRequest request, Model model, @PathVariable long id) {
 		User u = userRepository.findByUsername(request.getUserPrincipal().getName());
 		ArtPost ap = artPostRepository.findById(id).orElseThrow();
-		if(u == ap.getOwner()) {
+		if(u.equals(ap.getOwner())) {
 			u.removePost(ap);
 			for(ShoppingCart sc : ap.getCarts()) {
 				sc.removeArt(ap);

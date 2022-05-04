@@ -59,14 +59,14 @@
  	<input type="hidden" name="_csrf" value="{{token}}" />
  	</form>
  	<h1>Comentarios:</h1>
-    {{#ArtPost.postComments}}
+    {{#comments}}
     <p>Usuario: <a href="/user/{{owner.id}}" >{{owner.username}}</a></p>
     <p>{{description}}</p>
     <p>Fecha: {{commentDate}}</p>
     <a href="/post/{{ArtPost.id}}/comment/{{id}}/delete"><img src="/img/iconBasura.png" width=25px alt="BORRAR" title="Eliminar comentario"/></a>
     <br>
     <hr>
-    {{/ArtPost.postComments}}
+    {{/comments}}
     {{^isMine}}
     {{^isBought}}
   	<!-- Botón para meter el post en la cesta-->

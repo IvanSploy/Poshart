@@ -22,16 +22,4 @@ public class CacheController {
 		ConcurrentMapCache cache = (ConcurrentMapCache) cacheMgr.getCache("Posts");
 		return cache.getNativeCache();
 	}
-	@RequestMapping(value="/user", method=RequestMethod.GET)
-	public Map<Object, Object> getCacheContentUser(){
-		ConcurrentMapCacheManager cacheMgr = (ConcurrentMapCacheManager) cacheManager;
-		ConcurrentMapCache cache = (ConcurrentMapCache) cacheMgr.getCache("Users");
-		return cache.getNativeCache();
-	}
-	@RequestMapping(value="/comment", method=RequestMethod.GET)
-	public Map<Object, Object> getCacheContentComment(){
-		ConcurrentMapCacheManager cacheMgr = (ConcurrentMapCacheManager) cacheManager;
-		ConcurrentMapCache cache = (ConcurrentMapCache) cacheMgr.getCache("Comments");
-		return cache.getNativeCache();
-	}
 }
