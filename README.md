@@ -1,5 +1,5 @@
 # Poshart 🎨
-Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura, dibujo, fotografía, escultura, impresiones, arte virtual y elementos relacionados. Los usuarios podrán dar _me gusta_ y comentar en las obras que deseen ayudando a decidir a otros usuarios acerca de la compra de esa obra en concreto.
+Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura, dibujo, fotografía, escultura, impresiones, arte virtual y elementos relacionados. Los usuarios podrán comentar en las obras que deseen ayudando a decidir a otros usuarios acerca de la compra de esa obra en concreto.
 
 ## Vídeo 📺
 [![Poshart | Funcionamiento de la web](https://img.youtube.com/vi/z-_W8c4hlaQ/0.jpg)](https://www.youtube.com/watch?v=z-_W8c4hlaQ "Poshart | Funcionamiento de la web")
@@ -14,7 +14,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * Muro propio con las obras compradas en la aplicación.
 * Muro propio de las obras de arte puestas a la venta.
 * Seguir a otros usuarios.
-* Darle _me gusta_ y comentar en las obras de otros usuarios.
+* Comentar en las obras de otros usuarios.
 * Crear colecciones de diferentes temáticas de obras _(lista de deseos, inspiración, futuras compras, etc)_.
 
 ## Entidades principales 📄
@@ -32,7 +32,7 @@ Poshart es una aplicación web destinada a la compraventa de arte ya sea pintura
 * Notificar al usuario cuando otro usuario ha comentado en alguna obra de su propiedad.
 
 ## Despliegue con docker compose 🐋
-Para desplegar la aplicación teniendo docker compose (v.2.4.1) ya instalado solo necesitamos ejecutar el siguiente comando: ````curl -L https://bit.ly/3F6x6Hw | docker compose -f - up -d````
+Para desplegar la aplicación teniendo docker compose (v.2.4.1) ya instalado solo necesitamos ejecutar el siguiente comando: ````curl -L https://bit.ly/3F6x6Hw | docker compose -f - up````
 
 ## Despliegue de la aplicación 📇
 Para la compilación del proyecto vamos a seguir los siguientes pasos:
