@@ -27,12 +27,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: GEIposhart#333
       POSHART_INTERNAL_URI: http://poshart-loadbalancer-internal:8080
     links:
-      - poshart-db
+      - poshart-db-proxy
       - poshart-loadbalancer-internal
     restart: on-failure
     expose:
       - 8080
-    command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
+    command: [ "./wait-for-it.sh", "poshart-db-proxy:6033", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
 
   poshart-app2:
     image: poshart/poshart-app
@@ -47,12 +47,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: GEIposhart#333
       POSHART_INTERNAL_URI: http://poshart-loadbalancer-internal:8080
     links:
-      - poshart-db
+      - poshart-db-proxy
       - poshart-loadbalancer-internal
     restart: on-failure
     expose:
       - 8080
-    command: [ "./wait-for-it.sh", "poshart-db:3306", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
+    command: [ "./wait-for-it.sh", "poshart-db-proxy:6033", "--", "java", "-jar", "Poshart-0.0.1-SNAPSHOT.jar" ]
 
   poshart-loadbalancer-internal:
     image: poshart/poshart-haproxy-internal

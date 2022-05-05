@@ -4,6 +4,7 @@ WORKDIR /project
 COPY /src /project/src
 COPY pom.xml /project/
 RUN mvn -B package
+
 # Imagen base para el contenedor de la aplicación
 FROM openjdk:17-jdk-slim
 WORKDIR /usr/src/app/
